@@ -1,0 +1,311 @@
+# Copyright (C) 2016 Run Log
+# This file is distributed under the same license as the Run Log package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Run Log 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/run-log\n"
+"POT-Creation-Date: 2016-06-11 10:29:53+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: run-log.php:59
+msgctxt "Post Type General Name"
+msgid "Runs"
+msgstr ""
+
+#: run-log.php:60
+msgctxt "Post Type Singular Name"
+msgid "Run"
+msgstr ""
+
+#. #-#-#-#-#  plugin.pot (Run Log 1.0.0)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: run-log.php:61
+msgid "Run Log"
+msgstr ""
+
+#: run-log.php:62
+msgid "Parent Run:"
+msgstr ""
+
+#: run-log.php:63
+msgid "All Runs"
+msgstr ""
+
+#: run-log.php:64
+msgid "View Run"
+msgstr ""
+
+#: run-log.php:65
+msgid "Add New Run"
+msgstr ""
+
+#: run-log.php:66
+msgid "Add New"
+msgstr ""
+
+#: run-log.php:67
+msgid "Edit Run"
+msgstr ""
+
+#: run-log.php:68
+msgid "Update Run"
+msgstr ""
+
+#: run-log.php:69
+msgid "Search Run"
+msgstr ""
+
+#: run-log.php:70
+msgid "Not run found"
+msgstr ""
+
+#: run-log.php:71
+msgid "Not run found in Trash"
+msgstr ""
+
+#: run-log.php:74
+msgid "oi_run_log_post"
+msgstr ""
+
+#: run-log.php:75
+msgid "Log entry for a specific run"
+msgstr ""
+
+#: run-log.php:103 run-log.php:151
+msgid "Run Log Options"
+msgstr ""
+
+#: run-log.php:114
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+
+#: run-log.php:145
+msgid "Options saved"
+msgstr ""
+
+#: run-log.php:152
+msgid "Control the Run Log settings by updating these values"
+msgstr ""
+
+#: run-log.php:154
+msgid "Distance unit"
+msgstr ""
+
+#: run-log.php:156
+msgid "km"
+msgstr ""
+
+#: run-log.php:159
+msgid "mi"
+msgstr ""
+
+#: run-log.php:163
+msgid "Pace/Speed display"
+msgstr ""
+
+#: run-log.php:165 run-log.php:331
+msgid "Pace"
+msgstr ""
+
+#: run-log.php:168 run-log.php:323
+msgid "Speed"
+msgstr ""
+
+#: run-log.php:172
+msgid "Display position"
+msgstr ""
+
+#: run-log.php:174
+msgid "top"
+msgstr ""
+
+#: run-log.php:177
+msgid "bottom"
+msgstr ""
+
+#: run-log.php:180
+msgid "Save Changes"
+msgstr ""
+
+#: run-log.php:192
+msgid "Run Log Parameters"
+msgstr ""
+
+#: run-log.php:222 run-log.php:310
+msgid "Distance"
+msgstr ""
+
+#: run-log.php:225 run-log.php:316
+msgid "Duration"
+msgstr ""
+
+#: run-log.php:228
+msgid "Elevation gain"
+msgstr ""
+
+#: run-log.php:231
+msgid "Calories"
+msgstr ""
+
+#: run-log.php:326
+msgid "mi/h"
+msgstr ""
+
+#: run-log.php:328
+msgid "km/h"
+msgstr ""
+
+#: run-log.php:334
+msgid "min/mi"
+msgstr ""
+
+#: run-log.php:336
+msgid "min/km"
+msgstr ""
+
+#: run-log.php:383
+msgctxt "Taxonomy General Name"
+msgid "Goals"
+msgstr ""
+
+#: run-log.php:384
+msgctxt "Taxonomy Singular Name"
+msgid "Goal"
+msgstr ""
+
+#: run-log.php:385
+msgid "Goal"
+msgstr ""
+
+#: run-log.php:386
+msgid "All Goals"
+msgstr ""
+
+#: run-log.php:387
+msgid "Parent Goal"
+msgstr ""
+
+#: run-log.php:388
+msgid "Parent Goal:"
+msgstr ""
+
+#: run-log.php:389
+msgid "New Goal Name"
+msgstr ""
+
+#: run-log.php:390
+msgid "Add New Goal"
+msgstr ""
+
+#: run-log.php:391
+msgid "Edit Goal"
+msgstr ""
+
+#: run-log.php:392
+msgid "Update Goal"
+msgstr ""
+
+#: run-log.php:393
+msgid "Separate goals with commas"
+msgstr ""
+
+#: run-log.php:394
+msgid "Search goals"
+msgstr ""
+
+#: run-log.php:395
+msgid "Add or remove goals"
+msgstr ""
+
+#: run-log.php:396
+msgid "Choose from the most used goals"
+msgstr ""
+
+#: run-log.php:397
+msgid "Goal Not Found"
+msgstr ""
+
+#: run-log.php:428
+msgctxt "Taxonomy General Name"
+msgid "Gears"
+msgstr ""
+
+#: run-log.php:429
+msgctxt "Taxonomy Singular Name"
+msgid "Gear"
+msgstr ""
+
+#: run-log.php:430
+msgid "Gear"
+msgstr ""
+
+#: run-log.php:431
+msgid "All Gears"
+msgstr ""
+
+#: run-log.php:432
+msgid "Parent Gear"
+msgstr ""
+
+#: run-log.php:433
+msgid "Parent Gear:"
+msgstr ""
+
+#: run-log.php:434
+msgid "New Gear Name"
+msgstr ""
+
+#: run-log.php:435
+msgid "Add New Gear"
+msgstr ""
+
+#: run-log.php:436
+msgid "Edit Gear"
+msgstr ""
+
+#: run-log.php:437
+msgid "Update Gear"
+msgstr ""
+
+#: run-log.php:438
+msgid "Separate gears with commas"
+msgstr ""
+
+#: run-log.php:439
+msgid "Search Gears"
+msgstr ""
+
+#: run-log.php:440
+msgid "Add or remove gears"
+msgstr ""
+
+#: run-log.php:441
+msgid "Choose from the most used gears"
+msgstr ""
+
+#: run-log.php:442
+msgid "Gear Not Found"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://stuff.izmirli.org/wordpress-run-log-plugin/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Adds running diary capabilities - custom post type, custom fields and new "
+"taxonomies."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Oren Izmirli"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://profiles.wordpress.org/izem"
+msgstr ""

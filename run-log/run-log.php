@@ -3,7 +3,7 @@
 Plugin Name: Run Log
 Plugin URI: http://stuff.izmirli.org/wordpress-run-log-plugin/
 Description: Adds running diary capabilities - custom post type, custom fields and new taxonomies.
-Version: 1.0.0
+Version: 1.0.1
 Author: Oren Izmirli
 Author URI: https://profiles.wordpress.org/izem
 Text Domain: run-log
@@ -44,8 +44,7 @@ register_uninstall_hook( __FILE__, 'oirl_remove_default_options' );
  * @since 1.0.0
  */
 function oirl_init() {
-	$plugin_dir = basename(dirname(__FILE__));
-	load_plugin_textdomain( 'run-log', false, $plugin_dir );
+	load_plugin_textdomain( 'run-log', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 }
 add_action('plugins_loaded', 'oirl_init');
  

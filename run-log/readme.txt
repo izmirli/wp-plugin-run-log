@@ -10,6 +10,7 @@ License URI: https://wordpress.org/about/gpl/
 Adds running diary capabilities - custom post type, custom fields and new taxonomies.
 
 == Description ==
+
 The plugin add running diary capabilities to WordPress, so you can log your running activities in posts with special features.
 
 = Special Features =
@@ -77,27 +78,26 @@ From your computer via FTP or from your sever:
 4. Activate the plugin in the Plugin dashboard
 
 == Frequently Asked Questions ==
-Should be FAQ here. [placeholder]
+
+= Can this plugin be used for cycling or other similar sport activities? =
+
+Yes, it should be usable for cycling as well, and maybe other similar sports.
 
 == Screenshots ==
 
-1. Run data display in the post
-2. The post edit screen - run-log paramters input box at the bottom
-3. Gears and Goals input boxes from the post edit screen
-4. The plugin options screen
+1. Run data display in the post.
+2. The post edit screen - run-log paramters input box at the bottom.
+3. Gears and Goals input boxes from the post edit screen.
+4. The plugin options screen.
+
+== Translations ==
+
+* English.
+* Hebrew.
 
 == Changelog ==
 
 = 1.0.0 =
 
 * Initial version
-
-== Upgrade Notice ==
-
-Be afraid, be very afraid. [placeholder]
-
-== Translations ==
-
-* English - default (Not my mother tongue, so may have some wording and spelling mistakes. Do tell me how to correct them).
-* Hebrew (and RTL support).
 
