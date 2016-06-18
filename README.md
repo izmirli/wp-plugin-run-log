@@ -16,7 +16,9 @@ The WordPress Plugin Boilerplate includes the following files:
  * `run-log-rtl.css`. Styles file for RTL WordPress installations.
  * `run-log.css`. Styles file (for LTR WordPress installations).
  * `languages`. Directory that contains the .mo language files, along side with .pot and .po files.
-  * `run-log-he_IL.mo`. Hebrew translation file.
+    * `run-log-he_IL.mo`. Hebrew translation file.
+    * `run-log-he_IL.po`. Hebrew translation PO file.
+    * `run-log.pot`. General translation template.
 
 ## Features
 

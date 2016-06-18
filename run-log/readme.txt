@@ -28,6 +28,11 @@ Support for RTL and Hebrew translation included automatically.
 The metric system of measurement is used by default - Kilometer (km) for distance, minuts per kilometer (min/km) for pace, kilometers per hour (km/h) for speed [and meters (m) for elevation].
 You can change these to statute/imperial by updating plugin's "Distance unit" option to mi (Mile).
 
+= Translations =
+
+* Hebrew - full translations.
+* English is there by default, yet not my mother tongue, so may have some wording and spelling mistakes. Do tell me how to correct them if you fine any.
+
 = Usage =
 
 [After activating the plugin]
@@ -43,6 +48,9 @@ To log a new run you can follow these steps:
 
 If you want to configure run log data (distance, duration, pace/speed), you can do this on the "Run Log Options", accable via the "Run Log" admin sub-menu. There you can select between top/bottom display position, Kilometer/Miles units, and pace/speed.
 
+= Credits =
+
+The plugin icon was [Designed by Freepik](http://www.freepik.com).
 
 = To Do: =
 
@@ -51,6 +59,11 @@ If you want to configure run log data (distance, duration, pace/speed), you can 
 * Add Widget and short-code to diplay accumulate data and more.
 * Add hart rate.
 * Add API support for Strava/Garmin Connect/Sunto/Runkeepr to retrive data automatically.
+
+= Uninstall =
+
+This plugin doesn't add/change the data-base, so no worry about that. Yet, it does store plugin configuration options in the 'options' table. These options will be removed if plugin is uninstall (deleted) trough the plugins admin screen.
+Data stored by this plugin for posts (in postmeta table) will be kept.
 
 == Installation ==
 
@@ -90,14 +103,15 @@ Yes, it should be usable for cycling as well, and maybe other similar sports.
 3. Gears and Goals input boxes from the post edit screen.
 4. The plugin options screen.
 
-== Translations ==
-
-* English.
-* Hebrew.
-
 == Changelog ==
 
+= 1.2.0 =
+* Option not to display the run data on the post was added.
+* Option to display the run data on the excerpt was added.
+* Added plugin icon.
+
+= 1.0.1 =
+* Move translation files under languages directory
+
 = 1.0.0 =
-
 * Initial version
-

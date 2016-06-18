@@ -2,8 +2,8 @@
 /*
 Plugin Name: Run Log
 Plugin URI: http://stuff.izmirli.org/wordpress-run-log-plugin/
-Description: Adds running diary capabilities - custom post type, custom fields and new taxonomies.
-Version: 1.0.1
+Description: Adds running diary capabilities - log your sporting activity custom post type, custom fields and new taxonomies.
+Version: 1.2.0
 Author: Oren Izmirli
 Author URI: https://profiles.wordpress.org/izem
 Text Domain: run-log
@@ -23,7 +23,7 @@ function oirl_set_default_options() {
 	add_option( 'oirl-distance-unit', 'km' );
 	add_option( 'oirl-pace-or-speed', 'pace' );
 	add_option( 'oirl-display-pos', 'top' );
-	
+	add_option( 'oirl-display-on-excerpt', 0 );
 }
 register_activation_hook( __FILE__, 'oirl_set_default_options' );
 
@@ -32,10 +32,10 @@ register_activation_hook( __FILE__, 'oirl_set_default_options' );
  * @since 1.0.0
  */
 function oirl_remove_default_options() {
-	delete_option( 'oirl-distance-unit', 'km' );
-	delete_option( 'oirl-pace-or-speed', 'pace' );
-	delete_option( 'oirl-display-pos', 'top' );
-	
+	delete_option( 'oirl-distance-unit' );
+	delete_option( 'oirl-pace-or-speed' );
+	delete_option( 'oirl-display-pos' );
+	delete_option( 'oirl-display-on-excerpt' );
 }
 register_uninstall_hook( __FILE__, 'oirl_remove_default_options' );
 
@@ -133,9 +133,17 @@ function oirl_plugin_options() {
 	
 	// check and update (if needed) data display position
 	$display_position = get_option( 'oirl-display-pos' );
-	if( isset($_POST['oirl-display-pos']) && $_POST['oirl-display-pos'] != $display_position && in_array($_POST['oirl-display-pos'], array('top', 'bottom')) ) {
+	if( isset($_POST['oirl-display-pos']) && $_POST['oirl-display-pos'] != $display_position && in_array($_POST['oirl-display-pos'], array('top', 'bottom', 'none')) ) {
 		update_option( 'oirl-display-pos', $_POST['oirl-display-pos'] );
 		$display_position = $_POST['oirl-display-pos'];
+		$options_saved = true;
+	}
+	
+	// check and update (if needed) display on excerpt
+	$display_on_excerpt = get_option( 'oirl-display-on-excerpt' );
+	if( isset($_POST['oirl-display-on-excerpt']) && $_POST['oirl-display-on-excerpt'] != $display_on_excerpt && in_array($_POST['oirl-display-on-excerpt'], array(0, 1)) ) {
+		$display_on_excerpt = $_POST['oirl-display-on-excerpt'];
+		update_option( 'oirl-display-on-excerpt', $display_on_excerpt );
 		$options_saved = true;
 	}
 	
@@ -174,6 +182,20 @@ function oirl_plugin_options() {
 	&nbsp;
 	<input type="radio" name="oirl-display-pos" value="bottom" id="oirl-display-pos-bottom"<?=($display_position == 'bottom' ? 'checked' : '')?>>
 	<label for="oirl-display-pos-bottom"><?=esc_html__( 'bottom', 'run-log' )?></label>
+	&nbsp;
+	<input type="radio" name="oirl-display-pos" value="none" id="oirl-display-pos-none"<?=($display_position == 'none' ? 'checked' : '')?>>
+	<label for="oirl-display-pos-none"><?=esc_html__( 'without', 'run-log' )?></label>
+	
+	<br><br>
+	
+	<?=esc_html__( 'Display on excerpt', 'run-log' )?>:
+	<input type="radio" name="oirl-display-on-excerpt" value="0" id="oirl-display-on-excerpt-no" <?=($display_on_excerpt == 0 ? 'checked' : '')?>>
+	<label for="oirl-display-on-excerpt-no"><?=esc_html__( 'No' )?></label>
+	&nbsp;
+	<input type="radio" name="oirl-display-on-excerpt" value="1" id="oirl-display-on-excerpt-yes"<?=($display_on_excerpt == 1 ? 'checked' : '')?>>
+	<label for="oirl-display-on-excerpt-yes"><?=esc_html__( 'Yes' )?></label>
+	
+	<br>
 	
 	<p class="submit">
 	<input type="submit" name="Submit" class="button-primary" value="<?=esc_attr__('Save Changes')?>">
@@ -281,25 +303,39 @@ add_action( 'save_post', 'oirl_save_run_log_meta_boxes', 10, 2 );
 
 
 /**
- * Add the run log data to the post.
+ * Add the run log data to the post or excerpt.
  * @since 1.0.0
  *
- * @param string $content the content of post's body
+ * @param string $content the content of post's body.
+ * @param bool $excerpt Optional. true if this is a call from excerpt filter.
  *
  * @return string the content with the HTML output of the run log data.
  */
-function oirl_add_run_log_data_to_post( $content ) {
+function oirl_add_run_log_data_to_post( $content, $excerpt = false ) {
+
 	// return original content if not run log custom post type
-	if( ! is_singular('oi_run_log_post') ) {
+	//if( ! is_singular('oi_run_log_post') ) {
+	if( get_post_type() != 'oi_run_log_post' ) {
 		return $content;
 	}
+	$add_at_pos = get_option( 'oirl-display-pos' );
+	$display_on_excerpt = get_option( 'oirl-display-on-excerpt' );
+
+	// return original content if display is 'none' or if its excerpt and display_on_excerpt option is No.
+	if( ( $add_at_pos == 'none' && ! $excerpt ) || ( $excerpt && ! $display_on_excerpt ) ) {
+		return $content;
+	}
+
 	$distance_unit = get_option( 'oirl-distance-unit' );
 	$pace_or_speed = get_option( 'oirl-pace-or-speed' );
-	$add_at_pos = get_option( 'oirl-display-pos' );
 	$distance = get_post_meta($GLOBALS['post']->ID, "oirl-mb-distance", true);
 	$distance = ($distance_unit == 'mi' ? iorl_distance_converter( $distance, 'K2M' ) : $distance);
 	$duration = get_post_meta($GLOBALS['post']->ID, "oirl-mb-duration", true);
 	$pace = iorl_calculate_pace($distance, $duration, $pace_or_speed);
+	
+	if( (! isset($distance) || intval($distance) <= 0) && (! isset($duration) || intval($distance) <= 0) ) {
+		return $content;
+	}
 	
 	// HTML output
 	$run_log_data = '<div class="oirl-data-box">';
@@ -341,6 +377,16 @@ function oirl_add_run_log_data_to_post( $content ) {
 	return ($add_at_pos == 'bottom' ? $content . $run_log_data : $run_log_data . $content );
 }
 add_filter( 'the_content', 'oirl_add_run_log_data_to_post' );
+
+/**
+ * Wraper function for addung run log data to excerpt by calling the post filter function.
+ * @since 1.2.0
+ */
+function oirl_add_run_log_data_to_excerpt( $excerp ) {
+	//error_log('excerp: ' . print_r($excerp, true) );
+	return oirl_add_run_log_data_to_post( $excerp, true );
+}
+add_filter( 'get_the_excerpt', 'oirl_add_run_log_data_to_excerpt' );
 
 /**
  * Load the proper CSS file (LTR or RTL).

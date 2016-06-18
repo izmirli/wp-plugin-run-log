@@ -12,6 +12,12 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
+msgid "Display on excerpt"
+msgstr ""
+
+msgid "without"
+msgstr ""
+
 #: run-log.php:59
 msgctxt "Post Type General Name"
 msgid "Runs"
