@@ -27,6 +27,7 @@ The WordPress Plugin Boilerplate includes the following files:
 * Log distance and duration for each run in custom fields of run-log posts.
 * Calculate pace/speed automatically.
 * Display the above data in the post automatically.
+* Enable "Garmin Connect" quick embed (display full data and activity map from your "Garmin Connect" account).
 
 ## Installation
 

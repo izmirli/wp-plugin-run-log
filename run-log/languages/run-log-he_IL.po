@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Running Log\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/run-log\n"
-"POT-Creation-Date: 2016-06-12 10:26+0300\n"
+"POT-Creation-Date: 2016-06-12 21:35+0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Oren I\n"
 "Language-Team: \n"
@@ -13,291 +13,301 @@ msgstr ""
 "X-Generator: Poedit 1.8.8\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: ..\n"
-"X-Poedit-KeywordsList: __;_x;esc_html__\n"
+"X-Poedit-KeywordsList: __;_x;esc_html__;esc_attr__\n"
 "X-Poedit-SearchPath-0: run-log.php\n"
 
-msgid "Display on excerpt"
-msgstr "הצג [גם] בתקציר"
-
-msgid "without"
-msgstr "ללא"
-
-#: run-log.php:59
+#: run-log.php:58
 msgctxt "Post Type General Name"
 msgid "Runs"
 msgstr "ריצות"
 
-#: run-log.php:60
+#: run-log.php:59
 msgctxt "Post Type Singular Name"
 msgid "Run"
 msgstr "ריצה"
 
 #. Plugin Name of the plugin/theme
-#: run-log.php:61
+#: run-log.php:60
 msgid "Run Log"
 msgstr "יומן ריצה"
 
-#: run-log.php:62
+#: run-log.php:61
 msgid "Parent Run:"
 msgstr "ריצת אם"
 
-#: run-log.php:63
+#: run-log.php:62
 msgid "All Runs"
 msgstr "כל הריצות"
 
-#: run-log.php:64
+#: run-log.php:63
 msgid "View Run"
 msgstr "צפייה בריצה"
 
-#: run-log.php:65
+#: run-log.php:64
 msgid "Add New Run"
 msgstr "הוספת ריצה חדשה"
 
-#: run-log.php:66
+#: run-log.php:65
 msgid "Add New"
 msgstr "הוספת ריצה"
 
-#: run-log.php:67
+#: run-log.php:66
 msgid "Edit Run"
 msgstr "עריכת ריצה"
 
-#: run-log.php:68
+#: run-log.php:67
 msgid "Update Run"
 msgstr "עדכון ריצה"
 
-#: run-log.php:69
+#: run-log.php:68
 msgid "Search Run"
 msgstr "חיפוש ריצה"
 
-#: run-log.php:70
+#: run-log.php:69
 msgid "Not run found"
 msgstr "לא נמצאה ריצה"
 
-#: run-log.php:71
+#: run-log.php:70
 msgid "Not run found in Trash"
 msgstr "לא נמצאה ריצה בסל המחזור"
 
-#: run-log.php:74
+#: run-log.php:73
 msgid "oi_run_log_post"
 msgstr ""
 
-#: run-log.php:75
+#: run-log.php:74
 msgid "Log entry for a specific run"
 msgstr ""
 
-#: run-log.php:103 run-log.php:151
+#: run-log.php:102 run-log.php:158
 msgid "Run Log Options"
 msgstr "אפשרויות יומן ריצה"
 
-#: run-log.php:114
+#: run-log.php:113
 msgid "You do not have sufficient permissions to access this page."
 msgstr "אין לך הרשאות גישה לדף זה"
 
-#: run-log.php:145
+#: run-log.php:152
 msgid "Options saved"
 msgstr "האפשרויות נשמרו"
 
-#: run-log.php:152
+#: run-log.php:159
 msgid "Control the Run Log settings by updating these values"
 msgstr "הגדר את אפשרויות יומן הריצה ע\"י עדכון הערכים הבאים"
 
-#: run-log.php:154
+#: run-log.php:161
 msgid "Distance unit"
 msgstr "יחדת מרחק"
 
-#: run-log.php:156
+#: run-log.php:163
 msgid "km"
 msgstr "ק\"מ"
 
-#: run-log.php:159
+#: run-log.php:166
 msgid "mi"
 msgstr "מייל"
 
-#: run-log.php:163
+#: run-log.php:170
 msgid "Pace/Speed display"
 msgstr "תצוגת קצב/מהירות"
 
-#: run-log.php:165 run-log.php:331
+#: run-log.php:172 run-log.php:366
 msgid "Pace"
 msgstr "קצב"
 
-#: run-log.php:168 run-log.php:323
+#: run-log.php:175 run-log.php:358
 msgid "Speed"
 msgstr "מהירות"
 
-#: run-log.php:172
+#: run-log.php:179
 msgid "Display position"
 msgstr "מיקום תצוגת הנתונים"
 
-#: run-log.php:174
+#: run-log.php:181
 msgid "top"
 msgstr "למעלה"
 
-#: run-log.php:177
+#: run-log.php:184
 msgid "bottom"
 msgstr "למטה"
 
-#: run-log.php:180
+#: run-log.php:187
+msgid "without"
+msgstr "ללא"
+
+#: run-log.php:191
+msgid "Display on excerpt"
+msgstr "הצג [גם] בתקציר"
+
+#: run-log.php:193
+msgid "No"
+msgstr ""
+
+#: run-log.php:196
+msgid "Yes"
+msgstr ""
+
+#: run-log.php:201
 msgid "Save Changes"
 msgstr ""
 
-#: run-log.php:192
+#: run-log.php:213
 msgid "Run Log Parameters"
 msgstr "נתוני הריצה"
 
-#: run-log.php:222 run-log.php:310
+#: run-log.php:243 run-log.php:345
 msgid "Distance"
 msgstr "מרחק"
 
-#: run-log.php:225 run-log.php:316
+#: run-log.php:246 run-log.php:351
 msgid "Duration"
 msgstr "זמן"
 
-#: run-log.php:228
+#: run-log.php:249
 msgid "Elevation gain"
 msgstr "טיפוס מצטבר"
 
-#: run-log.php:231
+#: run-log.php:252
 msgid "Calories"
 msgstr "קלוריות"
 
-#: run-log.php:326
+#: run-log.php:361
 msgid "mi/h"
 msgstr "מייל לשעה"
 
-#: run-log.php:328
+#: run-log.php:363
 msgid "km/h"
 msgstr "קמ\"ש"
 
-#: run-log.php:334
+#: run-log.php:369
 msgid "min/mi"
 msgstr "דקות למייל"
 
-#: run-log.php:336
+#: run-log.php:371
 msgid "min/km"
 msgstr "דקות לק\"מ"
 
-#: run-log.php:383
+#: run-log.php:428
 msgctxt "Taxonomy General Name"
 msgid "Goals"
 msgstr "יעדים"
 
-#: run-log.php:384
+#: run-log.php:429
 msgctxt "Taxonomy Singular Name"
 msgid "Goal"
 msgstr "יעד"
 
-#: run-log.php:385
+#: run-log.php:430
 msgid "Goal"
 msgstr "יעד"
 
-#: run-log.php:386
+#: run-log.php:431
 msgid "All Goals"
 msgstr "כל היעדים"
 
-#: run-log.php:387
+#: run-log.php:432
 msgid "Parent Goal"
 msgstr "יעד אב"
 
-#: run-log.php:388
+#: run-log.php:433
 msgid "Parent Goal:"
 msgstr "יעד אב"
 
-#: run-log.php:389
+#: run-log.php:434
 msgid "New Goal Name"
 msgstr "שם היעד החדש"
 
-#: run-log.php:390
+#: run-log.php:435
 msgid "Add New Goal"
 msgstr "הוספת יעד"
 
-#: run-log.php:391
+#: run-log.php:436
 msgid "Edit Goal"
 msgstr "ערוך יעד"
 
-#: run-log.php:392
+#: run-log.php:437
 msgid "Update Goal"
 msgstr "עדכון יעד"
 
-#: run-log.php:393
+#: run-log.php:438
 msgid "Separate goals with commas"
 msgstr "הפרד את היעדים בעזרת פסיקים"
 
-#: run-log.php:394
+#: run-log.php:439
 msgid "Search goals"
 msgstr "חיפוש יעד"
 
-#: run-log.php:395
+#: run-log.php:440
 msgid "Add or remove goals"
 msgstr "הוספה או הסרה של יעדים"
 
-#: run-log.php:396
+#: run-log.php:441
 msgid "Choose from the most used goals"
 msgstr "בחר מתוך היעדים הנמצאים בשימוש נפוץ"
 
-#: run-log.php:397
+#: run-log.php:442
 msgid "Goal Not Found"
 msgstr "היעד לא נמצא"
 
-#: run-log.php:428
+#: run-log.php:473
 msgctxt "Taxonomy General Name"
 msgid "Gears"
 msgstr "פרטי ציוד"
 
-#: run-log.php:429
+#: run-log.php:474
 msgctxt "Taxonomy Singular Name"
 msgid "Gear"
 msgstr "ציוד"
 
-#: run-log.php:430
+#: run-log.php:475
 msgid "Gear"
 msgstr "ציוד"
 
-#: run-log.php:431
+#: run-log.php:476
 msgid "All Gears"
 msgstr "כל פרטי הציוד"
 
-#: run-log.php:432
+#: run-log.php:477
 msgid "Parent Gear"
 msgstr "ציוד אב"
 
-#: run-log.php:433
+#: run-log.php:478
 msgid "Parent Gear:"
 msgstr "ציוד אב"
 
-#: run-log.php:434
+#: run-log.php:479
 msgid "New Gear Name"
 msgstr "שם הציוד החדש"
 
-#: run-log.php:435
+#: run-log.php:480
 msgid "Add New Gear"
 msgstr "הוספת ציוד חדש"
 
-#: run-log.php:436
+#: run-log.php:481
 msgid "Edit Gear"
 msgstr "ערוך ציוד"
 
-#: run-log.php:437
+#: run-log.php:482
 msgid "Update Gear"
 msgstr "עדכון ציוד"
 
-#: run-log.php:438
+#: run-log.php:483
 msgid "Separate gears with commas"
 msgstr "הפרד פרטי ציוד בעזרת פסיקים"
 
-#: run-log.php:439
+#: run-log.php:484
 msgid "Search Gears"
 msgstr "חיפוש ציוד"
 
-#: run-log.php:440
+#: run-log.php:485
 msgid "Add or remove gears"
 msgstr "הוספה או הסרה של ציוד"
 
-#: run-log.php:441
+#: run-log.php:486
 msgid "Choose from the most used gears"
 msgstr "בחר מתוך פרטי הציוד השכיחים ביותר"
 
-#: run-log.php:442
+#: run-log.php:487
 msgid "Gear Not Found"
 msgstr "ציוד לא נמצא"
 
@@ -307,8 +317,8 @@ msgstr ""
 
 #. Description of the plugin/theme
 msgid ""
-"Adds running diary capabilities - custom post type, custom fields and new "
-"taxonomies."
+"Adds running diary capabilities - log your sporting activity with custom "
+"post type, custom fields and new taxonomies."
 msgstr ""
 "מוסיף יכולות של יומן ריצה לוורדפרס ע\"י יצירת: סוג פוסטים חדש, שדות מותאמים "
 "אישית (מרחק, זמן וכו'), וטקסונומיות רלוונטיות."
@@ -320,3 +330,11 @@ msgstr "אורן איזמירלי"
 #. Author URI of the plugin/theme
 msgid "https://profiles.wordpress.org/izem"
 msgstr ""
+
+msgid "Garmin Connect embed activity"
+msgstr "מספר פעילות באתר גרמין קונקט"
+
+msgid ""
+"Enter Garmin activity ID - the number at the end of activity's page address"
+msgstr ""
+"הזן את מספר הפעילות, כפי שמופיע בסוף כתובת דף הפעילות באתר גרמין קונקט"
