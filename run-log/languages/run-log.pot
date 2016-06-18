@@ -184,6 +184,15 @@ msgstr ""
 msgid "min/km"
 msgstr ""
 
+msgid "Total distance"
+msgstr ""
+
+msgid "Total duration"
+msgstr ""
+
+msgid "Cumulative pace"
+msgstr ""
+
 #: run-log.php:428
 msgctxt "Taxonomy General Name"
 msgid "Goals"

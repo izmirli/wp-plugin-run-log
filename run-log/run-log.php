@@ -3,7 +3,7 @@
 Plugin Name: Run Log
 Plugin URI: http://stuff.izmirli.org/wordpress-run-log-plugin/
 Description: Adds running diary capabilities - log your sporting activity with custom post type, custom fields and new taxonomies.
-Version: 1.3.2
+Version: 1.4.0
 Author: Oren Izmirli
 Author URI: https://profiles.wordpress.org/izem
 Text Domain: run-log
@@ -486,6 +486,77 @@ function iorl_enqueue_css() {
 	wp_enqueue_style( 'wpdocsPluginStylesheet', plugins_url( $css_file_name, __FILE__ ), null, '1.0.0' );
 }
 add_action( 'wp_enqueue_scripts', 'iorl_enqueue_css' );
+
+/**
+ * Add Shortcode
+ *
+ * @since 1.4.0
+ *
+ * @param array $atts the attributes arry - period_type: all-time/year/month; period_val: the year/month to show.
+ *
+ * @return string the Shortcode output.
+ */
+function oirl_total_shortcode( $atts ) {
+	global $wpdb;
+	// Attributes.
+	$atts = shortcode_atts(
+		array(
+			'period_type' => 'all-time',
+			'period_val' => '',
+		),
+		$atts,
+		'oirl_total'
+	);
+
+	// Get plugin options from db.
+	$plugin_ops = get_option( 'oi-run-log-options' );
+	$distance_unit = isset( $plugin_ops['distance_unit'] ) ? $plugin_ops['distance_unit'] : 'km';
+	$pace_or_speed = isset( $plugin_ops['pace_or_speed'] ) ? $plugin_ops['pace_or_speed'] : 'pace';
+
+	$distance_select = 'SUM( `meta_value` ) AS total_distance';
+	$distance_where = "`meta_key` = 'oirl-mb-distance'";
+	$distance_query = "SELECT $distance_select FROM $wpdb->postmeta WHERE $distance_where";
+	$distance_total = $wpdb->get_var( $distance_query );
+	$distance_total = ( 'mi' === $distance_unit ? iorl_distance_converter( $distance_total, 'K2M' ) : $distance_total );
+
+	$duration_select = '
+SUM(
+  TIME_TO_SEC(
+    MAKETIME(
+      SUBSTRING(`meta_value`, 1, 2),
+      SUBSTRING(`meta_value`, 4, 2),
+      SUBSTRING(`meta_value`, 7, 2)
+    )
+  )
+) / 60 as duration_min';
+	$duration_where = "`meta_key` = 'oirl-mb-duration'";
+	$duration_query = "SELECT $duration_select FROM $wpdb->postmeta WHERE $duration_where";
+	$duration_total = $wpdb->get_var( $duration_query );
+	$duration_sec = ($duration_total - floor( $duration_total )) * 60;
+	$duration_hour = floor( $duration_total / 60 );
+	$duration_min = floor( $duration_total ) - ($duration_hour * 60);
+	$duration = sprintf( '%02d:%02d:%02d', $duration_hour, $duration_min, $duration_sec );
+
+	$pace = iorl_calculate_pace( $distance_total, $duration, $pace_or_speed );
+
+	// Output code.
+	$output = '<div class="oirl-totals-box">';
+	// Distance.
+	$output .= '<div class="oirl-data">';
+	$output .= '<span class="oirl-data-desc">' . esc_html__( 'Total distance', 'run-log' ) . ":</span> <span class=\"oirl-data-value\">$distance_total</span>";
+	$output .= esc_html__( $distance_unit, 'run-log' ) . '</div>';
+	// Duration.
+	$output .= '<div class="oirl-data"><span class="oirl-data-desc">' . esc_html__( 'Total duration', 'run-log' ) . ":</span> <span class=\"oirl-data-value\">$duration</span>";
+	$output .= '</div>';
+	// Pace.
+	$output .= '<div class="oirl-data"><span class="oirl-data-desc">' . esc_html__( 'Cumulative pace', 'run-log' ) . ":</span> <span class=\"oirl-data-value\">$pace</span>";
+	$output .= ( 'mi' === $distance_unit ? esc_html__( 'min/mi', 'run-log' ) : esc_html__( 'min/km', 'run-log' ) ) . '</div>';
+	$output .= '</div>';
+
+	return $output;
+}
+add_shortcode( 'oirl_total', 'oirl_total_shortcode' );
+
 
 /**
  * Make this custom content type available for search/archive pages
