@@ -488,13 +488,17 @@ function iorl_enqueue_css() {
 add_action( 'wp_enqueue_scripts', 'iorl_enqueue_css' );
 
 /**
- * Add Shortcode
+ * Add Shortcode for displaying activety totals.
+ * Usage: [oirl_total] or [oirl_total period_type="year" period_val="2015"]
  *
  * @since 1.4.0
  *
- * @param array $atts the attributes arry - period_type: all-time/year/month; period_val: the year/month to show.
+ * @param array $atts the attributes arry -
+ *                    period_type: all-time/year/month (default: all-time);
+ *                    period_val: the number of year/month to show;
+ *                    only: distance/time.
  *
- * @return string the Shortcode output.
+ * @return string the Shortcode output - activities totals.
  */
 function oirl_total_shortcode( $atts ) {
 	global $wpdb;
@@ -503,6 +507,7 @@ function oirl_total_shortcode( $atts ) {
 		array(
 			'period_type' => 'all-time',
 			'period_val' => '',
+			'only' => '',
 		),
 		$atts,
 		'oirl_total'
@@ -513,13 +518,25 @@ function oirl_total_shortcode( $atts ) {
 	$distance_unit = isset( $plugin_ops['distance_unit'] ) ? $plugin_ops['distance_unit'] : 'km';
 	$pace_or_speed = isset( $plugin_ops['pace_or_speed'] ) ? $plugin_ops['pace_or_speed'] : 'pace';
 
-	$distance_select = 'SUM( `meta_value` ) AS total_distance';
-	$distance_where = "`meta_key` = 'oirl-mb-distance'";
-	$distance_query = "SELECT $distance_select FROM $wpdb->postmeta WHERE $distance_where";
-	$distance_total = $wpdb->get_var( $distance_query );
-	$distance_total = ( 'mi' === $distance_unit ? iorl_distance_converter( $distance_total, 'K2M' ) : $distance_total );
+	// Output code start.
+	$output = '<div class="oirl-totals-box">';
 
-	$duration_select = '
+	// Check & output distance total if needed.
+	if ( in_array( $atts['only'], array( '', 'distance' ), true ) ) {
+		$distance_select = 'SUM( `meta_value` ) AS total_distance';
+		$distance_where = "`meta_key` = 'oirl-mb-distance'";
+		$distance_query = "SELECT $distance_select FROM $wpdb->postmeta WHERE $distance_where";
+		$distance_total = $wpdb->get_var( $distance_query );
+		$distance_total = ( 'mi' === $distance_unit ? iorl_distance_converter( $distance_total, 'K2M' ) : $distance_total );
+
+		$output .= '<div class="oirl-data">';
+		$output .= '<span class="oirl-data-desc">' . esc_html__( 'Total distance', 'run-log' ) . ":</span> <span class=\"oirl-data-value\">$distance_total</span>";
+		$output .= esc_html__( $distance_unit, 'run-log' ) . '</div>';
+	}
+
+	// Check & output duration total if needed.
+	if ( in_array( $atts['only'], array( '', 'time' ), true ) ) {
+		$duration_select = '
 SUM(
   TIME_TO_SEC(
     MAKETIME(
@@ -529,28 +546,27 @@ SUM(
     )
   )
 ) / 60 as duration_min';
-	$duration_where = "`meta_key` = 'oirl-mb-duration'";
-	$duration_query = "SELECT $duration_select FROM $wpdb->postmeta WHERE $duration_where";
-	$duration_total = $wpdb->get_var( $duration_query );
-	$duration_sec = ($duration_total - floor( $duration_total )) * 60;
-	$duration_hour = floor( $duration_total / 60 );
-	$duration_min = floor( $duration_total ) - ($duration_hour * 60);
-	$duration = sprintf( '%02d:%02d:%02d', $duration_hour, $duration_min, $duration_sec );
+		$duration_where = "`meta_key` = 'oirl-mb-duration'";
+		$duration_query = "SELECT $duration_select FROM $wpdb->postmeta WHERE $duration_where";
+		$duration_total = $wpdb->get_var( $duration_query );
+		$duration_sec = ($duration_total - floor( $duration_total )) * 60;
+		$duration_hour = floor( $duration_total / 60 );
+		$duration_min = floor( $duration_total ) - ($duration_hour * 60);
+		$duration = sprintf( '%02d:%02d:%02d', $duration_hour, $duration_min, $duration_sec );
 
-	$pace = iorl_calculate_pace( $distance_total, $duration, $pace_or_speed );
+		$output .= '<div class="oirl-data"><span class="oirl-data-desc">' . esc_html__( 'Total duration', 'run-log' ) . ":</span> <span class=\"oirl-data-value\">$duration</span>";
+		$output .= '</div>';
+	}
 
-	// Output code.
-	$output = '<div class="oirl-totals-box">';
-	// Distance.
-	$output .= '<div class="oirl-data">';
-	$output .= '<span class="oirl-data-desc">' . esc_html__( 'Total distance', 'run-log' ) . ":</span> <span class=\"oirl-data-value\">$distance_total</span>";
-	$output .= esc_html__( $distance_unit, 'run-log' ) . '</div>';
-	// Duration.
-	$output .= '<div class="oirl-data"><span class="oirl-data-desc">' . esc_html__( 'Total duration', 'run-log' ) . ":</span> <span class=\"oirl-data-value\">$duration</span>";
-	$output .= '</div>';
-	// Pace.
-	$output .= '<div class="oirl-data"><span class="oirl-data-desc">' . esc_html__( 'Cumulative pace', 'run-log' ) . ":</span> <span class=\"oirl-data-value\">$pace</span>";
-	$output .= ( 'mi' === $distance_unit ? esc_html__( 'min/mi', 'run-log' ) : esc_html__( 'min/km', 'run-log' ) ) . '</div>';
+	// Camculate pace if needed.
+	if ( '' === $atts['only'] ) {
+		$pace = iorl_calculate_pace( $distance_total, $duration, $pace_or_speed );
+
+		$output .= '<div class="oirl-data"><span class="oirl-data-desc">' . esc_html__( 'Cumulative pace', 'run-log' ) . ":</span> <span class=\"oirl-data-value\">$pace</span>";
+		$output .= ( 'mi' === $distance_unit ? esc_html__( 'min/mi', 'run-log' ) : esc_html__( 'min/km', 'run-log' ) ) . '</div>';
+	}
+
+	// Output end.
 	$output .= '</div>';
 
 	return $output;

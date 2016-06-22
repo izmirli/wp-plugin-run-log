@@ -2,7 +2,7 @@
 Contributors: izem
 Tags: run, running, sport, training log, training diary, run log, run diary, running log, Garmin Connect, Garmin, jogging
 Requires at least: 3.8
-Tested up to: 4.5.2
+Tested up to: 4.5.3
 Stable tag: trunk
 License: GPLv2 (or later)
 License URI: https://wordpress.org/about/gpl/
