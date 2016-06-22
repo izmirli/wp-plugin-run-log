@@ -1,6 +1,6 @@
 === Run Log ===
 Contributors: izem
-Tags: run, running, sport, training log, training diary, run log, run diary, running log, Garmin Connect, Garmin, jogging
+Tags: run, running, sport, training log, training diary, run log, run diary, running log, garmin Connect, garmin. endomondo, jogging
 Requires at least: 3.8
 Tested up to: 4.5.3
 Stable tag: trunk
@@ -21,6 +21,7 @@ The plugin add running diary capabilities to WordPress, so you can log your runn
 * Calculate pace/speed automatically.
 * Display the above data in the post automatically.
 * Enable "Garmin Connect" quick embed (display full data and activity map from your "Garmin Connect" account).
+* Enable "endomondo" quick embed (display full data and activity map from your "endomondo" account).
 
 = Localization =
 
@@ -45,7 +46,7 @@ To log a new run you can follow these steps:
 3. Under the main editing area (body) you should see the "Run Log Parameters" box. There you enter the distance and duration of the run (as well as elevation gain and calories - to be used in future version of the plugin).
 4. [Optional] You may add the gear you used in this run on the "Gears" box (like shoes - in future we may track shoes mileage by this).
 5. [Optional] You may add the goal, that this run is part of the road to it, on the "Gears" box (like shoes - in future we may track shoes mileage by this).
-6. [Optional] You may add your "Garmin Connect" activity ID, to embed your activity's data and map from your "Garmin Connect" account (instead of the regular plugin's display).
+6. [Optional] You may add your "Garmin Connect" or "endomondo" activity ID, to embed your activity's data and map from your Garmin/endomondo account (instead of the regular plugin's display).
 7. Publish.
 
 If you want to configure run log data (distance, duration, pace/speed), you can do this on the "Run Log Options", accessible via the "Run Log" admin sub-menu. There you can select between top/bottom display position, Kilometer/Miles units, and pace/speed.
@@ -112,6 +113,9 @@ Make sure your activity is Public - activity's privacy is set to "Everyone" (the
 5. "Garmin Connect" embed.
 
 == Changelog ==
+
+= 1.4.0 =
+* Enable endomondo activity quick embed.
 
 = 1.3.2 =
 * Code refactoring of plugin options as one hash record (instead of many records).

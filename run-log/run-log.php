@@ -1,15 +1,20 @@
 <?php
 /**
-Plugin Name: Run Log
-Plugin URI: http://stuff.izmirli.org/wordpress-run-log-plugin/
-Description: Adds running diary capabilities - log your sporting activity with custom post type, custom fields and new taxonomies.
-Version: 1.4.0
-Author: Oren Izmirli
-Author URI: https://profiles.wordpress.org/izem
-Text Domain: run-log
-License: GPL2
-
+ * Run Log Plugin main file.
+ *
+ * @link              https://profiles.wordpress.org/izem
+ * @since             1.0.0
  * @package           Run_Log
+ *
+ * @wordpress-plugin
+ * Plugin Name: Run Log
+ * Plugin URI: http://stuff.izmirli.org/wordpress-run-log-plugin/
+ * Description: Adds running diary capabilities - log your sporting activity with custom post type, custom fields and new taxonomies.
+ * Version: 1.4.0
+ * Author: Oren Izmirli
+ * Author URI: https://profiles.wordpress.org/izem
+ * Text Domain: run-log
+ * License: GPL2
  */
 
 // If this file is called directly, abort.
@@ -295,19 +300,22 @@ function oirl_run_log_meta_boxes_display( $post ) {
 	?>
 	<div id="run-log-meta-box">
 		<label for="oirl-mb-distance"><?php echo esc_html__( 'Distance', 'run-log' )?> (<?php echo esc_html__( $distance_unit, 'run-log' )?>):</label>
-		<input name="oirl-mb-distance" type="number" step="0.001" min="0" size="3" maxlength="6" value="<?=$distance?>">
+		<input name="oirl-mb-distance" type="number" step="0.001" min="0" size="3" maxlength="6" value="<?php echo esc_attr( $distance ); ?>">
 		&nbsp;
 		<label for="oirl-mb-duration"><?php echo esc_html__( 'Duration', 'run-log' )?>:</label>
-		<input name="oirl-mb-duration" type="text" size="8" maxlength="8" pattern="([0-9]{1,2}:)?[0-5]?[0-9]:[0-5]?[0-9]" placeholder="00:00:00" value="<?php echo get_post_meta( $post->ID, 'oirl-mb-duration', true )?>">
+		<input name="oirl-mb-duration" type="text" size="8" maxlength="8" pattern="([0-9]{1,2}:)?[0-5]?[0-9]:[0-5]?[0-9]" placeholder="00:00:00" value="<?php echo esc_attr( get_post_meta( $post->ID, 'oirl-mb-duration', true ) ); ?>">
 		<br>
 		<label for="oirl-mb-elevation"><?php echo esc_html__( 'Elevation gain', 'run-log' )?>:</label>
-		<input name="oirl-mb-elevation" type="number" size="5" maxlength="6" value="<?php echo get_post_meta( $post->ID, 'oirl-mb-elevation', true )?>">
+		<input name="oirl-mb-elevation" type="number" size="5" maxlength="6" value="<?php echo esc_attr( get_post_meta( $post->ID, 'oirl-mb-elevation', true ) ); ?>">
 		&nbsp;
 		<label for="oirl-mb-calories"><?php echo esc_html__( 'Calories', 'run-log' )?>:</label>
-		<input name="oirl-mb-calories" type="number" size="4" maxlength="5" value="<?php echo get_post_meta( $post->ID, 'oirl-mb-calories', true )?>">
+		<input name="oirl-mb-calories" type="number" size="4" maxlength="5" value="<?php echo esc_attr( get_post_meta( $post->ID, 'oirl-mb-calories', true ) ); ?>">
 		<br>
 		<label for="oirl-mb-garmin-activity"><?php echo esc_html__( 'Garmin Connect embed activity', 'run-log' )?>:</label>
-		<input name="oirl-mb-garmin-activity" type="number" size="8" maxlength="12" value="<?php echo get_post_meta( $post->ID, 'oirl-mb-garmin-activity', true )?>" title="<?php echo esc_attr__( 'Enter Garmin activity ID - the number at the end of activity\'s page address', 'run-log' )?>">
+		<input name="oirl-mb-garmin-activity" type="number" size="8" maxlength="12" value="<?php echo esc_attr( get_post_meta( $post->ID, 'oirl-mb-garmin-activity', true ) ); ?>" title="<?php echo esc_attr__( 'Enter Garmin activity ID - the number at the end of activity\'s page address', 'run-log' )?>">
+		<br>
+		<label for="oirl-mb-endomondo-activity"><?php echo esc_html__( 'Endomondo embed activity', 'run-log' )?>:</label>
+		<input name="oirl-mb-endomondo-activity" type="number" size="8" maxlength="12" value="<?php echo esc_attr( get_post_meta( $post->ID, 'oirl-mb-endomondo-activity', true ) ); ?>" title="<?php echo esc_attr__( 'Enter Endomondo activity ID - the number at the end of activity\'s page address', 'run-log' )?>">
 	</div>
 	<!-- script type="text/javascript">
 	(function($) {
@@ -371,6 +379,12 @@ function oirl_save_run_log_meta_boxes( $post_id, $post ) {
 	} elseif ( get_post_meta( $post_id, 'oirl-mb-garmin-activity' ) ) {
 		delete_post_meta( $post_id, 'oirl-mb-garmin-activity' );
 	}
+	if ( isset( $_POST['oirl-mb-endomondo-activity'] ) && is_numeric( $_POST['oirl-mb-endomondo-activity'] ) ) {
+		$endomondo_activity = intval( $_POST['oirl-mb-endomondo-activity'] );
+		update_post_meta( $post_id, 'oirl-mb-endomondo-activity', $endomondo_activity );
+	} elseif ( get_post_meta( $post_id, 'oirl-mb-endomondo-activity' ) ) {
+		delete_post_meta( $post_id, 'oirl-mb-endomondo-activity' );
+	}
 }
 // register this function to save_post action with 2 args.
 add_action( 'save_post', 'oirl_save_run_log_meta_boxes', 10, 2 );
@@ -405,11 +419,16 @@ function oirl_add_run_log_data_to_post( $content, $excerpt = false ) {
 		return $content;
 	}
 
-	// embed garmin activity if got its ID (and it isn't an excerpt).
 	$garmin_activity = get_post_meta( $GLOBALS['post']->ID, 'oirl-mb-garmin-activity', true );
+	$endomondo_activity = get_post_meta( $GLOBALS['post']->ID, 'oirl-mb-endomondo-activity', true );
+
+	// Embed garmin/endomondo activity if got its ID (and it isn't an excerpt).
 	if ( $garmin_activity && preg_match( '/^\d+$/', $garmin_activity ) && ! $excerpt ) {
 		$garmin_iframe = "<iframe src='https://connect.garmin.com/activity/embed/$garmin_activity' width='465' height='500' frameborder='0'></iframe>\n";
 		return ( 'bottom' === $add_at_pos ? $content . $garmin_iframe : $garmin_iframe . $content );
+	} elseif ( $endomondo_activity && preg_match( '/^\d+$/', $endomondo_activity ) && ! $excerpt ) {
+		$endomondo_iframe = "<iframe src='http://www.endomondo.com/embed/workouts?w=$endomondo_activity&width=580&height=425' width='580' height='425' frameborder='1'></iframe>\n";
+		return ( 'bottom' === $add_at_pos ? $content . $endomondo_iframe : $endomondo_iframe . $content );
 	}
 
 	$distance = get_post_meta( $GLOBALS['post']->ID, 'oirl-mb-distance', true );
