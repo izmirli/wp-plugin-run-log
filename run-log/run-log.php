@@ -496,18 +496,20 @@ add_action( 'wp_enqueue_scripts', 'iorl_enqueue_css' );
  * @param array $atts the attributes arry -
  *                    period_type: all-time/year/month (default: all-time);
  *                    period_val: the number of year/month to show;
- *                    only: distance/time.
+ *                    only: distance/time;
+ *                    hide_pace: yes/nn.
  *
  * @return string the Shortcode output - activities totals.
  */
 function oirl_total_shortcode( $atts ) {
 	global $wpdb;
-	// Attributes.
+	// Attributes defaults when needed.
 	$atts = shortcode_atts(
 		array(
 			'period_type' => 'all-time',
-			'period_val' => '',
-			'only' => '',
+			'period_val'	=> '',
+			'only'				=> '',
+			'hide_pace'		=> 'no',
 		),
 		$atts,
 		'oirl_total'
