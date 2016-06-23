@@ -28,6 +28,7 @@ The WordPress Plugin Boilerplate includes the following files:
 * Calculate pace/speed automatically.
 * Display the above data in the post automatically.
 * Enable "Garmin Connect" quick embed (display full data and activity map from your "Garmin Connect" account).
+* Enable "endomondo" quick embed (display full data and activity map from your "endomondo" account).
 
 ## Installation
 

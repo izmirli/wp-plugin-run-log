@@ -340,3 +340,9 @@ msgstr ""
 
 msgid "Enter Garmin activity ID - the number at the end of activity's page address"
 msgstr ""
+
+msgid "Endomondo embed activity"
+msgstr ""
+
+msgid "Enter endomondo activity ID - the number at the end of activity's page address"
+msgstr ""
