@@ -1,7 +1,7 @@
 /**
  *
  */
- 
+
 .oirl-data-box {
 	width: 490px;
 	font-color: black;
@@ -34,4 +34,19 @@
 	font-size: 11px;
 	font-weight: bold;
 	color: #999;
+}
+
+.ui-tooltip {
+	padding: 8px;
+	position: absolute;
+	z-index: 9999;
+	max-width: 450px;
+  color: #333;
+  background-color: #ccc;
+	-webkit-box-shadow: 0 0 5px #aaa;
+  -moz-box-shadow: 0 0 5px #aaa;
+	box-shadow: 0 0 5px #aaa;
+}
+body .ui-tooltip {
+	border-width: 2px;
 }

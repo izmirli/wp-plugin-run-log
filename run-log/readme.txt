@@ -114,6 +114,9 @@ Make sure your activity is Public - activity's privacy is set to "Everyone" (the
 
 == Changelog ==
 
+= 1.4.1 =
+* Quick embed admin-side enhancements.
+
 = 1.4.0 =
 * Enable endomondo activity quick embed.
 

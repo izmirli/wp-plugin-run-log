@@ -346,3 +346,12 @@ msgstr ""
 
 msgid "Enter endomondo activity ID - the number at the end of activity's page address"
 msgstr ""
+
+msgid "Embed activity from external source"
+msgstr ""
+
+msgid "Garmin"
+msgstr ""
+
+msgid "Endomondo"
+msgstr ""
