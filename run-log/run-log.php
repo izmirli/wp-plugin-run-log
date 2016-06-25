@@ -10,7 +10,7 @@
  * Plugin Name: Run Log
  * Plugin URI: http://stuff.izmirli.org/wordpress-run-log-plugin/
  * Description: Adds running diary capabilities - log your sporting activity with custom post type, custom fields and new taxonomies.
- * Version: 1.4.0
+ * Version: 1.4.1
  * Author: Oren Izmirli
  * Author URI: https://profiles.wordpress.org/izem
  * Text Domain: run-log
@@ -35,12 +35,6 @@ function oirl_set_default_options() {
 		'display_on_excerpt' => 0,
 	);
 	add_option( 'oi-run-log-options', $oirl_plugin_options );
-
-	/* Old type options, should be removed in time.
-	add_option( 'oirl-distance-unit', 'km' );
-	add_option( 'oirl-pace-or-speed', 'pace' );
-	add_option( 'oirl-display-pos', 'top' );
-	add_option( 'oirl-display-on-excerpt', 0 ); */
 }
 register_activation_hook( __FILE__, 'oirl_set_default_options' );
 
@@ -150,7 +144,8 @@ add_action( 'init', 'oirl_register_run_log_post_type', 0 );
  * @since 1.0.0
  */
 function oirl_plugin_menu() {
-	add_submenu_page( 'edit.php?post_type=oi_run_log_post', __( 'Run Log Options', 'run-log' ), __( 'Run Log Options', 'run-log' ), 'manage_options', 'oirl-options-menu', 'oirl_plugin_options' );
+	global $oirl_manage_options_hook;
+	$oirl_manage_options_hook = add_submenu_page( 'edit.php?post_type=oi_run_log_post', __( 'Run Log Options', 'run-log' ), __( 'Run Log Options', 'run-log' ), 'manage_options', 'oirl-options-menu', 'oirl_plugin_options' );
 }
 // Register options page to menu using the admin_menu action hook.
 add_action( 'admin_menu', 'oirl_plugin_menu' );
@@ -210,7 +205,7 @@ function oirl_plugin_options() {
 	}
 
 	?>
-<div class="wrap">
+<div class="wrap oirl">
 	<h3><?php echo esc_html__( 'Run Log Options', 'run-log' )?></h3>
 	<p><?php echo esc_html__( 'Control the Run Log settings by updating these values', 'run-log' )?>:<p>
 	<form name="form1" method="post">
@@ -243,15 +238,14 @@ function oirl_plugin_options() {
 	<label for="oirl-display-pos-none"><?php echo esc_html__( 'without', 'run-log' )?></label>
 
 	<br><br>
-
+	<div title="<?php echo esc_attr__( 'Should the run data box be added to the excerpt?', 'run-log' ) ?>">
 	<?php echo esc_html__( 'Display on excerpt', 'run-log' )?>:
 	<input type="radio" name="oirl-display-on-excerpt" value="0" id="oirl-display-on-excerpt-no" <?php echo (0 == $display_on_excerpt ? 'checked' : '')?>>
 	<label for="oirl-display-on-excerpt-no"><?php echo esc_html__( 'No' )?></label>
 	&nbsp;
 	<input type="radio" name="oirl-display-on-excerpt" value="1" id="oirl-display-on-excerpt-yes"<?php echo (1 == $display_on_excerpt ? 'checked' : '')?>>
 	<label for="oirl-display-on-excerpt-yes"><?php echo esc_html__( 'Yes' )?></label>
-
-	<br>
+	</div>
 
 	<p class="submit">
 	<input type="submit" name="Submit" class="button-primary" value="<?php echo esc_attr__( 'Save Changes' )?>">
@@ -297,8 +291,9 @@ function oirl_run_log_meta_boxes_display( $post ) {
 	if ( 'mi' === $distance_unit ) {
 		$distance = iorl_distance_converter( $distance, 'K2M' );
 	}
+	$embed_external = get_post_meta( $post->ID, 'oirl-mb-embed-external', true );
 	?>
-	<div id="run-log-meta-box">
+	<div id="run-log-meta-box" class="oirl">
 		<label for="oirl-mb-distance"><?php echo esc_html__( 'Distance', 'run-log' )?> (<?php echo esc_html__( $distance_unit, 'run-log' )?>):</label>
 		<input name="oirl-mb-distance" type="number" step="0.001" min="0" size="3" maxlength="6" value="<?php echo esc_attr( $distance ); ?>">
 		&nbsp;
@@ -311,19 +306,49 @@ function oirl_run_log_meta_boxes_display( $post ) {
 		<label for="oirl-mb-calories"><?php echo esc_html__( 'Calories', 'run-log' )?>:</label>
 		<input name="oirl-mb-calories" type="number" size="4" maxlength="5" value="<?php echo esc_attr( get_post_meta( $post->ID, 'oirl-mb-calories', true ) ); ?>">
 		<br>
-		<label for="oirl-mb-garmin-activity"><?php echo esc_html__( 'Garmin Connect embed activity', 'run-log' )?>:</label>
-		<input name="oirl-mb-garmin-activity" type="number" size="8" maxlength="12" value="<?php echo esc_attr( get_post_meta( $post->ID, 'oirl-mb-garmin-activity', true ) ); ?>" title="<?php echo esc_attr__( 'Enter Garmin activity ID - the number at the end of activity\'s page address', 'run-log' )?>">
-		<br>
-		<label for="oirl-mb-endomondo-activity"><?php echo esc_html__( 'Endomondo embed activity', 'run-log' )?>:</label>
-		<input name="oirl-mb-endomondo-activity" type="number" size="8" maxlength="12" value="<?php echo esc_attr( get_post_meta( $post->ID, 'oirl-mb-endomondo-activity', true ) ); ?>" title="<?php echo esc_attr__( 'Enter endomondo activity ID - the number at the end of activity\'s page address', 'run-log' )?>">
+		<div id="oirl-embed-external">
+			<?php echo esc_html__( 'Embed activity from external source', 'run-log' )?>:
+			<input type="radio" name="oirl-mb-embed-external" value="no" id="oirl-mb-embed-external-no" <?php echo ( ! in_array( $embed_external, array( 'garmin', 'endomondo' ), true ) ? 'checked' : '')?>>
+			<label for="oirl-mb-embed-external-no"><?php echo esc_html__( 'No' )?></label>
+			&nbsp;
+			<input type="radio" name="oirl-mb-embed-external" value="garmin" id="oirl-mb-embed-external-garmin" <?php echo ( 'garmin' === $embed_external ? 'checked' : '')?>>
+			<label for="oirl-mb-embed-external-garmin"><?php echo esc_html__( 'Garmin', 'run-log' )?></label>
+			&nbsp;
+			<input type="radio" name="oirl-mb-embed-external" value="endomondo" id="oirl-mb-embed-external-endomondo" <?php echo ( 'endomondo' === $embed_external ? 'checked' : '')?>>
+			<label for="oirl-mb-embed-external-endomondo"><?php echo esc_html__( 'Endomondo', 'run-log' )?></label>
+			<br>
+			<div id="oirl-div-embed-external-garmin" style="display:none;">
+				<label for="oirl-mb-garmin-activity"><?php echo esc_html__( 'Garmin Connect embed activity', 'run-log' )?>:</label>
+				<input name="oirl-mb-garmin-activity" type="number" size="8" maxlength="12" value="<?php echo esc_attr( get_post_meta( $post->ID, 'oirl-mb-garmin-activity', true ) ); ?>" title="<?php echo esc_attr__( 'Enter Garmin activity ID - the number at the end of activity\'s page address', 'run-log' )?>">
+			</div>
+			<div id="oirl-div-embed-external-endomondo" style="display:none;">
+				<label for="oirl-mb-endomondo-activity"><?php echo esc_html__( 'Endomondo embed activity', 'run-log' )?>:</label>
+				<input name="oirl-mb-endomondo-activity" type="number" size="8" maxlength="12" value="<?php echo esc_attr( get_post_meta( $post->ID, 'oirl-mb-endomondo-activity', true ) ); ?>" title="<?php echo esc_attr__( 'Enter endomondo activity ID - the number at the end of activity\'s page address', 'run-log' )?>">
+			</div>
+		</div>
 	</div>
-	<!-- script type="text/javascript">
-	(function($) {
-		$( document ).tooltip();
-	})( jQuery );
-	</script -->
+
 	<?php
 }
+
+
+/**
+ * Load admin js and css.
+ *
+ * @since 1.5.0
+ *
+ * @param string $hook .
+ */
+function oirl_admin_scripts( $hook ) {
+	global $oirl_manage_options_hook;
+	if ( 'post-new.php' !== $hook && $oirl_manage_options_hook !== $hook && 'post.php' !== $hook ) {
+		return;
+	}
+	wp_enqueue_script( 'oirl-admin-script', plugin_dir_url( __FILE__ ) . '/js/admin-script.js', array( 'jquery', 'jquery-ui-tooltip' ), '1.0.0', true );
+	$css_file_name = 'run-log' . (is_rtl() ? '-rtl' : '') . '.css';
+	wp_enqueue_style( 'oirl-css', plugin_dir_url( __FILE__ ) . "/$css_file_name" );
+}
+add_action( 'admin_enqueue_scripts', 'oirl_admin_scripts' );
 
 /**
  * Saving the meta-box data
@@ -369,9 +394,12 @@ function oirl_save_run_log_meta_boxes( $post_id, $post ) {
 		$elevation = floatval( $_POST['oirl-mb-elevation'] );
 		update_post_meta( $post_id, 'oirl-mb-elevation', $elevation );
 	}
-	if ( isset($_POST['oirl-mb-calories']) && is_numeric($_POST['oirl-mb-calories'])) {
+	if ( isset( $_POST['oirl-mb-calories'] ) && is_numeric( $_POST['oirl-mb-calories'] )) {
 		$calories = intval( $_POST['oirl-mb-calories'] );
 		update_post_meta( $post_id, 'oirl-mb-calories', $calories );
+	}
+	if ( isset( $_POST['oirl-mb-embed-external'] ) && in_array( $_POST['oirl-mb-embed-external'], array( 'no', 'garmin', 'endomondo' ), true ) ) {
+		update_post_meta( $post_id, 'oirl-mb-embed-external', $_POST['oirl-mb-embed-external'] );
 	}
 	if ( isset( $_POST['oirl-mb-garmin-activity'] ) && is_numeric( $_POST['oirl-mb-garmin-activity'] ) ) {
 		$garmin_activity = intval( $_POST['oirl-mb-garmin-activity'] );
@@ -402,7 +430,6 @@ add_action( 'save_post', 'oirl_save_run_log_meta_boxes', 10, 2 );
  */
 function oirl_add_run_log_data_to_post( $content, $excerpt = false ) {
 	// return original content if not run log custom post type
-	// if( ! is_singular('oi_run_log_post') ) {
 	if ( get_post_type() !== 'oi_run_log_post' ) {
 		return $content;
 	}
@@ -419,14 +446,15 @@ function oirl_add_run_log_data_to_post( $content, $excerpt = false ) {
 		return $content;
 	}
 
+	$embed_external = get_post_meta( $GLOBALS['post']->ID, 'oirl-mb-embed-external', true );
 	$garmin_activity = get_post_meta( $GLOBALS['post']->ID, 'oirl-mb-garmin-activity', true );
 	$endomondo_activity = get_post_meta( $GLOBALS['post']->ID, 'oirl-mb-endomondo-activity', true );
 
 	// Embed garmin/endomondo activity if got its ID (and it isn't an excerpt).
-	if ( $garmin_activity && preg_match( '/^\d+$/', $garmin_activity ) && ! $excerpt ) {
+	if ( ( ! $embed_external || 'garmin' === $embed_external) && $garmin_activity && preg_match( '/^\d+$/', $garmin_activity ) && ! $excerpt ) {
 		$garmin_iframe = "<iframe src='https://connect.garmin.com/activity/embed/$garmin_activity' width='465' height='500' frameborder='0'></iframe>\n";
 		return ( 'bottom' === $add_at_pos ? $content . $garmin_iframe : $garmin_iframe . $content );
-	} elseif ( $endomondo_activity && preg_match( '/^\d+$/', $endomondo_activity ) && ! $excerpt ) {
+	} elseif ( ( ! $embed_external || 'endomondo' === $embed_external) && $endomondo_activity && preg_match( '/^\d+$/', $endomondo_activity ) && ! $excerpt ) {
 		$endomondo_iframe = "<iframe src='http://www.endomondo.com/embed/workouts?w=$endomondo_activity&width=580&height=425' width='580' height='425' frameborder='1'></iframe>\n";
 		return ( 'bottom' === $add_at_pos ? $content . $endomondo_iframe : $endomondo_iframe . $content );
 	}
@@ -605,9 +633,11 @@ add_shortcode( 'oirl_total', 'oirl_total_shortcode' );
  * @return WP_Query the query object after adding run-log custom post_type.
  */
 function iorl_run_log_update_get_posts( $query ) {
-	if ( ! isset( $query->query_vars['suppress_filters'] ) || false == $query->query_vars['suppress_filters'] ) {
+	if ( ! isset( $query->query_vars['suppress_filters'] ) || false === $query->query_vars['suppress_filters'] ) {
 		$this_qry_post_types = $query->get( 'post_type' );
-		if ( empty( $this_qry_post_types ) ) $this_qry_post_types = 'Post';
+		if ( empty( $this_qry_post_types ) ) {
+			$this_qry_post_types = 'Post';
+		}
 		$new_qry_post_types = array_merge( (array) $this_qry_post_types, array( 'oi_run_log_post' ) );
 		$query->set( 'post_type', $new_qry_post_types );
 	}
@@ -721,7 +751,7 @@ add_action( 'init', 'iorl_register_gear_taxonomy', 0 );
  */
 function iorl_calculate_pace( $distance, $duration, $type = 'pace' ) {
 	$distance = floatval( $distance );
-	if ( ! $distance || ! preg_match( '/^(\d+):([0-5]\d):([0-5]\d)$/', $duration, $duration_matches ) || ! in_array( $type, array( 'pace', 'speed' ) ) ) {
+	if ( ! $distance || ! preg_match( '/^(\d+):([0-5]\d):([0-5]\d)$/', $duration, $duration_matches ) || ! in_array( $type, array( 'pace', 'speed' ), true ) ) {
 		return 0;
 	}
 
@@ -752,7 +782,7 @@ function iorl_calculate_pace( $distance, $duration, $type = 'pace' ) {
  * @return float the conversion outcome. 0 if invalid param given.
  */
 function iorl_distance_converter( $distance, $conversion = 'M2K' ) {
-	if ( ! is_numeric( $distance ) || floatval( $distance ) <= 0 || ! in_array( $conversion, array( 'K2M', 'M2K' ) ) ) {
+	if ( ! is_numeric( $distance ) || floatval( $distance ) <= 0 || ! in_array( $conversion, array( 'K2M', 'M2K' ), true ) ) {
 		return 0;
 	}
 

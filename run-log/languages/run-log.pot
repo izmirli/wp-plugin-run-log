@@ -356,3 +356,24 @@ msgstr ""
 #. Author URI of the plugin/theme
 msgid "https://profiles.wordpress.org/izem"
 msgstr ""
+
+msgid "Garmin Connect embed activity"
+msgstr ""
+
+msgid "Enter Garmin activity ID - the number at the end of activity's page address"
+msgstr ""
+
+msgid "Endomondo embed activity"
+msgstr ""
+
+msgid "Enter endomondo activity ID - the number at the end of activity's page address"
+msgstr ""
+
+msgid "Embed activity from external source"
+msgstr ""
+
+msgid "Garmin"
+msgstr ""
+
+msgid "Endomondo"
+msgstr ""
