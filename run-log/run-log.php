@@ -613,9 +613,21 @@ function oirl_total_shortcode( $atts ) {
 		$distance_total = $wpdb->get_var( $distance_query );
 		$distance_total = ( 'mi' === $distance_unit ? iorl_distance_converter( $distance_total, 'K2M' ) : $distance_total );
 
-		$output .= '<div class="oirl-data">';
-		$output .= '<span class="oirl-data-desc">' . esc_html__( 'Total distance', 'run-log' ) . ":</span> <span class=\"oirl-data-value\">$distance_total</span>";
-		$output .= esc_html__( $distance_unit, 'run-log' ) . '</div>';
+		if ( 'distance' === $atts['only'] ) {
+			$output .= '<div class="oirl-data"><div class="oirl-data-desc">' . esc_html__( 'Total distance', 'run-log' ) . '</div>';
+			foreach ( str_split( $distance_total ) as $cur_char ) {
+				if ( '.' === $cur_char ) {
+					$output .= '<span class="bottom">.</span>';
+					continue;
+				}
+				$output .= "<span class=\"oirl-counter\"><span>$cur_char</span></span>";
+			}
+			$output .= '<span class="bottom">' . esc_html__( $distance_unit, 'run-log' ) . '</span></div>';
+		} else {
+			$output .= '<div class="oirl-data">';
+			$output .= '<span class="oirl-data-desc">' . esc_html__( 'Total distance', 'run-log' ) . "</span> <span class=\"oirl-data-value\">$distance_total</span>";
+			$output .= esc_html__( $distance_unit, 'run-log' ) . '</div>';
+		}
 	}
 
 	// Check & output duration total if needed.
