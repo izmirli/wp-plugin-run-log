@@ -1,18 +1,27 @@
 /**
- *
+ * Run Log Plugin Styles CSS [LTR].
  */
+
+.oirl-light {
+	color: black;
+	background-color: #fff;
+}
+
+.oirl-dark {
+	color: #fff;
+	background-color: black;
+}
 
 .oirl-data-box {
 	width: 490px;
-	font-color: black;
 	height: 60px;
 	margin: 15px auto;
 	padding: 5px;
-	background-color: #fff;
-	border: 1px dotted black;
 	border-radius: 13px;
 	box-shadow: 2px 2px;
 }
+.oirl-light .oirl-data-box { border: 1px dotted black; }
+.oirl-dark .oirl-data-box { border: 1px dotted #fff; }
 
 .oirl-data-box .oirl-data {
 	position: relative;
@@ -36,6 +45,53 @@
 	color: #999;
 }
 
+/* counter */
+.oirl-total-box { text-align: center; }
+
+.oirl-total-box .oirl-data {
+	display: inline-block;
+	margin: 3px auto;
+	padding: 5px;
+	border-radius: 5px;
+}
+.oirl-light.oirl-total-box .oirl-data {
+	border: 1px solid #666;
+	background-color: #bbb;
+}
+
+.oirl-counter {
+	font-size: 175%;
+	vertical-align: middle;
+	margin: 0 2px;
+	border-radius: 5px;
+	/* border-style: inset; */
+}
+
+.oirl-light span.oirl-counter > span {
+	padding: 0 2px;
+	background: #e2e2e2; /* Old Browsers */
+	background: -moz-linear-gradient(top, #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%); /* FF3.6+ */
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, #e2e2e2), color-stop(50%, #dbdbdb), color-stop(51%, #d1d1d1), color-stop(100%, #fefefe));/* Chrome, Safari4+ */
+	background: -webkit-linear-gradient(top, #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%); /* IE 10+ */
+	background: linear-gradient(to bottom, #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%);/* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#fefefe', GradientType=0 );/* IE6-9 */
+}
+
+.oirl-light span.oirl-counter {
+	padding: 2px;
+	background: #e2e2e2;
+	background: -moz-linear-gradient(top, #fefefe 0%, #d1d1d1 50%, #dbdbdb 51%, #e2e2e2 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, #fefefe), color-stop(50%, #d1d1d1), color-stop(51%, #dbdbdb), color-stop(100%, #e2e2e2));
+	background: -webkit-linear-gradient(top, #fefefe 0%, #d1d1d1 50%, #dbdbdb 51%, #e2e2e2 100%);
+	background: -o-linear-gradient(top, #fefefe 0%, #d1d1d1 50%, #dbdbdb 51%, #e2e2e2 100%);
+	background: -ms-linear-gradient(top, #fefefe 0%, #d1d1d1 50%, #dbdbdb 51%, #e2e2e2 100%);
+	background: linear-gradient(to bottom, #fefefe 0%, #d1d1d1 50%, #dbdbdb 51%, #e2e2e2 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', endColorstr='#e2e2e2', GradientType=0 );
+}
+
+/* jQuery UI Styles */
 .ui-tooltip {
 	padding: 8px;
 	position: absolute;

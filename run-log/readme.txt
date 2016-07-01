@@ -25,7 +25,7 @@ The plugin add running diary capabilities to WordPress, so you can log your runn
 
 = Localization =
 
-Support for RTL and Hebrew translation included automatically.
+Support RTL languages sites.
 
 The metric system of measurement is used by default - Kilometer (km) for distance, minutes per kilometer (min/km) for pace, kilometers per hour (km/h) for speed [and meters (m) for elevation].
 You can change these to statute/imperial by updating plugin's "Distance unit" option to mi (Mile).
@@ -113,6 +113,10 @@ Make sure your activity is Public - activity's privacy is set to "Everyone" (the
 5. "Garmin Connect" embed.
 
 == Changelog ==
+
+= 1.5.0 =
+* Shortcode for displaying totals (distance, time, ).
+* Option to choose light or dark style theme.
 
 = 1.4.1 =
 * Quick embed admin-side enhancements.
