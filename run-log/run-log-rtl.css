@@ -1,18 +1,33 @@
 /**
- * The RTL
+ * The RTL Styles for Run Log Plugin
  */
+
+ .oirl .bottom { vertical-align: bottom; }
+ .oirl .super { vertical-align: super; }
+ .oirl .sub { vertical-align: sub; }
+ .oirl .bold { font-weight: bold; }
+ .oirl .smaller { font-size: 75%; }
+
+.oirl-light {
+	color: black;
+	background-color: #fff;
+}
+
+.oirl-dark {
+	color: #fff;
+	background-color: black;
+}
 
 .oirl-data-box {
 	width: 490px;
-	font-color: black;
 	height: 60px;
 	margin: 15px auto;
 	padding: 5px;
-	background-color: #fff;
-	border: 1px dotted black;
 	border-radius: 13px;
 	box-shadow: 2px 2px;
 }
+.oirl-light.oirl-data-box { border: 1px dotted black; }
+.oirl-dark.oirl-data-box { border: 1px dotted #fff; }
 
 .oirl-data-box .oirl-data {
 	position: relative;
@@ -36,7 +51,86 @@
 	color: #999;
 }
 
-/* jQuery UI tooltip */
+/* counter */
+.oirl-total-box { text-align: center; }
+.oirl-light.oirl-total-box,
+.oirl-dark.oirl-total-box {
+	color: inherit;
+	background-color: inherit;
+}
+
+.oirl-total-box .oirl-data {
+	display: inline-block;
+	margin: 3px auto;
+	padding: 5px;
+	border-radius: 5px;
+}
+.oirl-light.oirl-total-box .oirl-data {
+	color: #000;
+	border: 1px solid #666;
+	background-color: #bbb;
+}
+.oirl-dark.oirl-total-box .oirl-data {
+	color: #fff;
+	border: 1px solid #999;
+	background-color: #444;
+}
+
+.oirl-counter {
+	font-size: 175%;
+	vertical-align: middle;
+	margin: 0 2px;
+	border-radius: 5px;
+	/* border-style: inset; */
+}
+
+.oirl-light span.oirl-counter > span {
+	padding: 0 2px;
+	background: #e2e2e2; /* Old Browsers */
+	background: -moz-linear-gradient(top, #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%); /* FF3.6+ */
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, #e2e2e2), color-stop(50%, #dbdbdb), color-stop(51%, #d1d1d1), color-stop(100%, #fefefe));/* Chrome, Safari4+ */
+	background: -webkit-linear-gradient(top, #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%); /* IE 10+ */
+	background: linear-gradient(to bottom, #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%);/* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#fefefe', GradientType=0 );/* IE6-9 */
+}
+.oirl-light span.oirl-counter {
+	padding: 2px;
+	background: #e2e2e2;
+	background: -moz-linear-gradient(top, #fefefe 0%, #d1d1d1 50%, #dbdbdb 51%, #e2e2e2 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, #fefefe), color-stop(50%, #d1d1d1), color-stop(51%, #dbdbdb), color-stop(100%, #e2e2e2));
+	background: -webkit-linear-gradient(top, #fefefe 0%, #d1d1d1 50%, #dbdbdb 51%, #e2e2e2 100%);
+	background: -o-linear-gradient(top, #fefefe 0%, #d1d1d1 50%, #dbdbdb 51%, #e2e2e2 100%);
+	background: -ms-linear-gradient(top, #fefefe 0%, #d1d1d1 50%, #dbdbdb 51%, #e2e2e2 100%);
+	background: linear-gradient(to bottom, #fefefe 0%, #d1d1d1 50%, #dbdbdb 51%, #e2e2e2 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', endColorstr='#e2e2e2', GradientType=0 );
+}
+
+.oirl-dark span.oirl-counter > span {
+	padding: 0 2px;
+	background: #4c4c4c;
+	background: -moz-linear-gradient(top, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2c2c2c 50%, #000000 51%, #111111 60%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, #4c4c4c), color-stop(12%, #595959), color-stop(25%, #666666), color-stop(39%, #474747), color-stop(50%, #2c2c2c), color-stop(51%, #000000), color-stop(60%, #111111), color-stop(76%, #2b2b2b), color-stop(91%, #1c1c1c), color-stop(100%, #131313));
+	background: -webkit-linear-gradient(top, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2c2c2c 50%, #000000 51%, #111111 60%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%);
+	background: -o-linear-gradient(top, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2c2c2c 50%, #000000 51%, #111111 60%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%);
+	background: -ms-linear-gradient(top, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2c2c2c 50%, #000000 51%, #111111 60%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%);
+	background: linear-gradient(to bottom, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2c2c2c 50%, #000000 51%, #111111 60%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#131313', GradientType=0 );
+}
+.oirl-dark span.oirl-counter {
+	padding: 2px;
+	background: #4c4c4c;
+	background: -moz-linear-gradient(top, #131313 0%, #1c1c1c 12%, #2b2b2b 25%, #111111 39%, #000000 50%, #2c2c2c 51%, #474747 60%, #666666 76%, #595959 91%, #4c4c4c 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, #131313), color-stop(12%, #1c1c1c), color-stop(25%, #2b2b2b), color-stop(39%, #111111), color-stop(50%, #000000), color-stop(51%, #2c2c2c), color-stop(60%, #474747), color-stop(76%, #666666), color-stop(91%, #595959), color-stop(100%, #4c4c4c));
+	background: -webkit-linear-gradient(top, #131313 0%, #1c1c1c 12%, #2b2b2b 25%, #111111 39%, #000000 50%, #2c2c2c 51%, #474747 60%, #666666 76%, #595959 91%, #4c4c4c 100%);
+	background: -o-linear-gradient(top, #131313 0%,#1c1c1c 12%, #2b2b2b 25%, #111111 39%, #000000 50%, #2c2c2c 51%, #474747 60%, #666666 76%, #595959 91%, #4c4c4c 100%);
+	background: -ms-linear-gradient(top, #131313 0%, #1c1c1c 12%, #2b2b2b 25%, #111111 39%, #000000 50%, #2c2c2c 51%, #474747 60%, #666666 76%, #595959 91%, #4c4c4c 100%);
+	background: linear-gradient(to bottom, #131313 0%, #1c1c1c 12%, #2b2b2b 25%, #111111 39%, #000000 50%, #2c2c2c 51%, #474747 60%, #666666 76%, #595959 91%, #4c4c4c 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#131313', endColorstr='#4c4c4c', GradientType=0 );
+}
+
+/* jQuery UI Styles */
 .ui-tooltip {
 	padding: 8px;
 	position: absolute;

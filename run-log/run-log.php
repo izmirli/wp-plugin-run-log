@@ -570,7 +570,7 @@ add_action( 'wp_enqueue_scripts', 'iorl_enqueue_css' );
 
 /**
  * Add Shortcode for displaying activeties totals.
- * Usage: [oirl_total] or [oirl_total period_type="year" period_val="2015" hide_pace="yes"]
+ * Usage: [oirl_total] or [oirl_total only="distance"] or [oirl_total period_type="year" period_val="2015" hide_pace="yes"]
  *
  * @since 1.4.0
  *
@@ -578,9 +578,10 @@ add_action( 'wp_enqueue_scripts', 'iorl_enqueue_css' );
  *                    period_type: all-time/year/month (default: all-time);
  *                    period_val: the number of year/month to show;
  *                    only: distance/time;
- *                    hide_pace: yes/nn.
+ *                    hide_pace: yes/nn;
+ *										days_display: true/false - display days in total time if more then 24 hours.
  *
- * @return string the Shortcode output - activities totals.
+ * @return string the output - HTML of activities totals.
  */
 function oirl_total_shortcode( $atts ) {
 	global $wpdb;
@@ -591,6 +592,7 @@ function oirl_total_shortcode( $atts ) {
 			'period_val'	=> '',
 			'only'				=> '',
 			'hide_pace'		=> 'no',
+			'days_display' => false,
 		),
 		$atts,
 		'oirl_total'
@@ -612,17 +614,18 @@ function oirl_total_shortcode( $atts ) {
 		$distance_query = "SELECT $distance_select FROM $wpdb->postmeta WHERE $distance_where";
 		$distance_total = $wpdb->get_var( $distance_query );
 		$distance_total = ( 'mi' === $distance_unit ? iorl_distance_converter( $distance_total, 'K2M' ) : $distance_total );
+		$distance_total = sprintf( '%.1f', $distance_total );
 
 		if ( 'distance' === $atts['only'] ) {
 			$output .= '<div class="oirl-data"><div class="oirl-data-desc">' . esc_html__( 'Total distance', 'run-log' ) . '</div>';
 			foreach ( str_split( $distance_total ) as $cur_char ) {
 				if ( '.' === $cur_char ) {
-					$output .= '<span class="bottom">.</span>';
+					$output .= '<span class="sub bold">.</span>';
 					continue;
 				}
 				$output .= "<span class=\"oirl-counter\"><span>$cur_char</span></span>";
 			}
-			$output .= '<span class="bottom">' . esc_html__( $distance_unit, 'run-log' ) . '</span></div>';
+			$output .= '<span class="super">' . esc_html__( $distance_unit, 'run-log' ) . '</span></div>';
 		} else {
 			$output .= '<div class="oirl-data">';
 			$output .= '<span class="oirl-data-desc">' . esc_html__( 'Total distance', 'run-log' ) . "</span> <span class=\"oirl-data-value\">$distance_total</span>";
@@ -653,21 +656,27 @@ SUM(
 		if ( 'time' === $atts['only'] ) {
 			$duration_days = floor( $duration_hour / 24 );
 			$duration_hours_after_days = $duration_hour - ( $duration_days * 24 );
-			$duration = sprintf( '%d:%02d:%02d:%02d', $duration_days, $duration_hours_after_days, $duration_min, $duration_sec );
-			$duration = preg_replace( '/^0:/', '', $duration );
-			$display_chars = str_split( $duration );
+			$duration_with_days_display = sprintf( '%d:%02d:%02d:%02d', $duration_days, $duration_hours_after_days, $duration_min, $duration_sec );
+			$duration_with_days_display = preg_replace( '/^0:/', '', $duration_with_days_display );
+			$display_chars = str_split( ( $atts['days_display'] ? $duration_with_days_display : $duration ) );
 
 			$output .= '<div class="oirl-data"><div class="oirl-data-desc">' . esc_html__( 'Total duration', 'run-log' ) . '</div>';
+			$sec_countdown = strlen( $duration ) > 8 ? 3 : 2;
 			foreach ( $display_chars as $cur_char ) {
 				if ( ':' === $cur_char ) {
+					$sec_countdown--;
+					if ( 0 === $sec_countdown ) {
+						$output .= '<span class="smaller sub">';
+					}
 					$output .= ':';
 				} else {
 					$output .= "<span class=\"oirl-counter\"><span>$cur_char</span></span>";
 				}
 			}
+			$output .= '</span>';
 			$output .= '</div>';
 		} else {
-			$output .= '<div class="oirl-data"><span class="oirl-data-desc">' . esc_html__( 'Total duration', 'run-log' ) . ":</span> <span class=\"oirl-data-value\">$duration</span>";
+			$output .= '<div class="oirl-data"><span class="oirl-data-desc">' . esc_html__( 'Total duration', 'run-log' ) . "</span> <span class=\"oirl-data-value\">$duration</span>";
 			$output .= '</div>';
 		}
 	}
@@ -676,7 +685,7 @@ SUM(
 	if ( '' === $atts['only'] ) {
 		$pace = iorl_calculate_pace( $distance_total, $duration, $pace_or_speed );
 
-		$output .= '<div class="oirl-data"><span class="oirl-data-desc">' . esc_html__( 'Cumulative pace', 'run-log' ) . ":</span> <span class=\"oirl-data-value\">$pace</span>";
+		$output .= '<div class="oirl-data"><span class="oirl-data-desc">' . esc_html__( 'Cumulative pace', 'run-log' ) . "</span> <span class=\"oirl-data-value\">$pace</span>";
 		$output .= ( 'mi' === $distance_unit ? esc_html__( 'min/mi', 'run-log' ) : esc_html__( 'min/km', 'run-log' ) ) . '</div>';
 	}
 

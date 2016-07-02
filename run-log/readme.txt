@@ -1,6 +1,6 @@
 === Run Log ===
 Contributors: izem
-Tags: run, running, sport, training log, training diary, run log, run diary, running log, garmin Connect, garmin. endomondo, jogging
+Tags: run, running, sport, training log, training diary, run log, run diary, running log, garmin Connect, garmin. endomondo, jogging, total distance, total time, total duration
 Requires at least: 3.8
 Tested up to: 4.5.3
 Stable tag: trunk
@@ -20,6 +20,8 @@ The plugin add running diary capabilities to WordPress, so you can log your runn
 * Log distance and duration for each run in custom fields of run-log posts.
 * Calculate pace/speed automatically.
 * Display the above data in the post automatically.
+* Shortcode for displaying totals (distance, time, pace/speed).
+* Option to choose light or dark style theme, to blend with your theme.
 * Enable "Garmin Connect" quick embed (display full data and activity map from your "Garmin Connect" account).
 * Enable "endomondo" quick embed (display full data and activity map from your "endomondo" account).
 
@@ -108,15 +110,18 @@ Make sure your activity is Public - activity's privacy is set to "Everyone" (the
 
 1. Run data display in the post.
 2. The post edit screen - run-log parameters input box at the bottom.
-3. Gears and Goals input boxes from the post edit screen.
+3. Shortcode displaying 3 views: default, distance only, duration only.
 4. The plugin options screen.
 5. "Garmin Connect" embed.
+6. Gears and Goals input boxes from the post edit screen.
+7. endomondo embed.
 
 == Changelog ==
 
 = 1.5.0 =
-* Shortcode for displaying totals (distance, time, ).
+* Shortcode for displaying totals (distance, time, pace/speed).
 * Option to choose light or dark style theme.
+* Better form input sanitizing with filter_input.
 
 = 1.4.1 =
 * Quick embed admin-side enhancements.
