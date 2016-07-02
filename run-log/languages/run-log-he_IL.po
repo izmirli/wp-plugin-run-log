@@ -363,3 +363,12 @@ msgstr "גרמין"
 
 msgid "Endomondo"
 msgstr "אנדומונדו"
+
+msgid "Style theme"
+msgstr "סגנון עיצוב"
+
+msgid "Light"
+msgstr "בהיר"
+
+msgid "Dark"
+msgstr "כהה"

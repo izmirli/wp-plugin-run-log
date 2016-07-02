@@ -10,7 +10,7 @@
  * Plugin Name: Run Log
  * Plugin URI: http://stuff.izmirli.org/wordpress-run-log-plugin/
  * Description: Adds running diary capabilities - log your sporting activity with custom post type, custom fields and new taxonomies.
- * Version: 1.4.1
+ * Version: 1.5.0
  * Author: Oren Izmirli
  * Author URI: https://profiles.wordpress.org/izem
  * Text Domain: run-log
@@ -33,6 +33,7 @@ function oirl_set_default_options() {
 		'pace_or_speed' => 'pace',
 		'display_pos' => 'top',
 		'display_on_excerpt' => 0,
+		'style_theme' => 'light',
 	);
 	add_option( 'oi-run-log-options', $oirl_plugin_options );
 }
@@ -189,6 +190,14 @@ function oirl_plugin_options() {
 		$updated_options = true;
 	}
 
+	// check and update (if needed) style theme type.
+	$style_theme = isset( $cur_ops['style_theme'] ) ? $cur_ops['style_theme'] : '';
+	$given_style_theme = filter_input( INPUT_POST, 'oirl-style-theme', FILTER_VALIDATE_REGEXP, array( 'options' => array( 'regexp' => '/^(light|dark)$/' ) ) );
+	if ( $given_style_theme && $given_style_theme !== $style_theme ) {
+		$style_theme = $cur_ops['style_theme'] = $given_style_theme;
+		$updated_options = true;
+	}
+
 	// check and update (if needed) display on excerpt.
 	$display_on_excerpt = isset( $cur_ops['display_on_excerpt'] ) ? $cur_ops['display_on_excerpt'] : '';
 	$given_display_on_excerpt = filter_input( INPUT_POST, 'oirl-display-on-excerpt', FILTER_VALIDATE_REGEXP, array( 'options' => array( 'regexp' => '/^[01]$/' ) ) );
@@ -224,6 +233,15 @@ function oirl_plugin_options() {
 	&nbsp;
 	<input type="radio" name="oirl-pace-or-speed" value="speed" id="oirl-pace-or-speed-Speed"<?php echo ('speed' === $pace_or_speed ? 'checked' : '')?>>
 	<label for="oirl-pace-or-speed-Speed"><?php echo esc_html__( 'Speed', 'run-log' )?></label>
+
+	<br><br>
+
+	<?php echo esc_html__( 'Style theme', 'run-log' )?>:
+	<input type="radio" name="oirl-style-theme" value="light" id="oirl-style-theme-light" <?php echo ( 'light' === $style_theme ? 'checked' : '')?>>
+	<label for="oirl-style-theme-light"><?php echo esc_html__( 'Light', 'run-log' )?></label>
+	&nbsp;
+	<input type="radio" name="oirl-style-theme" value="dark" id="oirl-style-theme-dark"<?php echo ('dark' === $style_theme ? 'checked' : '')?>>
+	<label for="oirl-style-theme-dark"><?php echo esc_html__( 'Dark', 'run-log' )?></label>
 
 	<br><br>
 
@@ -360,7 +378,8 @@ add_action( 'admin_enqueue_scripts', 'oirl_admin_scripts' );
  */
 function oirl_save_run_log_meta_boxes( $post_id, $post ) {
 	// Check nonce for anti-CSRF.
-	if ( ! isset( $_POST['run-log-meta-box-nonce'] ) || ! wp_verify_nonce( $_POST['run-log-meta-box-nonce'], basename( __FILE__ ) ) ) {
+	$oirl_mb_nonce = filter_input( INPUT_POST, 'run-log-meta-box-nonce', FILTER_SANITIZE_STRING );
+	if ( ! isset( $oirl_mb_nonce ) || ! wp_verify_nonce( $oirl_mb_nonce, basename( __FILE__ ) ) ) {
 		return $post_id;
 	}
 	// Check user permisions.
@@ -376,39 +395,53 @@ function oirl_save_run_log_meta_boxes( $post_id, $post ) {
 		return $post_id;
 	}
 
-	if ( isset( $_POST['oirl-mb-distance'] ) && is_numeric( $_POST['oirl-mb-distance'] ) ) {
-		$distance = floatval( $_POST['oirl-mb-distance'] );
+	$plugin_ops = get_option( 'oi-run-log-options' );
+	$distance_unit = isset( $plugin_ops['distance_unit'] ) ? $plugin_ops['distance_unit'] : 'km';
+
+	$oirl_mb_distance = filter_input( INPUT_POST, 'oirl-mb-distance', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+	if ( isset( $oirl_mb_distance ) && is_numeric( $oirl_mb_distance ) ) {
+		$distance = floatval( $oirl_mb_distance );
 		// if distance unit is mi, convert to km befor saving.
-		$plugin_ops = get_option( 'oi-run-log-options' );
-		$distance_unit = isset( $plugin_ops['distance_unit'] ) ? $plugin_ops['distance_unit'] : 'km';
 		if ( 'mi' === $distance_unit ) {
 			$distance = iorl_distance_converter( $distance, 'M2K' );
 		}
 		update_post_meta( $post_id, 'oirl-mb-distance', $distance );
 	}
-	if ( isset( $_POST['oirl-mb-duration'] ) && preg_match( '/^\s*(?:(\d{1,2}):)?([0-5]?\d):([0-5]?\d)\s*$/', $_POST['oirl-mb-duration'], $duration_matches ) ) {
+
+	$oirl_mb_duration = filter_input( INPUT_POST, 'oirl-mb-duration', FILTER_VALIDATE_REGEXP, array( 'options' => array( 'regexp' => '/^\s*(?:\d{1,2}:)?[0-5]?\d:[0-5]?\d\s*$/' ) ) );
+	if ( isset( $oirl_mb_duration ) && preg_match( '/^\s*(?:(\d{1,2}):)?([0-5]?\d):([0-5]?\d)\s*$/', $oirl_mb_duration, $duration_matches ) ) {
 		$duration = sprintf( '%02d:%02d:%02d', ( is_numeric( $duration_matches[1] ) ? $duration_matches[1] : 0 ), $duration_matches[2], $duration_matches[3] );
 		update_post_meta( $post_id, 'oirl-mb-duration', $duration );
 	}
-	if ( isset( $_POST['oirl-mb-elevation'] ) && is_numeric( $_POST['oirl-mb-elevation'] ) ) {
-		$elevation = floatval( $_POST['oirl-mb-elevation'] );
+
+	$oirl_mb_elevation = filter_input( INPUT_POST, 'oirl-mb-elevation', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+	if ( isset( $oirl_mb_elevation ) && is_numeric( $oirl_mb_elevation ) ) {
+		$elevation = floatval( $oirl_mb_elevation );
 		update_post_meta( $post_id, 'oirl-mb-elevation', $elevation );
 	}
-	if ( isset( $_POST['oirl-mb-calories'] ) && is_numeric( $_POST['oirl-mb-calories'] )) {
-		$calories = intval( $_POST['oirl-mb-calories'] );
+
+	$oirl_mb_calories = filter_input( INPUT_POST, 'oirl-mb-calories', FILTER_SANITIZE_NUMBER_INT );
+	if ( isset( $oirl_mb_calories ) && is_numeric( $oirl_mb_calories ) ) {
+		$calories = intval( $oirl_mb_calories );
 		update_post_meta( $post_id, 'oirl-mb-calories', $calories );
 	}
-	if ( isset( $_POST['oirl-mb-embed-external'] ) && in_array( $_POST['oirl-mb-embed-external'], array( 'no', 'garmin', 'endomondo' ), true ) ) {
-		update_post_meta( $post_id, 'oirl-mb-embed-external', $_POST['oirl-mb-embed-external'] );
+
+	$oirl_mb_embed_external = filter_input( INPUT_POST, 'oirl-mb-embed-external', FILTER_VALIDATE_REGEXP, array( 'options' => array( 'regexp' => '/^(no|garmin|endomondo)$/' ) ) );
+	if ( isset( $oirl_mb_embed_external ) && in_array( $oirl_mb_embed_external, array( 'no', 'garmin', 'endomondo' ), true ) ) {
+		update_post_meta( $post_id, 'oirl-mb-embed-external', $oirl_mb_embed_external );
 	}
-	if ( isset( $_POST['oirl-mb-garmin-activity'] ) && is_numeric( $_POST['oirl-mb-garmin-activity'] ) ) {
-		$garmin_activity = intval( $_POST['oirl-mb-garmin-activity'] );
+
+	$oirl_mb_garmin_activity = filter_input( INPUT_POST, 'oirl-mb-garmin-activity', FILTER_SANITIZE_NUMBER_INT );
+	if ( isset( $oirl_mb_garmin_activity ) && is_numeric( $oirl_mb_garmin_activity ) ) {
+		$garmin_activity = intval( $oirl_mb_garmin_activity );
 		update_post_meta( $post_id, 'oirl-mb-garmin-activity', $garmin_activity );
 	} elseif ( get_post_meta( $post_id, 'oirl-mb-garmin-activity' ) ) {
 		delete_post_meta( $post_id, 'oirl-mb-garmin-activity' );
 	}
-	if ( isset( $_POST['oirl-mb-endomondo-activity'] ) && is_numeric( $_POST['oirl-mb-endomondo-activity'] ) ) {
-		$endomondo_activity = intval( $_POST['oirl-mb-endomondo-activity'] );
+
+	$oirl_mb_endomondo_activity = filter_input( INPUT_POST, 'oirl-mb-endomondo-activity', FILTER_SANITIZE_NUMBER_INT );
+	if ( isset( $oirl_mb_endomondo_activity ) && is_numeric( $oirl_mb_endomondo_activity ) ) {
+		$endomondo_activity = intval( $oirl_mb_endomondo_activity );
 		update_post_meta( $post_id, 'oirl-mb-endomondo-activity', $endomondo_activity );
 	} elseif ( get_post_meta( $post_id, 'oirl-mb-endomondo-activity' ) ) {
 		delete_post_meta( $post_id, 'oirl-mb-endomondo-activity' );
@@ -429,7 +462,7 @@ add_action( 'save_post', 'oirl_save_run_log_meta_boxes', 10, 2 );
  * @return string the content with the HTML output of the run log data.
  */
 function oirl_add_run_log_data_to_post( $content, $excerpt = false ) {
-	// return original content if not run log custom post type
+	// Return original content if not run log custom post type.
 	if ( get_post_type() !== 'oi_run_log_post' ) {
 		return $content;
 	}
@@ -440,6 +473,7 @@ function oirl_add_run_log_data_to_post( $content, $excerpt = false ) {
 	$display_on_excerpt = isset( $plugin_ops['display_on_excerpt'] ) ? $plugin_ops['display_on_excerpt'] : 0;
 	$distance_unit = isset( $plugin_ops['distance_unit'] ) ? $plugin_ops['distance_unit'] : 'km';
 	$pace_or_speed = isset( $plugin_ops['pace_or_speed'] ) ? $plugin_ops['pace_or_speed'] : 'pace';
+	$style_theme = isset( $plugin_ops['style_theme'] ) ? $plugin_ops['style_theme'] : 'light';
 
 	// return original content if display is 'none' or if its excerpt and display_on_excerpt option is No.
 	if ( ( 'none' === $add_at_pos && ! $excerpt ) || ( $excerpt && ! $display_on_excerpt ) ) {
@@ -469,7 +503,7 @@ function oirl_add_run_log_data_to_post( $content, $excerpt = false ) {
 	}
 
 	// HTML output.
-	$run_log_data = '<div class="oirl-data-box">';
+	$run_log_data = '<div class="oirl oirl-' . $style_theme . ' oirl-data-box">';
 
 	// Distance.
 	$run_log_data .= '<div class="oirl-data">';
@@ -535,8 +569,8 @@ function iorl_enqueue_css() {
 add_action( 'wp_enqueue_scripts', 'iorl_enqueue_css' );
 
 /**
- * Add Shortcode for displaying activety totals.
- * Usage: [oirl_total] or [oirl_total period_type="year" period_val="2015"]
+ * Add Shortcode for displaying activeties totals.
+ * Usage: [oirl_total] or [oirl_total only="distance"] or [oirl_total period_type="year" period_val="2015" hide_pace="yes"]
  *
  * @since 1.4.0
  *
@@ -544,9 +578,10 @@ add_action( 'wp_enqueue_scripts', 'iorl_enqueue_css' );
  *                    period_type: all-time/year/month (default: all-time);
  *                    period_val: the number of year/month to show;
  *                    only: distance/time;
- *                    hide_pace: yes/nn.
+ *                    hide_pace: yes/nn;
+ *										days_display: true/false - display days in total time if more then 24 hours.
  *
- * @return string the Shortcode output - activities totals.
+ * @return string the output - HTML of activities totals.
  */
 function oirl_total_shortcode( $atts ) {
 	global $wpdb;
@@ -557,6 +592,7 @@ function oirl_total_shortcode( $atts ) {
 			'period_val'	=> '',
 			'only'				=> '',
 			'hide_pace'		=> 'no',
+			'days_display' => false,
 		),
 		$atts,
 		'oirl_total'
@@ -566,9 +602,10 @@ function oirl_total_shortcode( $atts ) {
 	$plugin_ops = get_option( 'oi-run-log-options' );
 	$distance_unit = isset( $plugin_ops['distance_unit'] ) ? $plugin_ops['distance_unit'] : 'km';
 	$pace_or_speed = isset( $plugin_ops['pace_or_speed'] ) ? $plugin_ops['pace_or_speed'] : 'pace';
+	$style_theme = isset( $plugin_ops['style_theme'] ) ? $plugin_ops['style_theme'] : 'light';
 
 	// Output code start.
-	$output = '<div class="oirl-totals-box">';
+	$output = '<div class="oirl oirl-' . $style_theme . ' oirl-' . ( '' !== $atts['only'] ? 'total' : 'data') . '-box">';
 
 	// Check & output distance total if needed.
 	if ( in_array( $atts['only'], array( '', 'distance' ), true ) ) {
@@ -577,10 +614,23 @@ function oirl_total_shortcode( $atts ) {
 		$distance_query = "SELECT $distance_select FROM $wpdb->postmeta WHERE $distance_where";
 		$distance_total = $wpdb->get_var( $distance_query );
 		$distance_total = ( 'mi' === $distance_unit ? iorl_distance_converter( $distance_total, 'K2M' ) : $distance_total );
+		$distance_total = sprintf( '%.1f', $distance_total );
 
-		$output .= '<div class="oirl-data">';
-		$output .= '<span class="oirl-data-desc">' . esc_html__( 'Total distance', 'run-log' ) . ":</span> <span class=\"oirl-data-value\">$distance_total</span>";
-		$output .= esc_html__( $distance_unit, 'run-log' ) . '</div>';
+		if ( 'distance' === $atts['only'] ) {
+			$output .= '<div class="oirl-data"><div class="oirl-data-desc">' . esc_html__( 'Total distance', 'run-log' ) . '</div>';
+			foreach ( str_split( $distance_total ) as $cur_char ) {
+				if ( '.' === $cur_char ) {
+					$output .= '<span class="sub bold">.</span>';
+					continue;
+				}
+				$output .= "<span class=\"oirl-counter\"><span>$cur_char</span></span>";
+			}
+			$output .= '<span class="super">' . esc_html__( $distance_unit, 'run-log' ) . '</span></div>';
+		} else {
+			$output .= '<div class="oirl-data">';
+			$output .= '<span class="oirl-data-desc">' . esc_html__( 'Total distance', 'run-log' ) . "</span> <span class=\"oirl-data-value\">$distance_total</span>";
+			$output .= esc_html__( $distance_unit, 'run-log' ) . '</div>';
+		}
 	}
 
 	// Check & output duration total if needed.
@@ -603,15 +653,39 @@ SUM(
 		$duration_min = floor( $duration_total ) - ($duration_hour * 60);
 		$duration = sprintf( '%02d:%02d:%02d', $duration_hour, $duration_min, $duration_sec );
 
-		$output .= '<div class="oirl-data"><span class="oirl-data-desc">' . esc_html__( 'Total duration', 'run-log' ) . ":</span> <span class=\"oirl-data-value\">$duration</span>";
-		$output .= '</div>';
+		if ( 'time' === $atts['only'] ) {
+			$duration_days = floor( $duration_hour / 24 );
+			$duration_hours_after_days = $duration_hour - ( $duration_days * 24 );
+			$duration_with_days_display = sprintf( '%d:%02d:%02d:%02d', $duration_days, $duration_hours_after_days, $duration_min, $duration_sec );
+			$duration_with_days_display = preg_replace( '/^0:/', '', $duration_with_days_display );
+			$display_chars = str_split( ( $atts['days_display'] ? $duration_with_days_display : $duration ) );
+
+			$output .= '<div class="oirl-data"><div class="oirl-data-desc">' . esc_html__( 'Total duration', 'run-log' ) . '</div>';
+			$sec_countdown = strlen( $duration ) > 8 ? 3 : 2;
+			foreach ( $display_chars as $cur_char ) {
+				if ( ':' === $cur_char ) {
+					$sec_countdown--;
+					if ( 0 === $sec_countdown ) {
+						$output .= '<span class="smaller sub">';
+					}
+					$output .= ':';
+				} else {
+					$output .= "<span class=\"oirl-counter\"><span>$cur_char</span></span>";
+				}
+			}
+			$output .= '</span>';
+			$output .= '</div>';
+		} else {
+			$output .= '<div class="oirl-data"><span class="oirl-data-desc">' . esc_html__( 'Total duration', 'run-log' ) . "</span> <span class=\"oirl-data-value\">$duration</span>";
+			$output .= '</div>';
+		}
 	}
 
 	// Camculate pace if needed.
 	if ( '' === $atts['only'] ) {
 		$pace = iorl_calculate_pace( $distance_total, $duration, $pace_or_speed );
 
-		$output .= '<div class="oirl-data"><span class="oirl-data-desc">' . esc_html__( 'Cumulative pace', 'run-log' ) . ":</span> <span class=\"oirl-data-value\">$pace</span>";
+		$output .= '<div class="oirl-data"><span class="oirl-data-desc">' . esc_html__( 'Cumulative pace', 'run-log' ) . "</span> <span class=\"oirl-data-value\">$pace</span>";
 		$output .= ( 'mi' === $distance_unit ? esc_html__( 'min/mi', 'run-log' ) : esc_html__( 'min/km', 'run-log' ) ) . '</div>';
 	}
 

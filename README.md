@@ -19,6 +19,8 @@ The WordPress Plugin Boilerplate includes the following files:
     * `run-log-he_IL.mo`. Hebrew translation file.
     * `run-log-he_IL.po`. Hebrew translation PO file.
     * `run-log.pot`. General translation template.
+  * `js`. JavaScript files directory.
+    * `admin-script.js`. JavaScript code used by this plugin.
 
 ## Features
 
@@ -27,6 +29,7 @@ The WordPress Plugin Boilerplate includes the following files:
 * Log distance and duration for each run in custom fields of run-log posts.
 * Calculate pace/speed automatically.
 * Display the above data in the post automatically.
+* Display total distance/time shortcode.
 * Enable "Garmin Connect" quick embed (display full data and activity map from your "Garmin Connect" account).
 * Enable "endomondo" quick embed (display full data and activity map from your "endomondo" account).
 

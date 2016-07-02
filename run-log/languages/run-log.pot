@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Run Log package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Run Log 1.4.0\n"
+"Project-Id-Version: Run Log 1.5.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/run-log\n"
-"POT-Creation-Date: 2016-06-23 05:53:54+00:00\n"
+"POT-Creation-Date: 2016-07-02 16:26:57+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,7 +22,7 @@ msgctxt "Post Type Singular Name"
 msgid "Run"
 msgstr ""
 
-#. #-#-#-#-#  plugin.pot (Run Log 1.4.0)  #-#-#-#-#
+#. #-#-#-#-#  plugin.pot (Run Log 1.5.0)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: run-log.php:111
 msgid "Run Log"
@@ -376,4 +376,13 @@ msgid "Garmin"
 msgstr ""
 
 msgid "Endomondo"
+msgstr ""
+
+msgid "Style theme"
+msgstr ""
+
+msgid "Light"
+msgstr ""
+
+msgid "Dark"
 msgstr ""
