@@ -685,8 +685,13 @@ SUM(
 	if ( '' === $atts['only'] ) {
 		$pace = iorl_calculate_pace( $distance_total, $duration, $pace_or_speed );
 
-		$output .= '<div class="oirl-data"><span class="oirl-data-desc">' . esc_html__( 'Cumulative pace', 'run-log' ) . "</span> <span class=\"oirl-data-value\">$pace</span>";
-		$output .= ( 'mi' === $distance_unit ? esc_html__( 'min/mi', 'run-log' ) : esc_html__( 'min/km', 'run-log' ) ) . '</div>';
+		if ( 'speed' === $pace_or_speed ) {
+			$output .= '<div class="oirl-data"><span class="oirl-data-desc">' . esc_html__( 'Average speed', 'run-log' ) . "</span> <span class=\"oirl-data-value\">$pace</span>";
+			$output .= ( 'mi' === $distance_unit ? esc_html__( 'mi/h', 'run-log' ) : esc_html__( 'km/h', 'run-log' ) ) . '</div>';
+		} else {
+			$output .= '<div class="oirl-data"><span class="oirl-data-desc">' . esc_html__( 'Average pace', 'run-log' ) . "</span> <span class=\"oirl-data-value\">$pace</span>";
+			$output .= ( 'mi' === $distance_unit ? esc_html__( 'min/mi', 'run-log' ) : esc_html__( 'min/km', 'run-log' ) ) . '</div>';
+		}
 	}
 
 	// Output end.
