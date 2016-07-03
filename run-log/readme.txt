@@ -20,7 +20,7 @@ The plugin add running diary capabilities to WordPress, so you can log and displ
 * Log distance and duration for each run in custom fields of run-log posts.
 * Calculate pace/speed automatically.
 * Display the above data in the post automatically.
-* Shortcode for displaying totals (distance, time, pace/speed).
+* Shortcode for displaying totals (distance, time, and cumulative average pace/speed).
 * Option to choose light or dark style theme, to blend with your theme.
 * Quick embed your STRAVA/Garmin Connect/endomondo activity in the post (displaying data and map from your account).
 
@@ -34,7 +34,7 @@ You can change these to statute/imperial by updating plugin's "Distance unit" op
 = Translations =
 
 * Hebrew - full translations.
-* English is there by default, yet not my mother tongue, so may have some wording and spelling mistakes. Do tell me how to correct them if you fine any.
+* English - default. Not my mother tongue, so may have some wording and spelling mistakes. Do tell me how to correct them if you find any.
 
 = Usage =
 
