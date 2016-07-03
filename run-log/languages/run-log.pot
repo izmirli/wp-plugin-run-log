@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Run Log 1.5.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/run-log\n"
-"POT-Creation-Date: 2016-07-02 16:26:57+00:00\n"
+"POT-Creation-Date: 2016-07-02 17:36:32+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12,330 +12,362 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: run-log.php:109
+#: run-log.php:104
 msgctxt "Post Type General Name"
 msgid "Runs"
 msgstr ""
 
-#: run-log.php:110
+#: run-log.php:105
 msgctxt "Post Type Singular Name"
 msgid "Run"
 msgstr ""
 
 #. #-#-#-#-#  plugin.pot (Run Log 1.5.0)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
-#: run-log.php:111
+#: run-log.php:106
 msgid "Run Log"
 msgstr ""
 
-#: run-log.php:112
+#: run-log.php:107
 msgid "Parent Run:"
 msgstr ""
 
-#: run-log.php:113
+#: run-log.php:108
 msgid "All Runs"
 msgstr ""
 
-#: run-log.php:114
+#: run-log.php:109
 msgid "View Run"
 msgstr ""
 
-#: run-log.php:115
+#: run-log.php:110
 msgid "Add New Run"
 msgstr ""
 
-#: run-log.php:116
+#: run-log.php:111
 msgid "Add New"
 msgstr ""
 
-#: run-log.php:117
+#: run-log.php:112
 msgid "Edit Run"
 msgstr ""
 
-#: run-log.php:118
+#: run-log.php:113
 msgid "Update Run"
 msgstr ""
 
-#: run-log.php:119
+#: run-log.php:114
 msgid "Search Run"
 msgstr ""
 
-#: run-log.php:120
+#: run-log.php:115
 msgid "Not run found"
 msgstr ""
 
-#: run-log.php:121
+#: run-log.php:116
 msgid "Not run found in Trash"
 msgstr ""
 
-#: run-log.php:124
+#: run-log.php:119
 msgid "oi_run_log_post"
 msgstr ""
 
-#: run-log.php:125
+#: run-log.php:120
 msgid "Log entry for a specific run"
 msgstr ""
 
-#: run-log.php:153 run-log.php:214
+#: run-log.php:149 run-log.php:218
 msgid "Run Log Options"
 msgstr ""
 
-#: run-log.php:165
+#: run-log.php:161
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: run-log.php:208
+#: run-log.php:212
 msgid "Options saved"
 msgstr ""
 
-#: run-log.php:215
+#: run-log.php:219
 msgid "Control the Run Log settings by updating these values"
 msgstr ""
 
-#: run-log.php:217
+#: run-log.php:221
 msgid "Distance unit"
 msgstr ""
 
-#: run-log.php:219
+#: run-log.php:223
 msgid "km"
 msgstr ""
 
-#: run-log.php:222
+#: run-log.php:226
 msgid "mi"
 msgstr ""
 
-#: run-log.php:226
+#: run-log.php:230
 msgid "Pace/Speed display"
 msgstr ""
 
-#: run-log.php:228 run-log.php:469
+#: run-log.php:232 run-log.php:531
 msgid "Pace"
 msgstr ""
 
-#: run-log.php:231 run-log.php:461
+#: run-log.php:235 run-log.php:523
 msgid "Speed"
 msgstr ""
 
-#: run-log.php:235
+#: run-log.php:239
+msgid "Style theme"
+msgstr ""
+
+#: run-log.php:241
+msgid "Light"
+msgstr ""
+
+#: run-log.php:244
+msgid "Dark"
+msgstr ""
+
+#: run-log.php:248
 msgid "Display position"
 msgstr ""
 
-#: run-log.php:237
+#: run-log.php:250
 msgid "top"
 msgstr ""
 
-#: run-log.php:240
+#: run-log.php:253
 msgid "bottom"
 msgstr ""
 
-#: run-log.php:243
+#: run-log.php:256
 msgid "without"
 msgstr ""
 
-#: run-log.php:247
+#: run-log.php:259
+msgid "Should the run data box be added to the excerpt?"
+msgstr ""
+
+#: run-log.php:260
 msgid "Display on excerpt"
 msgstr ""
 
-#: run-log.php:249
+#: run-log.php:262 run-log.php:330
 msgid "No"
 msgstr ""
 
-#: run-log.php:252
+#: run-log.php:265
 msgid "Yes"
 msgstr ""
 
-#: run-log.php:257
+#: run-log.php:269
 msgid "Save Changes"
 msgstr ""
 
-#: run-log.php:270
+#: run-log.php:282
 msgid "Run Log Parameters"
 msgstr ""
 
-#: run-log.php:302 run-log.php:448
+#: run-log.php:315 run-log.php:510
 msgid "Distance"
 msgstr ""
 
-#: run-log.php:305 run-log.php:454
+#: run-log.php:318 run-log.php:516
 msgid "Duration"
 msgstr ""
 
-#: run-log.php:308
+#: run-log.php:321
 msgid "Elevation gain"
 msgstr ""
 
-#: run-log.php:311
+#: run-log.php:324
 msgid "Calories"
 msgstr ""
 
-#: run-log.php:314
+#: run-log.php:328
+msgid "Embed activity from external source"
+msgstr ""
+
+#: run-log.php:333
+msgid "Garmin"
+msgstr ""
+
+#: run-log.php:336
+msgid "Endomondo"
+msgstr ""
+
+#: run-log.php:339
 msgid "Garmin Connect embed activity"
 msgstr ""
 
-#: run-log.php:315
+#: run-log.php:340
 msgid ""
 "Enter Garmin activity ID - the number at the end of activity's page address"
 msgstr ""
 
-#: run-log.php:317
+#: run-log.php:343
 msgid "Endomondo embed activity"
 msgstr ""
 
-#: run-log.php:318
+#: run-log.php:344
 msgid ""
 "Enter endomondo activity ID - the number at the end of activity's page "
 "address"
 msgstr ""
 
-#: run-log.php:464
+#: run-log.php:526 run-log.php:690
 msgid "mi/h"
 msgstr ""
 
-#: run-log.php:466
+#: run-log.php:528 run-log.php:690
 msgid "km/h"
 msgstr ""
 
-#: run-log.php:472 run-log.php:587
+#: run-log.php:534 run-log.php:693
 msgid "min/mi"
 msgstr ""
 
-#: run-log.php:474 run-log.php:587
+#: run-log.php:536 run-log.php:693
 msgid "min/km"
 msgstr ""
 
-#: run-log.php:554
+#: run-log.php:620 run-log.php:631
 msgid "Total distance"
 msgstr ""
 
-#: run-log.php:578
+#: run-log.php:663 run-log.php:679
 msgid "Total duration"
 msgstr ""
 
-#: run-log.php:586
-msgid "Cumulative pace"
+#: run-log.php:689
+msgid "Average speed"
 msgstr ""
 
-#: run-log.php:627
+#: run-log.php:692
+msgid "Average pace"
+msgstr ""
+
+#: run-log.php:736
 msgctxt "Taxonomy General Name"
 msgid "Goals"
 msgstr ""
 
-#: run-log.php:628
+#: run-log.php:737
 msgctxt "Taxonomy Singular Name"
 msgid "Goal"
 msgstr ""
 
-#: run-log.php:629
+#: run-log.php:738
 msgid "Goal"
 msgstr ""
 
-#: run-log.php:630
+#: run-log.php:739
 msgid "All Goals"
 msgstr ""
 
-#: run-log.php:631
+#: run-log.php:740
 msgid "Parent Goal"
 msgstr ""
 
-#: run-log.php:632
+#: run-log.php:741
 msgid "Parent Goal:"
 msgstr ""
 
-#: run-log.php:633
+#: run-log.php:742
 msgid "New Goal Name"
 msgstr ""
 
-#: run-log.php:634
+#: run-log.php:743
 msgid "Add New Goal"
 msgstr ""
 
-#: run-log.php:635
+#: run-log.php:744
 msgid "Edit Goal"
 msgstr ""
 
-#: run-log.php:636
+#: run-log.php:745
 msgid "Update Goal"
 msgstr ""
 
-#: run-log.php:637
+#: run-log.php:746
 msgid "Separate goals with commas"
 msgstr ""
 
-#: run-log.php:638
+#: run-log.php:747
 msgid "Search goals"
 msgstr ""
 
-#: run-log.php:639
+#: run-log.php:748
 msgid "Add or remove goals"
 msgstr ""
 
-#: run-log.php:640
+#: run-log.php:749
 msgid "Choose from the most used goals"
 msgstr ""
 
-#: run-log.php:641
+#: run-log.php:750
 msgid "Goal Not Found"
 msgstr ""
 
-#: run-log.php:673
+#: run-log.php:782
 msgctxt "Taxonomy General Name"
 msgid "Gears"
 msgstr ""
 
-#: run-log.php:674
+#: run-log.php:783
 msgctxt "Taxonomy Singular Name"
 msgid "Gear"
 msgstr ""
 
-#: run-log.php:675
+#: run-log.php:784
 msgid "Gear"
 msgstr ""
 
-#: run-log.php:676
+#: run-log.php:785
 msgid "All Gears"
 msgstr ""
 
-#: run-log.php:677
+#: run-log.php:786
 msgid "Parent Gear"
 msgstr ""
 
-#: run-log.php:678
+#: run-log.php:787
 msgid "Parent Gear:"
 msgstr ""
 
-#: run-log.php:679
+#: run-log.php:788
 msgid "New Gear Name"
 msgstr ""
 
-#: run-log.php:680
+#: run-log.php:789
 msgid "Add New Gear"
 msgstr ""
 
-#: run-log.php:681
+#: run-log.php:790
 msgid "Edit Gear"
 msgstr ""
 
-#: run-log.php:682
+#: run-log.php:791
 msgid "Update Gear"
 msgstr ""
 
-#: run-log.php:683
+#: run-log.php:792
 msgid "Separate gears with commas"
 msgstr ""
 
-#: run-log.php:684
+#: run-log.php:793
 msgid "Search Gears"
 msgstr ""
 
-#: run-log.php:685
+#: run-log.php:794
 msgid "Add or remove gears"
 msgstr ""
 
-#: run-log.php:686
+#: run-log.php:795
 msgid "Choose from the most used gears"
 msgstr ""
 
-#: run-log.php:687
+#: run-log.php:796
 msgid "Gear Not Found"
 msgstr ""
 
@@ -355,34 +387,4 @@ msgstr ""
 
 #. Author URI of the plugin/theme
 msgid "https://profiles.wordpress.org/izem"
-msgstr ""
-
-msgid "Garmin Connect embed activity"
-msgstr ""
-
-msgid "Enter Garmin activity ID - the number at the end of activity's page address"
-msgstr ""
-
-msgid "Endomondo embed activity"
-msgstr ""
-
-msgid "Enter endomondo activity ID - the number at the end of activity's page address"
-msgstr ""
-
-msgid "Embed activity from external source"
-msgstr ""
-
-msgid "Garmin"
-msgstr ""
-
-msgid "Endomondo"
-msgstr ""
-
-msgid "Style theme"
-msgstr ""
-
-msgid "Light"
-msgstr ""
-
-msgid "Dark"
 msgstr ""
