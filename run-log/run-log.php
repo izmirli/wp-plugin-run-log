@@ -10,7 +10,7 @@
  * Plugin Name: Run Log
  * Plugin URI: http://stuff.izmirli.org/wordpress-run-log-plugin/
  * Description: Adds running diary capabilities - log your sporting activity with custom post type, custom fields and new taxonomies.
- * Version: 1.5.0
+ * Version: 1.5.1
  * Author: Oren Izmirli
  * Author URI: https://profiles.wordpress.org/izem
  * Text Domain: run-log
@@ -326,8 +326,11 @@ function oirl_run_log_meta_boxes_display( $post ) {
 		<br>
 		<div id="oirl-embed-external">
 			<?php echo esc_html__( 'Embed activity from external source', 'run-log' )?>:
-			<input type="radio" name="oirl-mb-embed-external" value="no" id="oirl-mb-embed-external-no" <?php echo ( ! in_array( $embed_external, array( 'garmin', 'endomondo' ), true ) ? 'checked' : '')?>>
+			<input type="radio" name="oirl-mb-embed-external" value="no" id="oirl-mb-embed-external-no" <?php echo ( ! in_array( $embed_external, array( 'strava', 'garmin', 'endomondo' ), true ) ? 'checked' : '')?>>
 			<label for="oirl-mb-embed-external-no"><?php echo esc_html__( 'No' )?></label>
+			&nbsp;
+			<input type="radio" name="oirl-mb-embed-external" value="strava" id="oirl-mb-embed-external-strava" <?php echo ( 'strava' === $embed_external ? 'checked' : '')?>>
+			<label for="oirl-mb-embed-external-strava"><?php echo esc_html__( 'Strava', 'run-log' )?></label>
 			&nbsp;
 			<input type="radio" name="oirl-mb-embed-external" value="garmin" id="oirl-mb-embed-external-garmin" <?php echo ( 'garmin' === $embed_external ? 'checked' : '')?>>
 			<label for="oirl-mb-embed-external-garmin"><?php echo esc_html__( 'Garmin', 'run-log' )?></label>
@@ -335,6 +338,10 @@ function oirl_run_log_meta_boxes_display( $post ) {
 			<input type="radio" name="oirl-mb-embed-external" value="endomondo" id="oirl-mb-embed-external-endomondo" <?php echo ( 'endomondo' === $embed_external ? 'checked' : '')?>>
 			<label for="oirl-mb-embed-external-endomondo"><?php echo esc_html__( 'Endomondo', 'run-log' )?></label>
 			<br>
+			<div id="oirl-div-embed-external-strava" style="display:none;">
+				<label for="oirl-mb-strava-activity"><?php echo esc_html__( 'Strava embed activity', 'run-log' )?>:</label>
+				<input name="oirl-mb-strava-activity" type="number" size="8" maxlength="12" value="<?php echo esc_attr( get_post_meta( $post->ID, 'oirl-mb-strava-activity', true ) ); ?>" title="<?php echo esc_attr__( 'Enter Strava activity ID - the number at the end of activity\'s page address', 'run-log' )?>">
+			</div>
 			<div id="oirl-div-embed-external-garmin" style="display:none;">
 				<label for="oirl-mb-garmin-activity"><?php echo esc_html__( 'Garmin Connect embed activity', 'run-log' )?>:</label>
 				<input name="oirl-mb-garmin-activity" type="number" size="8" maxlength="12" value="<?php echo esc_attr( get_post_meta( $post->ID, 'oirl-mb-garmin-activity', true ) ); ?>" title="<?php echo esc_attr__( 'Enter Garmin activity ID - the number at the end of activity\'s page address', 'run-log' )?>">
@@ -362,7 +369,7 @@ function oirl_admin_scripts( $hook ) {
 	if ( 'post-new.php' !== $hook && $oirl_manage_options_hook !== $hook && 'post.php' !== $hook ) {
 		return;
 	}
-	wp_enqueue_script( 'oirl-admin-script', plugin_dir_url( __FILE__ ) . '/js/admin-script.js', array( 'jquery', 'jquery-ui-tooltip' ), '1.0.0', true );
+	wp_enqueue_script( 'oirl-admin-script', plugin_dir_url( __FILE__ ) . '/js/admin-script.js', array( 'jquery', 'jquery-ui-tooltip' ), '1.0.1', true );
 	$css_file_name = 'run-log' . (is_rtl() ? '-rtl' : '') . '.css';
 	wp_enqueue_style( 'oirl-css', plugin_dir_url( __FILE__ ) . "/$css_file_name" );
 }
@@ -426,9 +433,17 @@ function oirl_save_run_log_meta_boxes( $post_id, $post ) {
 		update_post_meta( $post_id, 'oirl-mb-calories', $calories );
 	}
 
-	$oirl_mb_embed_external = filter_input( INPUT_POST, 'oirl-mb-embed-external', FILTER_VALIDATE_REGEXP, array( 'options' => array( 'regexp' => '/^(no|garmin|endomondo)$/' ) ) );
-	if ( isset( $oirl_mb_embed_external ) && in_array( $oirl_mb_embed_external, array( 'no', 'garmin', 'endomondo' ), true ) ) {
+	$oirl_mb_embed_external = filter_input( INPUT_POST, 'oirl-mb-embed-external', FILTER_VALIDATE_REGEXP, array( 'options' => array( 'regexp' => '/^(no|strava|garmin|endomondo)$/' ) ) );
+	if ( isset( $oirl_mb_embed_external ) && in_array( $oirl_mb_embed_external, array( 'no', 'strava', 'garmin', 'endomondo' ), true ) ) {
 		update_post_meta( $post_id, 'oirl-mb-embed-external', $oirl_mb_embed_external );
+	}
+
+	$oirl_mb_strava_activity = filter_input( INPUT_POST, 'oirl-mb-strava-activity', FILTER_SANITIZE_NUMBER_INT );
+	if ( isset( $oirl_mb_strava_activity ) && is_numeric( $oirl_mb_strava_activity ) ) {
+		$strava_activity = intval( $oirl_mb_strava_activity );
+		update_post_meta( $post_id, 'oirl-mb-strava-activity', $strava_activity );
+	} elseif ( get_post_meta( $post_id, 'oirl-mb-strava-activity' ) ) {
+		delete_post_meta( $post_id, 'oirl-mb-strava-activity' );
 	}
 
 	$oirl_mb_garmin_activity = filter_input( INPUT_POST, 'oirl-mb-garmin-activity', FILTER_SANITIZE_NUMBER_INT );
@@ -481,13 +496,18 @@ function oirl_add_run_log_data_to_post( $content, $excerpt = false ) {
 	}
 
 	$embed_external = get_post_meta( $GLOBALS['post']->ID, 'oirl-mb-embed-external', true );
+	$strava_activity = get_post_meta( $GLOBALS['post']->ID, 'oirl-mb-strava-activity', true );
 	$garmin_activity = get_post_meta( $GLOBALS['post']->ID, 'oirl-mb-garmin-activity', true );
 	$endomondo_activity = get_post_meta( $GLOBALS['post']->ID, 'oirl-mb-endomondo-activity', true );
 
-	// Embed garmin/endomondo activity if got its ID (and it isn't an excerpt).
-	if ( ( ! $embed_external || 'garmin' === $embed_external) && $garmin_activity && preg_match( '/^\d+$/', $garmin_activity ) && ! $excerpt ) {
-		$garmin_iframe = "<iframe src='https://connect.garmin.com/activity/embed/$garmin_activity' width='465' height='500' frameborder='0'></iframe>\n";
-		return ( 'bottom' === $add_at_pos ? $content . $garmin_iframe : $garmin_iframe . $content );
+	// Embed strava/garmin/endomondo activity if got its ID (and it isn't an excerpt).
+	if ( ( ! $embed_external || 'strava' === $embed_external) && $strava_activity && preg_match( '/^\d+$/', $strava_activity ) && ! $excerpt ) {
+		$unit_system = 'mi' === $distance_unit ? 'imperial' : 'metric';
+		$strava_embed = "<a href='https://www.strava.com/activities/$strava_activity' rel='noopener noreferrer' target='_blank'><img  src='https://meme.strava.com/map_based/activities/$strava_activity.jpeg?height=630&width=1200&hl=en-US&unit_system=$unit_system&cfs=1&upscale=1' alt='Activity data and map from STRAVA' width='500' height='263' border='0'></a>\n";
+		return ( 'bottom' === $add_at_pos ? $content . $strava_embed : $strava_embed . $content );
+	}	elseif ( ( ! $embed_external || 'garmin' === $embed_external ) && $garmin_activity && preg_match( '/^\d+$/', $garmin_activity ) && ! $excerpt ) {
+			$garmin_iframe = "<iframe src='https://connect.garmin.com/activity/embed/$garmin_activity' width='465' height='500' frameborder='0'></iframe>\n";
+			return ( 'bottom' === $add_at_pos ? $content . $garmin_iframe : $garmin_iframe . $content );
 	} elseif ( ( ! $embed_external || 'endomondo' === $embed_external) && $endomondo_activity && preg_match( '/^\d+$/', $endomondo_activity ) && ! $excerpt ) {
 		$endomondo_iframe = "<iframe src='http://www.endomondo.com/embed/workouts?w=$endomondo_activity&width=580&height=425' width='580' height='425' frameborder='1'></iframe>\n";
 		return ( 'bottom' === $add_at_pos ? $content . $endomondo_iframe : $endomondo_iframe . $content );
@@ -592,7 +612,7 @@ function oirl_total_shortcode( $atts ) {
 			'period_val'	=> '',
 			'only'				=> '',
 			'hide_pace'		=> 'no',
-			'days_display' => false,
+			'days_display' => 'no',
 		),
 		$atts,
 		'oirl_total'
@@ -658,7 +678,7 @@ SUM(
 			$duration_hours_after_days = $duration_hour - ( $duration_days * 24 );
 			$duration_with_days_display = sprintf( '%d:%02d:%02d:%02d', $duration_days, $duration_hours_after_days, $duration_min, $duration_sec );
 			$duration_with_days_display = preg_replace( '/^0:/', '', $duration_with_days_display );
-			$display_chars = str_split( ( $atts['days_display'] ? $duration_with_days_display : $duration ) );
+			$display_chars = str_split( ( 'yes' === $atts['days_display'] ? $duration_with_days_display : $duration ) );
 
 			$output .= '<div class="oirl-data"><div class="oirl-data-desc">' . esc_html__( 'Total duration', 'run-log' ) . '</div>';
 			$sec_countdown = strlen( $duration ) > 8 ? 3 : 2;

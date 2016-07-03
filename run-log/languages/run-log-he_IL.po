@@ -326,8 +326,8 @@ msgstr ""
 
 #. Description of the plugin/theme
 msgid ""
-"Adds running diary capabilities - log your sporting activity with custom "
-"post type, custom fields and new taxonomies."
+"Adds running diary capabilities - log your sporting activity with custom post "
+"type, custom fields and new taxonomies."
 msgstr ""
 "מוסיף יכולות של יומן ריצה לוורדפרס ע\"י יצירת: סוג פוסטים חדש, שדות מותאמים "
 "אישית (מרחק, זמן וכו'), וטקסונומיות רלוונטיות."
@@ -343,16 +343,14 @@ msgstr ""
 msgid "Garmin Connect embed activity"
 msgstr "מספר פעילות באתר גרמין קונקט"
 
-msgid ""
-"Enter Garmin activity ID - the number at the end of activity's page address"
+msgid "Enter Garmin activity ID - the number at the end of activity's page address"
 msgstr "הזן את מספר הפעילות, כפי שמופיע בסוף כתובת דף הפעילות באתר גרמין קונקט"
 
 msgid "Endomondo embed activity"
 msgstr "מספר פעילות באתר אנדומונדו"
 
 msgid ""
-"Enter endomondo activity ID - the number at the end of activity's page "
-"address"
+"Enter endomondo activity ID - the number at the end of activity's page address"
 msgstr "הזן את מספר הפעילות, כפי שמופיע בסוף כתובת דף הפעילות באתר אנדומונדו"
 
 msgid "Embed activity from external source"
@@ -378,3 +376,12 @@ msgstr "מהירות ממוצעת"
 
 msgid "Average pace"
 msgstr "קצב ממוצע"
+
+msgid "Strava"
+msgstr "סטרבה"
+
+msgid "Strava embed activity"
+msgstr "מספר פעילות באתר סטרבה"
+
+msgid "Enter Strava activity ID - the number at the end of activity's page address"
+msgstr "הזן את מספר הפעילות מאתר סטרבה - המספר בסוף כתובת דף הפעילות"
