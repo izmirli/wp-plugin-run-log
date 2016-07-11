@@ -19,7 +19,7 @@ The plugin add running diary capabilities to WordPress, so you can log and displ
 * Log distance and duration (elevation gain and calories) for each run in custom fields of run-log posts.
 * Calculate pace/speed automatically.
 * Display the above data in the post automatically.
-* Shortcode for displaying totals (distance, time, and cumulative average pace/speed).
+* Shortcode for displaying totals - distance, time, elevation gain (and average pace/speed).
 * Option to choose light or dark style theme, to blend with your theme.
 * Quick embed your STRAVA/Garmin Connect/endomondo activity in the post (displaying data and map from your account).
 * Add custom taxonomies for gear (like shoes) and goals (like "sub 4 marathon") that could be connected to run-log posts (and regular posts).
@@ -53,7 +53,9 @@ You can change these to statute/imperial by updating plugin's "Distance unit" op
 If you want to configure run log data (distance, duration, pace/speed), you can do this on the "Run Log Options", accessible via the "Run Log" admin sub-menu. There you can select between top/bottom display position, Kilometer/Miles units, and pace/speed.
 
 **To display your totals**
+
 Use `[oirl_total]` Shortcode with (or without) these optional attributes:
+
 * only: distance/time/elevation/calories;
 * year: a 4-digit year - display totals for this year only;
 * month: 1 or 2 digits for month (may have leading zero) - display totals for this year only (mast be used in conjunction with 'year' attribute);
@@ -61,6 +63,7 @@ Use `[oirl_total]` Shortcode with (or without) these optional attributes:
 *	days_display: true/false - display days in total time if more then 24 hours.
 
 Examples:
+
 * All-time distance + time + average pace/speed:
  * `[oirl_total]`
 * 2015 totals without average pace/speed (display distance + time):
