@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Run Log package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Run Log 1.5.1\n"
+"Project-Id-Version: Run Log 1.5.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/run-log\n"
-"POT-Creation-Date: 2016-07-03 21:16:15+00:00\n"
+"POT-Creation-Date: 2016-07-11 05:57:22+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,7 +22,7 @@ msgctxt "Post Type Singular Name"
 msgid "Run"
 msgstr ""
 
-#. #-#-#-#-#  plugin.pot (Run Log 1.5.1)  #-#-#-#-#
+#. #-#-#-#-#  plugin.pot (Run Log 1.5.2)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: run-log.php:106
 msgid "Run Log"
@@ -96,11 +96,13 @@ msgstr ""
 msgid "Distance unit"
 msgstr ""
 
-#: run-log.php:223
+#: run-log.php:223 run-log.php:323 run-log.php:551 run-log.php:694
+#: run-log.php:698
 msgid "km"
 msgstr ""
 
-#: run-log.php:226
+#: run-log.php:226 run-log.php:321 run-log.php:551 run-log.php:694
+#: run-log.php:698
 msgid "mi"
 msgstr ""
 
@@ -108,11 +110,11 @@ msgstr ""
 msgid "Pace/Speed display"
 msgstr ""
 
-#: run-log.php:232 run-log.php:551
+#: run-log.php:232 run-log.php:571
 msgid "Pace"
 msgstr ""
 
-#: run-log.php:235 run-log.php:543
+#: run-log.php:235 run-log.php:563
 msgid "Speed"
 msgstr ""
 
@@ -152,7 +154,7 @@ msgstr ""
 msgid "Display on excerpt"
 msgstr ""
 
-#: run-log.php:262 run-log.php:330
+#: run-log.php:262 run-log.php:346
 msgid "No"
 msgstr ""
 
@@ -168,219 +170,231 @@ msgstr ""
 msgid "Run Log Parameters"
 msgstr ""
 
-#: run-log.php:315 run-log.php:530
+#: run-log.php:319 run-log.php:550
 msgid "Distance"
 msgstr ""
 
-#: run-log.php:318 run-log.php:536
+#: run-log.php:328 run-log.php:556
 msgid "Duration"
 msgstr ""
 
-#: run-log.php:321
+#: run-log.php:331
 msgid "Elevation gain"
 msgstr ""
 
-#: run-log.php:324
+#: run-log.php:333 run-log.php:790
+msgid "ft"
+msgstr ""
+
+#: run-log.php:335 run-log.php:790
+msgid "m"
+msgstr ""
+
+#: run-log.php:340
 msgid "Calories"
 msgstr ""
 
-#: run-log.php:328
+#: run-log.php:344
 msgid "Embed activity from external source"
 msgstr ""
 
-#: run-log.php:333
+#: run-log.php:349
 msgid "Strava"
 msgstr ""
 
-#: run-log.php:336
+#: run-log.php:352
 msgid "Garmin"
 msgstr ""
 
-#: run-log.php:339
+#: run-log.php:355
 msgid "Endomondo"
 msgstr ""
 
-#: run-log.php:342
+#: run-log.php:358
 msgid "Strava embed activity"
 msgstr ""
 
-#: run-log.php:343
+#: run-log.php:359
 msgid ""
 "Enter Strava activity ID - the number at the end of activity's page address"
 msgstr ""
 
-#: run-log.php:346
+#: run-log.php:362
 msgid "Garmin Connect embed activity"
 msgstr ""
 
-#: run-log.php:347
+#: run-log.php:363
 msgid ""
 "Enter Garmin activity ID - the number at the end of activity's page address"
 msgstr ""
 
-#: run-log.php:350
+#: run-log.php:366
 msgid "Endomondo embed activity"
 msgstr ""
 
-#: run-log.php:351
+#: run-log.php:367
 msgid ""
 "Enter endomondo activity ID - the number at the end of activity's page "
 "address"
 msgstr ""
 
-#: run-log.php:546 run-log.php:710
+#: run-log.php:566 run-log.php:799
 msgid "mi/h"
 msgstr ""
 
-#: run-log.php:548 run-log.php:710
+#: run-log.php:568 run-log.php:799
 msgid "km/h"
 msgstr ""
 
-#: run-log.php:554 run-log.php:713
+#: run-log.php:574 run-log.php:802
 msgid "min/mi"
 msgstr ""
 
-#: run-log.php:556 run-log.php:713
+#: run-log.php:576 run-log.php:802
 msgid "min/km"
 msgstr ""
 
-#: run-log.php:640 run-log.php:651
+#: run-log.php:679 run-log.php:697
 msgid "Total distance"
 msgstr ""
 
-#: run-log.php:683 run-log.php:699
+#: run-log.php:735 run-log.php:758
 msgid "Total duration"
 msgstr ""
 
-#: run-log.php:709
+#: run-log.php:778
+msgid "Total elevation"
+msgstr ""
+
+#: run-log.php:798
 msgid "Average speed"
 msgstr ""
 
-#: run-log.php:712
+#: run-log.php:801
 msgid "Average pace"
 msgstr ""
 
-#: run-log.php:756
+#: run-log.php:845
 msgctxt "Taxonomy General Name"
 msgid "Goals"
 msgstr ""
 
-#: run-log.php:757
+#: run-log.php:846
 msgctxt "Taxonomy Singular Name"
 msgid "Goal"
 msgstr ""
 
-#: run-log.php:758
+#: run-log.php:847
 msgid "Goal"
 msgstr ""
 
-#: run-log.php:759
+#: run-log.php:848
 msgid "All Goals"
 msgstr ""
 
-#: run-log.php:760
+#: run-log.php:849
 msgid "Parent Goal"
 msgstr ""
 
-#: run-log.php:761
+#: run-log.php:850
 msgid "Parent Goal:"
 msgstr ""
 
-#: run-log.php:762
+#: run-log.php:851
 msgid "New Goal Name"
 msgstr ""
 
-#: run-log.php:763
+#: run-log.php:852
 msgid "Add New Goal"
 msgstr ""
 
-#: run-log.php:764
+#: run-log.php:853
 msgid "Edit Goal"
 msgstr ""
 
-#: run-log.php:765
+#: run-log.php:854
 msgid "Update Goal"
 msgstr ""
 
-#: run-log.php:766
+#: run-log.php:855
 msgid "Separate goals with commas"
 msgstr ""
 
-#: run-log.php:767
+#: run-log.php:856
 msgid "Search goals"
 msgstr ""
 
-#: run-log.php:768
+#: run-log.php:857
 msgid "Add or remove goals"
 msgstr ""
 
-#: run-log.php:769
+#: run-log.php:858
 msgid "Choose from the most used goals"
 msgstr ""
 
-#: run-log.php:770
+#: run-log.php:859
 msgid "Goal Not Found"
 msgstr ""
 
-#: run-log.php:802
+#: run-log.php:891
 msgctxt "Taxonomy General Name"
 msgid "Gears"
 msgstr ""
 
-#: run-log.php:803
+#: run-log.php:892
 msgctxt "Taxonomy Singular Name"
 msgid "Gear"
 msgstr ""
 
-#: run-log.php:804
+#: run-log.php:893
 msgid "Gear"
 msgstr ""
 
-#: run-log.php:805
+#: run-log.php:894
 msgid "All Gears"
 msgstr ""
 
-#: run-log.php:806
+#: run-log.php:895
 msgid "Parent Gear"
 msgstr ""
 
-#: run-log.php:807
+#: run-log.php:896
 msgid "Parent Gear:"
 msgstr ""
 
-#: run-log.php:808
+#: run-log.php:897
 msgid "New Gear Name"
 msgstr ""
 
-#: run-log.php:809
+#: run-log.php:898
 msgid "Add New Gear"
 msgstr ""
 
-#: run-log.php:810
+#: run-log.php:899
 msgid "Edit Gear"
 msgstr ""
 
-#: run-log.php:811
+#: run-log.php:900
 msgid "Update Gear"
 msgstr ""
 
-#: run-log.php:812
+#: run-log.php:901
 msgid "Separate gears with commas"
 msgstr ""
 
-#: run-log.php:813
+#: run-log.php:902
 msgid "Search Gears"
 msgstr ""
 
-#: run-log.php:814
+#: run-log.php:903
 msgid "Add or remove gears"
 msgstr ""
 
-#: run-log.php:815
+#: run-log.php:904
 msgid "Choose from the most used gears"
 msgstr ""
 
-#: run-log.php:816
+#: run-log.php:905
 msgid "Gear Not Found"
 msgstr ""
 
