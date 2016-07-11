@@ -1,6 +1,6 @@
 === Run Log ===
 Contributors: izem
-Tags: run, running, sport, training log, training diary, run log, run diary, running log, strava, garmin Connect, garmin. endomondo, jogging, total distance, total time, total duration
+Tags: run, running, sport, training log, training diary, run log, run diary, running log, strava, garmin Connect, garmin. endomondo, jogging, total distance, total time, total duration, share runs
 Requires at least: 3.8
 Tested up to: 4.5.3
 Stable tag: trunk
@@ -11,18 +11,18 @@ Add running diary capabilities - log your sporting activity, track and display: 
 
 == Description ==
 
-The plugin add running diary capabilities to WordPress, so you can log and display your running [and other sporting] activities in posts.
+The plugin add running diary capabilities to WordPress, so you can log and display your running [and other sporting] activities in posts. Share runs, total mileage (or kilometers), total time spent running, etc. Track your shoes usage, and/or other sporting gear. Link and group your activities by goals.
 
 = Features =
 
 * Add custom post type for logging a running activity.
-* Add custom taxonomies for gear (like shoes) and goals (like "sub 4 marathon") that could be connected to run-log posts (and regular posts).
-* Log distance and duration for each run in custom fields of run-log posts.
+* Log distance and duration (elevation gain and calories) for each run in custom fields of run-log posts.
 * Calculate pace/speed automatically.
 * Display the above data in the post automatically.
 * Shortcode for displaying totals (distance, time, and cumulative average pace/speed).
 * Option to choose light or dark style theme, to blend with your theme.
 * Quick embed your STRAVA/Garmin Connect/endomondo activity in the post (displaying data and map from your account).
+* Add custom taxonomies for gear (like shoes) and goals (like "sub 4 marathon") that could be connected to run-log posts (and regular posts).
 
 = Localization =
 
@@ -53,13 +53,26 @@ You can change these to statute/imperial by updating plugin's "Distance unit" op
 If you want to configure run log data (distance, duration, pace/speed), you can do this on the "Run Log Options", accessible via the "Run Log" admin sub-menu. There you can select between top/bottom display position, Kilometer/Miles units, and pace/speed.
 
 **To display your totals**
+Use `[oirl_total]` Shortcode with (or without) these optional attributes:
+* only: distance/time/elevation/calories;
+* year: a 4-digit year - display totals for this year only;
+* month: 1 or 2 digits for month (may have leading zero) - display totals for this year only (mast be used in conjunction with 'year' attribute);
+* hide_pace: yes/no - if 'yes' will not show the average pace/speed;
+*	days_display: true/false - display days in total time if more then 24 hours.
 
-* All-time distance + time + average pace/speed
+Examples:
+* All-time distance + time + average pace/speed:
  * `[oirl_total]`
-* All-time distance
+* 2015 totals without average pace/speed (display distance + time):
+ * `[oirl_total year="2015" hide_pace="yes"]`
+* January 2016 totals (distance + time + average pace/speed):
+ * `[oirl_total year="2016" month="1"]`
+* All-time distance:
  * `[oirl_total only="distance"]`
-* All-time duration (displaying days if more then 24 hours)
+* All-time duration (displaying days if more then 24 hours):
  * `[oirl_total only="time" days_display="yes"]`
+* Total elevation gain for 2016:
+ * `[oirl_total only="elevation" year="2016"]`
 
 = Credits =
 
@@ -132,6 +145,11 @@ Make sure your activity is Public - activity's privacy is set to "Everyone" (the
 
 == Changelog ==
 
+= 1.5.2 =
+* Totals Shortcode supports year/month time periods.
+* Totals Shortcode supports elevation.
+* Added m to ft (Meters to Feet) and ft to m conversion.
+
 = 1.5.1 =
 * STRAVA quick embed and totals Shortcode enhancements.
 
@@ -169,6 +187,9 @@ Make sure your activity is Public - activity's privacy is set to "Everyone" (the
 * Initial version
 
 == Upgrade Notice ==
+
+= 1.5.2 =
+Till now elevation gain was always in meters, now if mi is your "distance unit", elevation will be saved and displayed in feet.
 
 = 1.5.1 =
 After updating, it is recommended to check and update "Run Log Options" page.

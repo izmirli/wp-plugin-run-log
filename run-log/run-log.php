@@ -10,7 +10,7 @@
  * Plugin Name: Run Log
  * Plugin URI: http://stuff.izmirli.org/wordpress-run-log-plugin/
  * Description: Adds running diary capabilities - log your sporting activity with custom post type, custom fields and new taxonomies.
- * Version: 1.5.1
+ * Version: 1.5.2
  * Author: Oren Izmirli
  * Author URI: https://profiles.wordpress.org/izem
  * Text Domain: run-log
@@ -306,20 +306,36 @@ function oirl_run_log_meta_boxes_display( $post ) {
 	} else { // no valid distance - display zero.
 		$distance = 0;
 	}
+	$elevation = get_post_meta( $post->ID, 'oirl-mb-elevation', true );
 	if ( 'mi' === $distance_unit ) {
 		$distance = iorl_distance_converter( $distance, 'K2M' );
+		if ( $elevation ) {
+			$elevation = round( iorl_distance_converter( $elevation, 'M2F' ) );
+		}
 	}
 	$embed_external = get_post_meta( $post->ID, 'oirl-mb-embed-external', true );
 	?>
 	<div id="run-log-meta-box" class="oirl">
-		<label for="oirl-mb-distance"><?php echo esc_html__( 'Distance', 'run-log' )?> (<?php echo esc_html__( $distance_unit, 'run-log' )?>):</label>
+		<label for="oirl-mb-distance"><?php echo esc_html__( 'Distance', 'run-log' )?> (<?php
+		if ( 'mi' === $distance_unit ) {
+			esc_html_e( 'mi', 'run-log' );
+		} else {
+			esc_html_e( 'km', 'run-log' );
+		}
+		?>):</label>
 		<input name="oirl-mb-distance" type="number" step="0.001" min="0" size="3" maxlength="6" value="<?php echo esc_attr( $distance ); ?>">
 		&nbsp;
 		<label for="oirl-mb-duration"><?php echo esc_html__( 'Duration', 'run-log' )?>:</label>
 		<input name="oirl-mb-duration" type="text" size="8" maxlength="8" pattern="([0-9]{1,2}:)?[0-5]?[0-9]:[0-5]?[0-9]" placeholder="00:00:00" value="<?php echo esc_attr( get_post_meta( $post->ID, 'oirl-mb-duration', true ) ); ?>">
 		<br>
-		<label for="oirl-mb-elevation"><?php echo esc_html__( 'Elevation gain', 'run-log' )?>:</label>
-		<input name="oirl-mb-elevation" type="number" size="5" maxlength="6" value="<?php echo esc_attr( get_post_meta( $post->ID, 'oirl-mb-elevation', true ) ); ?>">
+		<label for="oirl-mb-elevation"><?php echo esc_html__( 'Elevation gain', 'run-log' )?> (<?php
+		if ( 'mi' === $distance_unit ) {
+			esc_html_e( 'ft', 'run-log' );
+		} else {
+			esc_html_e( 'm', 'run-log' );
+		}
+		?>):</label>
+		<input name="oirl-mb-elevation" type="number" size="5" maxlength="6" value="<?php echo esc_attr( $elevation ); ?>">
 		&nbsp;
 		<label for="oirl-mb-calories"><?php echo esc_html__( 'Calories', 'run-log' )?>:</label>
 		<input name="oirl-mb-calories" type="number" size="4" maxlength="5" value="<?php echo esc_attr( get_post_meta( $post->ID, 'oirl-mb-calories', true ) ); ?>">
@@ -381,7 +397,7 @@ add_action( 'admin_enqueue_scripts', 'oirl_admin_scripts' );
  * @since 1.0.0
  *
  * @param int     $post_id post ID.
- * @param WP_Post $post the post 0.
+ * @param WP_Post $post the post object.
  */
 function oirl_save_run_log_meta_boxes( $post_id, $post ) {
 	// Check nonce for anti-CSRF.
@@ -424,6 +440,10 @@ function oirl_save_run_log_meta_boxes( $post_id, $post ) {
 	$oirl_mb_elevation = filter_input( INPUT_POST, 'oirl-mb-elevation', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
 	if ( isset( $oirl_mb_elevation ) && is_numeric( $oirl_mb_elevation ) ) {
 		$elevation = floatval( $oirl_mb_elevation );
+		// if distance unit is mi, convert to ft befor saving.
+		if ( 'mi' === $distance_unit ) {
+			$elevation = iorl_distance_converter( $elevation, 'F2M' );
+		}
 		update_post_meta( $post_id, 'oirl-mb-elevation', $elevation );
 	}
 
@@ -505,7 +525,7 @@ function oirl_add_run_log_data_to_post( $content, $excerpt = false ) {
 		$unit_system = 'mi' === $distance_unit ? 'imperial' : 'metric';
 		$strava_embed = "<a href='https://www.strava.com/activities/$strava_activity' rel='noopener noreferrer' target='_blank'><img  src='https://meme.strava.com/map_based/activities/$strava_activity.jpeg?height=630&width=1200&hl=en-US&unit_system=$unit_system&cfs=1&upscale=1' alt='Activity data and map from STRAVA' width='500' height='263' border='0'></a>\n";
 		return ( 'bottom' === $add_at_pos ? $content . $strava_embed : $strava_embed . $content );
-	}	elseif ( ( ! $embed_external || 'garmin' === $embed_external ) && $garmin_activity && preg_match( '/^\d+$/', $garmin_activity ) && ! $excerpt ) {
+	} elseif ( ( ! $embed_external || 'garmin' === $embed_external ) && $garmin_activity && preg_match( '/^\d+$/', $garmin_activity ) && ! $excerpt ) {
 			$garmin_iframe = "<iframe src='https://connect.garmin.com/activity/embed/$garmin_activity' width='465' height='500' frameborder='0'></iframe>\n";
 			return ( 'bottom' === $add_at_pos ? $content . $garmin_iframe : $garmin_iframe . $content );
 	} elseif ( ( ! $embed_external || 'endomondo' === $embed_external) && $endomondo_activity && preg_match( '/^\d+$/', $endomondo_activity ) && ! $excerpt ) {
@@ -528,7 +548,7 @@ function oirl_add_run_log_data_to_post( $content, $excerpt = false ) {
 	// Distance.
 	$run_log_data .= '<div class="oirl-data">';
 	$run_log_data .= '<span class="oirl-data-desc">' . esc_html__( 'Distance', 'run-log' ) . '</span>';
-	$run_log_data .= "<span class='oirl-data-value'>$distance</span> " . esc_html__( $distance_unit, 'run-log' );
+	$run_log_data .= "<span class='oirl-data-value'>$distance</span> " . ( 'mi' === $distance_unit ? esc_html__( 'mi', 'run-log' ) : esc_html__( 'km', 'run-log' ) );
 	$run_log_data .= "</div>\n";
 
 	// Duration.
@@ -584,21 +604,21 @@ add_filter( 'get_the_excerpt', 'oirl_add_run_log_data_to_excerpt' );
  */
 function iorl_enqueue_css() {
 	$css_file_name = 'run-log' . (is_rtl() ? '-rtl' : '') . '.css';
-	wp_enqueue_style( 'wpdocsPluginStylesheet', plugins_url( $css_file_name, __FILE__ ), null, '1.0.0' );
+	wp_enqueue_style( 'wpdocsPluginStylesheet', plugins_url( $css_file_name, __FILE__ ), null, '1.1.0' );
 }
 add_action( 'wp_enqueue_scripts', 'iorl_enqueue_css' );
 
 /**
  * Add Shortcode for displaying activeties totals.
- * Usage: [oirl_total] or [oirl_total only="distance"] or [oirl_total period_type="year" period_val="2015" hide_pace="yes"]
+ * Usage examples: [oirl_total], [oirl_total only="distance"], [oirl_total year="2015" hide_pace="yes"]
  *
  * @since 1.4.0
  *
- * @param array $atts the attributes arry -
- *                    period_type: all-time/year/month (default: all-time);
- *                    period_val: the number of year/month to show;
- *                    only: distance/time;
- *                    hide_pace: yes/nn;
+ * @param array $atts the attributes arry (all are optional) -
+ *                    only: distance/time/elevation/calories;
+ *                    year: a 4-digit year - display totals for this year only;
+ *                    month: 1/2-digits for month - totals for this month only;
+ *                    hide_pace: yes/no - should average pace/speed be hidden;
  *										days_display: true/false - display days in total time if more then 24 hours.
  *
  * @return string the output - HTML of activities totals.
@@ -608,9 +628,9 @@ function oirl_total_shortcode( $atts ) {
 	// Attributes defaults when needed.
 	$atts = shortcode_atts(
 		array(
-			'period_type' => 'all-time',
-			'period_val'	=> '',
 			'only'				=> '',
+			'year'				=> '',
+			'month'				=> '',
 			'hide_pace'		=> 'no',
 			'days_display' => 'no',
 		),
@@ -624,20 +644,46 @@ function oirl_total_shortcode( $atts ) {
 	$pace_or_speed = isset( $plugin_ops['pace_or_speed'] ) ? $plugin_ops['pace_or_speed'] : 'pace';
 	$style_theme = isset( $plugin_ops['style_theme'] ) ? $plugin_ops['style_theme'] : 'light';
 
+	// Prepare the where conditions for the time period if needed.
+	$period_where = '';
+	$qry_value_parameters = array();
+	if ( isset( $atts['year'] ) && preg_match( '/^[12]\d{3}$/', $atts['year'] ) ) {
+		$period_where = " AND `post_id` IN( SELECT `ID` FROM $wpdb->posts WHERE YEAR( `post_date` ) = %d";
+		array_push( $qry_value_parameters, $atts['year'] );
+		if ( isset( $atts['month'] ) && preg_match( '/^\d\d?$/', $atts['month'] ) ) {
+				$period_where .= ' AND MONTH( `post_date` ) = %d';
+				array_push( $qry_value_parameters, sprintf( '%02d', $atts['month'] ) );
+				$month_name = date( 'F', mktime( 0, 0, 0, $atts['month'], 10 ) );
+		}
+		$period_where .= ')';
+	}
+
 	// Output code start.
 	$output = '<div class="oirl oirl-' . $style_theme . ' oirl-' . ( '' !== $atts['only'] ? 'total' : 'data') . '-box">';
 
 	// Check & output distance total if needed.
 	if ( in_array( $atts['only'], array( '', 'distance' ), true ) ) {
-		$distance_select = 'SUM( `meta_value` ) AS total_distance';
-		$distance_where = "`meta_key` = 'oirl-mb-distance'";
-		$distance_query = "SELECT $distance_select FROM $wpdb->postmeta WHERE $distance_where";
-		$distance_total = $wpdb->get_var( $distance_query );
+		array_unshift( $qry_value_parameters, 'oirl-mb-distance' );
+		$distance_total = $wpdb->get_var( $wpdb->prepare(
+			"
+SELECT SUM( `meta_value` ) AS total_distance
+FROM $wpdb->postmeta
+WHERE `meta_key`=%s $period_where
+			",
+		$qry_value_parameters ) );
+		array_shift( $qry_value_parameters );
 		$distance_total = ( 'mi' === $distance_unit ? iorl_distance_converter( $distance_total, 'K2M' ) : $distance_total );
 		$distance_total = sprintf( '%.1f', $distance_total );
 
 		if ( 'distance' === $atts['only'] ) {
-			$output .= '<div class="oirl-data"><div class="oirl-data-desc">' . esc_html__( 'Total distance', 'run-log' ) . '</div>';
+			$output .= '<div class="oirl-data"><div class="oirl-data-desc">' . esc_html__( 'Total distance', 'run-log' );
+			if ( $atts['year'] ) {
+				if ( $atts['month'] ) {
+					$output .= ' ' . esc_html__( $month_name );
+				}
+				$output .= " {$atts['year']}";
+			}
+			$output .= '</div>';
 			foreach ( str_split( $distance_total ) as $cur_char ) {
 				if ( '.' === $cur_char ) {
 					$output .= '<span class="sub bold">.</span>';
@@ -645,18 +691,20 @@ function oirl_total_shortcode( $atts ) {
 				}
 				$output .= "<span class=\"oirl-counter\"><span>$cur_char</span></span>";
 			}
-			$output .= '<span class="super">' . esc_html__( $distance_unit, 'run-log' ) . '</span></div>';
+			$output .= '<span class="super">' . ( 'mi' === $distance_unit ? esc_html__( 'mi', 'run-log' ) : esc_html__( 'km', 'run-log' ) ) . '</span></div>';
 		} else {
 			$output .= '<div class="oirl-data">';
 			$output .= '<span class="oirl-data-desc">' . esc_html__( 'Total distance', 'run-log' ) . "</span> <span class=\"oirl-data-value\">$distance_total</span>";
-			$output .= esc_html__( $distance_unit, 'run-log' ) . '</div>';
+			$output .= ( 'mi' === $distance_unit ? esc_html__( 'mi', 'run-log' ) : esc_html__( 'km', 'run-log' ) ) . '</div>';
 		}
 	}
 
 	// Check & output duration total if needed.
 	if ( in_array( $atts['only'], array( '', 'time' ), true ) ) {
-		$duration_select = '
-SUM(
+		array_unshift( $qry_value_parameters, 'oirl-mb-duration' );
+		$duration_total = $wpdb->get_var( $wpdb->prepare(
+			"
+SELECT SUM(
   TIME_TO_SEC(
     MAKETIME(
       SUBSTRING(`meta_value`, 1, 2),
@@ -664,10 +712,14 @@ SUM(
       SUBSTRING(`meta_value`, 7, 2)
     )
   )
-) / 60 as duration_min';
-		$duration_where = "`meta_key` = 'oirl-mb-duration'";
-		$duration_query = "SELECT $duration_select FROM $wpdb->postmeta WHERE $duration_where";
-		$duration_total = $wpdb->get_var( $duration_query );
+) / 60 as duration_min
+FROM $wpdb->postmeta
+WHERE `meta_key`=%s $period_where
+			",
+			$qry_value_parameters
+		) );
+		// Remove 'oirl-mb-duration' from $qry_value_parameters for next queries if any.
+		array_shift( $qry_value_parameters );
 		$duration_sec = ($duration_total - floor( $duration_total )) * 60;
 		$duration_hour = floor( $duration_total / 60 );
 		$duration_min = floor( $duration_total ) - ($duration_hour * 60);
@@ -680,7 +732,14 @@ SUM(
 			$duration_with_days_display = preg_replace( '/^0:/', '', $duration_with_days_display );
 			$display_chars = str_split( ( 'yes' === $atts['days_display'] ? $duration_with_days_display : $duration ) );
 
-			$output .= '<div class="oirl-data"><div class="oirl-data-desc">' . esc_html__( 'Total duration', 'run-log' ) . '</div>';
+			$output .= '<div class="oirl-data"><div class="oirl-data-desc">' . esc_html__( 'Total duration', 'run-log' );
+			if ( $atts['year'] ) {
+				if ( $atts['month'] ) {
+					$output .= ' ' . esc_html__( $month_name );
+				}
+				$output .= " {$atts['year']}";
+			}
+			$output .= '</div>';
 			$sec_countdown = strlen( $duration ) > 8 ? 3 : 2;
 			foreach ( $display_chars as $cur_char ) {
 				if ( ':' === $cur_char ) {
@@ -701,8 +760,38 @@ SUM(
 		}
 	}
 
+	// Check & output distance total if needed.
+	if ( 'elevation' === $atts['only'] ) {
+		array_unshift( $qry_value_parameters, 'oirl-mb-elevation' );
+		$elevation_total = $wpdb->get_var( $wpdb->prepare(
+			"
+SELECT SUM( `meta_value` ) AS total_elevation
+FROM $wpdb->postmeta
+WHERE `meta_key`=%s $period_where
+			",
+			$qry_value_parameters
+		) );
+		array_shift( $qry_value_parameters );
+		// Conversion to feet if needed?
+		$elevation_total = ( 'mi' === $distance_unit ? iorl_distance_converter( $elevation_total, 'M2F' ) : $elevation_total );
+		$elevation_total = round( $elevation_total );
+		$output .= '<div class="oirl-data"><div class="oirl-data-desc">' . esc_html__( 'Total elevation', 'run-log' );
+		if ( $atts['year'] ) {
+			if ( $atts['month'] ) {
+				$output .= ' ' . esc_html__( $month_name );
+			}
+			$output .= " {$atts['year']}";
+		}
+		$output .= '</div>';
+		foreach ( str_split( $elevation_total ) as $cur_char ) {
+			$output .= "<span class=\"oirl-counter\"><span>$cur_char</span></span>";
+		}
+		// Conversion to feet if needed?.
+		$output .= '<span class="super">' . ( 'mi' === $distance_unit ? esc_html__( 'ft', 'run-log' ) : esc_html__( 'm', 'run-log' ) ) . '</span></div>';
+	}
+
 	// Camculate pace if needed.
-	if ( '' === $atts['only'] ) {
+	if ( '' === $atts['only'] && 'yes' !== $atts['hide_pace'] ) {
 		$pace = iorl_calculate_pace( $distance_total, $duration, $pace_or_speed );
 
 		if ( 'speed' === $pace_or_speed ) {
@@ -876,16 +965,22 @@ function iorl_calculate_pace( $distance, $duration, $type = 'pace' ) {
  * @since 1.0.0
  *
  * @param float  $distance the distance to convert (should be bigger than 0).
- * @param string $conversion Optional. Accepts 'M2K' form Miles to Kilometers; 'K2M' from Kilometers to Miles. Default 'M2K'.
+ * @param string $conversion Optional. Accepts 'M2K' form Miles to Kilometers;
+ *                           'K2M' from Kilometers to Miles; 'M2F' Meters to Feet;
+ *                           'F2M' Feet to Meters. Default 'M2K'.
  *
  * @return float the conversion outcome. 0 if invalid param given.
  */
 function iorl_distance_converter( $distance, $conversion = 'M2K' ) {
-	if ( ! is_numeric( $distance ) || floatval( $distance ) <= 0 || ! in_array( $conversion, array( 'K2M', 'M2K' ), true ) ) {
+	if ( ! is_numeric( $distance ) || floatval( $distance ) <= 0 || ! in_array( $conversion, array( 'K2M', 'M2K', 'M2F', 'F2M' ), true ) ) {
 		return 0;
 	}
 
-	if ( 'M2K' === $conversion ) {
+	if ( 'M2F' === $conversion ) {
+		return sprintf( '%.2f', floatval( $distance ) * 3.28084 );
+	} elseif ( 'F2M' === $conversion ) {
+		return sprintf( '%.2f', floatval( $distance ) * 0.3048 );
+	} elseif ( 'M2K' === $conversion ) {
 		return sprintf( '%.2f', floatval( $distance ) / 0.62137 );
 	} else {
 		return sprintf( '%.2f', floatval( $distance ) * 0.62137 );
