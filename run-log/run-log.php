@@ -10,7 +10,7 @@
  * Plugin Name: Run Log
  * Plugin URI: http://stuff.izmirli.org/wordpress-run-log-plugin/
  * Description: Adds running diary capabilities - log your sporting activity with custom post type, custom fields and new taxonomies.
- * Version: 1.5.2
+ * Version: 1.5.3
  * Author: Oren Izmirli
  * Author URI: https://profiles.wordpress.org/izem
  * Text Domain: run-log
@@ -607,6 +607,87 @@ function iorl_enqueue_css() {
 	wp_enqueue_style( 'wpdocsPluginStylesheet', plugins_url( $css_file_name, __FILE__ ), null, '1.1.0' );
 }
 add_action( 'wp_enqueue_scripts', 'iorl_enqueue_css' );
+
+/**
+ * A widget for displaying totals (distance/time/elevation/calories).
+ *
+ * @since 1.5.3
+ */
+class OIRL_Total_Widget extends WP_Widget {
+
+	/**
+	 * Sets up the widgets name etc
+	 *
+	 * @since 1.5.3
+	 */
+	public function __construct() {
+		$widget_ops = array(
+			'classname' => 'oirl_total_widget',
+			'description' => __( 'Show total distance/time/elevation/calories of your logged activeties', 'run-log' ),
+		);
+		parent::__construct( 'oirl_total_widget', __( 'Totals Widget', 'run-log' ), $widget_ops );
+	}
+
+	/**
+	 * Front-end display of widget.
+	 *
+	 * @see WP_Widget::widget()
+	 * @since 1.5.3
+	 *
+	 * @param array $args     Widget arguments.
+	 * @param array $instance Saved values from database.
+	 */
+	public function widget( $args, $instance ) {
+		echo $args['before_widget'];
+		if ( ! empty( $instance['title'] ) ) {
+			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
+		}
+		echo __( 'Hello, World!', 'text_domain' );
+		echo $args['after_widget'];
+	}
+
+	/**
+	 * Back-end widget form.
+	 *
+	 * @see WP_Widget::form()
+	 * @since 1.5.3
+	 *
+	 * @param array $instance Previously saved values from database.
+	 */
+	public function form( $instance ) {
+		if ( isset( $instance['title'] ) ) {
+			$title = $instance['title'];
+		} else {
+			$title = __( 'Logged Activeties Total', 'run-log' );
+		}
+		?>
+		<p>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
+		</p>
+		<?php
+	}
+
+	/**
+	 * Sanitize widget form values as they are saved.
+	 *
+	 * @see WP_Widget::update()
+	 * @since 1.5.3
+	 *
+	 * @param array $new_instance Values just sent to be saved.
+	 * @param array $old_instance Previously saved values from database.
+	 *
+	 * @return array Updated safe values to be saved.
+	 */
+	public function update( $new_instance, $old_instance ) {
+		$instance = array();
+		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		return $instance;
+	}
+} // class OIRL_Total_Widget
+add_action( 'widgets_init', function() {
+	register_widget( 'oirl_total_widget' );
+});
 
 /**
  * Add Shortcode for displaying activeties totals.
