@@ -1,8 +1,8 @@
 === Run Log ===
 Contributors: izem
-Tags: run, running, sport, training log, training diary, run log, run diary, running log, strava, garmin Connect, garmin. endomondo, jogging, total distance, total time, total duration, share runs
+Tags: run, running, sport, training log, training diary, run log, run diary, running log, strava, garmin connect, garmin, endomondo, jogging, total distance, total time, total duration, share runs
 Requires at least: 3.8
-Tested up to: 4.5.3
+Tested up to: 4.7
 Stable tag: trunk
 License: GPLv2 (or later)
 License URI: https://wordpress.org/about/gpl/
@@ -147,6 +147,9 @@ Make sure your activity is Public - activity's privacy is set to "Everyone" (the
 8. STRAVA embed.
 
 == Changelog ==
+
+= 1.5.3 =
+* Fixed pages not displaying due to iorl_run_log_update_get_posts bug
 
 = 1.5.2 =
 * Totals Shortcode supports year/month time periods.

@@ -2,13 +2,13 @@
 /**
  * Run Log Plugin main file.
  *
- * @link              https://profiles.wordpress.org/izem
+ * @link              http://run-log.gameiz.net/
  * @since             1.0.0
  * @package           Run_Log
  *
  * @wordpress-plugin
  * Plugin Name: Run Log
- * Plugin URI: http://stuff.izmirli.org/wordpress-run-log-plugin/
+ * Plugin URI: http://run-log.gameiz.net/
  * Description: Adds running diary capabilities - log your sporting activity with custom post type, custom fields and new taxonomies.
  * Version: 1.5.3
  * Author: Oren Izmirli
@@ -902,13 +902,15 @@ add_shortcode( 'oirl_total', 'oirl_total_shortcode' );
  * @return WP_Query the query object after adding run-log custom post_type.
  */
 function iorl_run_log_update_get_posts( $query ) {
-	if ( ! isset( $query->query_vars['suppress_filters'] ) || false === $query->query_vars['suppress_filters'] ) {
-		$this_qry_post_types = $query->get( 'post_type' );
-		if ( empty( $this_qry_post_types ) ) {
-			$this_qry_post_types = 'Post';
+	if ( ( is_home() && $query->is_main_query() ) || is_category() || is_tag() ) {
+		if ( empty( $query->query_vars['suppress_filters'] ) ) {
+			$this_qry_post_types = $query->get( 'post_type' );
+			if ( empty( $this_qry_post_types ) ) {
+				$this_qry_post_types = 'Post';
+			}
+			$new_qry_post_types = array_merge( (array) $this_qry_post_types, array( 'oi_run_log_post' ) );
+			$query->set( 'post_type', $new_qry_post_types );
 		}
-		$new_qry_post_types = array_merge( (array) $this_qry_post_types, array( 'oi_run_log_post' ) );
-		$query->set( 'post_type', $new_qry_post_types );
 	}
 	return $query;
 }
