@@ -10,7 +10,7 @@
  * Plugin Name: Run Log
  * Plugin URI: http://run-log.gameiz.net/
  * Description: Adds running diary capabilities - log your sporting activity with custom post type, custom fields and new taxonomies.
- * Version: 1.5.3
+ * Version: 1.6
  * Author: Oren Izmirli
  * Author URI: https://profiles.wordpress.org/izem
  * Text Domain: run-log
@@ -34,6 +34,8 @@ function oirl_set_default_options() {
 		'display_pos' => 'top',
 		'display_on_excerpt' => 0,
 		'style_theme' => 'light',
+		'gear_links' => true,
+		'goal_links' => true,
 	);
 	add_option( 'oi-run-log-options', $oirl_plugin_options );
 }
@@ -201,8 +203,24 @@ function oirl_plugin_options() {
 	// check and update (if needed) display on excerpt.
 	$display_on_excerpt = isset( $cur_ops['display_on_excerpt'] ) ? $cur_ops['display_on_excerpt'] : '';
 	$given_display_on_excerpt = filter_input( INPUT_POST, 'oirl-display-on-excerpt', FILTER_VALIDATE_REGEXP, array( 'options' => array( 'regexp' => '/^[01]$/' ) ) );
-	if ( isset( $given_display_on_excerpt ) && false !== $given_display_on_excerpt && $given_display_on_excerpt != $display_on_excerpt ) {
+	if ( isset( $given_display_on_excerpt ) && false !== $given_display_on_excerpt && $given_display_on_excerpt !== $display_on_excerpt ) {
 		$display_on_excerpt = $cur_ops['display_on_excerpt'] = $given_display_on_excerpt;
+		$updated_options = true;
+	}
+
+	// check and update (if needed) display goal links.
+	$goal_links = isset( $cur_ops['goal_links'] ) ? $cur_ops['goal_links'] : '';
+	$given_goal_links = filter_input( INPUT_POST, 'oirl-goal-links', FILTER_VALIDATE_REGEXP, array( 'options' => array( 'regexp' => '/^[01]$/' ) ) );
+	if ( isset( $given_goal_links ) && false !== $given_goal_links && $given_goal_links !== $goal_links ) {
+		$goal_links = $cur_ops['goal_links'] = $given_goal_links;
+		$updated_options = true;
+	}
+
+	// check and update (if needed) display gear links.
+	$gear_links = isset( $cur_ops['gear_links'] ) ? $cur_ops['gear_links']: '';
+	$given_gear_links = filter_input( INPUT_POST, 'oirl-gear-links', FILTER_VALIDATE_REGEXP, array( 'options' => array( 'regexp' => '/^[01]$/' ) ) );
+	if ( isset( $given_gear_links ) && false !== $given_gear_links && $given_gear_links !== $gear_links ) {
+		$gear_links = $cur_ops['gear_links'] = $given_gear_links;
 		$updated_options = true;
 	}
 
@@ -218,56 +236,81 @@ function oirl_plugin_options() {
 	<h3><?php echo esc_html__( 'Run Log Options', 'run-log' )?></h3>
 	<p><?php echo esc_html__( 'Control the Run Log settings by updating these values', 'run-log' )?>:<p>
 	<form name="form1" method="post">
-	<?php echo esc_html__( 'Distance unit', 'run-log' )?>:
-	<input type="radio" name="oirl-distance-unit" value="km" id="oirl-distance-unit-km" <?php echo ( 'km' === $distance_unit ? 'checked' : '')?>>
-	<label for="oirl-distance-unit-km"><?php echo esc_html__( 'km', 'run-log' )?></label>
-	&nbsp;
-	<input type="radio" name="oirl-distance-unit" value="mi" id="oirl-distance-unit-mi" <?php echo ('mi' === $distance_unit ? 'checked' : '')?>>
-	<label for="oirl-distance-unit-mi"><?php echo esc_html__( 'mi', 'run-log' )?></label>
+		<div title="<?php echo esc_attr__( 'Select km (Kilometer) to use the metric system for distance, as well as for pace (minutes per kilometer), speed (kilometers per hour) and elevation. Select mi (Mile) to use the imperial/USC system.', 'run-log' ) ?>">
+			<?php echo esc_html__( 'Distance unit', 'run-log' )?>:
+			<input type="radio" name="oirl-distance-unit" value="km" id="oirl-distance-unit-km" <?php echo ( 'km' === $distance_unit ? 'checked' : '')?>>
+			<label for="oirl-distance-unit-km"><?php echo esc_html__( 'km', 'run-log' )?></label>
+			&nbsp;
+			<input type="radio" name="oirl-distance-unit" value="mi" id="oirl-distance-unit-mi" <?php echo ('mi' === $distance_unit ? 'checked' : '')?>>
+			<label for="oirl-distance-unit-mi"><?php echo esc_html__( 'mi', 'run-log' )?></label>
+		</div>
+		<br>
 
-	<br><br>
+		<div title="<?php echo esc_attr__( 'What is your preference? minutes per kilometer/mile? or kilometers/miles per hour?', 'run-log' ) ?>">
+			<?php echo esc_html__( 'Pace/Speed display', 'run-log' )?>:
+			<input type="radio" name="oirl-pace-or-speed" value="pace" id="oirl-pace-or-speed-Pace" <?php echo ( 'pace' === $pace_or_speed ? 'checked' : '')?>>
+			<label for="oirl-pace-or-speed-Pace"><?php echo esc_html__( 'Pace', 'run-log' )?></label>
+			&nbsp;
+			<input type="radio" name="oirl-pace-or-speed" value="speed" id="oirl-pace-or-speed-Speed"<?php echo ('speed' === $pace_or_speed ? 'checked' : '')?>>
+			<label for="oirl-pace-or-speed-Speed"><?php echo esc_html__( 'Speed', 'run-log' )?></label>
+		</div>
+		<br>
 
-	<?php echo esc_html__( 'Pace/Speed display', 'run-log' )?>:
-	<input type="radio" name="oirl-pace-or-speed" value="pace" id="oirl-pace-or-speed-Pace" <?php echo ( 'pace' === $pace_or_speed ? 'checked' : '')?>>
-	<label for="oirl-pace-or-speed-Pace"><?php echo esc_html__( 'Pace', 'run-log' )?></label>
-	&nbsp;
-	<input type="radio" name="oirl-pace-or-speed" value="speed" id="oirl-pace-or-speed-Speed"<?php echo ('speed' === $pace_or_speed ? 'checked' : '')?>>
-	<label for="oirl-pace-or-speed-Speed"><?php echo esc_html__( 'Speed', 'run-log' )?></label>
+		<div title="<?php echo esc_attr__( 'Should light or dark colors be used (example: white/black background for activity\'s info box)?', 'run-log' ) ?>">
+			<?php echo esc_html__( 'Style theme', 'run-log' )?>:
+			<input type="radio" name="oirl-style-theme" value="light" id="oirl-style-theme-light" <?php echo ( 'light' === $style_theme ? 'checked' : '')?>>
+			<label for="oirl-style-theme-light"><?php echo esc_html__( 'Light', 'run-log' )?></label>
+			&nbsp;
+			<input type="radio" name="oirl-style-theme" value="dark" id="oirl-style-theme-dark"<?php echo ('dark' === $style_theme ? 'checked' : '')?>>
+			<label for="oirl-style-theme-dark"><?php echo esc_html__( 'Dark', 'run-log' )?></label>
+		</div>
+		<br>
 
-	<br><br>
+		<div title="<?php echo esc_attr__( 'Should activity\'s info box be displayed at post top? bottom? or not at all (just trak distance, time, etc.)?', 'run-log' ) ?>">
+			<?php echo esc_html__( 'Display position', 'run-log' )?>:
+			<input type="radio" name="oirl-display-pos" value="top" id="oirl-display-pos-top" <?php echo ( 'top' === $display_position ? 'checked' : '')?>>
+			<label for="oirl-display-pos-top"><?php echo esc_html__( 'top', 'run-log' )?></label>
+			&nbsp;
+			<input type="radio" name="oirl-display-pos" value="bottom" id="oirl-display-pos-bottom"<?php echo ('bottom' === $display_position ? 'checked' : '')?>>
+			<label for="oirl-display-pos-bottom"><?php echo esc_html__( 'bottom', 'run-log' )?></label>
+			&nbsp;
+			<input type="radio" name="oirl-display-pos" value="none" id="oirl-display-pos-none"<?php echo ('none' === $display_position ? 'checked' : '')?>>
+			<label for="oirl-display-pos-none"><?php echo esc_html__( 'without', 'run-log' )?></label>
+		</div>
+		<br>
 
-	<?php echo esc_html__( 'Style theme', 'run-log' )?>:
-	<input type="radio" name="oirl-style-theme" value="light" id="oirl-style-theme-light" <?php echo ( 'light' === $style_theme ? 'checked' : '')?>>
-	<label for="oirl-style-theme-light"><?php echo esc_html__( 'Light', 'run-log' )?></label>
-	&nbsp;
-	<input type="radio" name="oirl-style-theme" value="dark" id="oirl-style-theme-dark"<?php echo ('dark' === $style_theme ? 'checked' : '')?>>
-	<label for="oirl-style-theme-dark"><?php echo esc_html__( 'Dark', 'run-log' )?></label>
+		<div title="<?php echo esc_attr__( 'Should the run data box be added to the excerpt?', 'run-log' ) ?>">
+			<?php echo esc_html__( 'Display on excerpt', 'run-log' )?>:
+			<input type="radio" name="oirl-display-on-excerpt" value="0" id="oirl-display-on-excerpt-no" <?php echo ('0' === $display_on_excerpt ? 'checked' : '')?>>
+			<label for="oirl-display-on-excerpt-no"><?php echo esc_html__( 'No' )?></label>
+			&nbsp;
+			<input type="radio" name="oirl-display-on-excerpt" value="1" id="oirl-display-on-excerpt-yes"<?php echo ('1' === $display_on_excerpt ? 'checked' : '')?>>
+			<label for="oirl-display-on-excerpt-yes"><?php echo esc_html__( 'Yes' )?></label>
+		</div>
+		<br>
 
-	<br><br>
+		<div title="<?php echo esc_attr__( 'Should links to goals activety is part of be at the bottom of its run-log posts?', 'run-log' ) ?>">
+			<?php echo esc_html__( 'Display goals links', 'run-log' )?>:
+			<input type="radio" name="oirl-goal-links" value="0" id="oirl-goal-links-no" <?php echo ( '0' === $goal_links ? 'checked' : '' )?>>
+			<label for="oirl-goal-links-no"><?php echo esc_html__( 'No' )?></label>
+			&nbsp;
+			<input type="radio" name="oirl-goal-links" value="1" id="oirl-goal-links-yes"<?php echo ( '1' === $goal_links ? 'checked' : '' )?>>
+			<label for="oirl-goal-links-yes"><?php echo esc_html__( 'Yes' )?></label>
+		</div>
+		<br>
 
-	<?php echo esc_html__( 'Display position', 'run-log' )?>:
-	<input type="radio" name="oirl-display-pos" value="top" id="oirl-display-pos-top" <?php echo ( 'top' === $display_position ? 'checked' : '')?>>
-	<label for="oirl-display-pos-top"><?php echo esc_html__( 'top', 'run-log' )?></label>
-	&nbsp;
-	<input type="radio" name="oirl-display-pos" value="bottom" id="oirl-display-pos-bottom"<?php echo ('bottom' === $display_position ? 'checked' : '')?>>
-	<label for="oirl-display-pos-bottom"><?php echo esc_html__( 'bottom', 'run-log' )?></label>
-	&nbsp;
-	<input type="radio" name="oirl-display-pos" value="none" id="oirl-display-pos-none"<?php echo ('none' === $display_position ? 'checked' : '')?>>
-	<label for="oirl-display-pos-none"><?php echo esc_html__( 'without', 'run-log' )?></label>
+		<div title="<?php echo esc_attr__( 'Should links to gear used in activety be at the bottom of its run-log posts?', 'run-log' ) ?>">
+			<?php echo esc_html__( 'Display gear links', 'run-log' )?>:
+			<input type="radio" name="oirl-gear-links" value="0" id="oirl-gear-links-no" <?php echo ( '0' === $gear_links ? 'checked' : '' )?>>
+			<label for="oirl-goal-links-no"><?php echo esc_html__( 'No' )?></label>
+			&nbsp;
+			<input type="radio" name="oirl-gear-links" value="1" id="oirl-gear-links-yes"<?php echo ( '1' === $gear_links ? 'checked' : '' )?>>
+			<label for="oirl-gear-links-yes"><?php echo esc_html__( 'Yes' )?></label>
+		</div>
 
-	<br><br>
-	<div title="<?php echo esc_attr__( 'Should the run data box be added to the excerpt?', 'run-log' ) ?>">
-	<?php echo esc_html__( 'Display on excerpt', 'run-log' )?>:
-	<input type="radio" name="oirl-display-on-excerpt" value="0" id="oirl-display-on-excerpt-no" <?php echo (0 == $display_on_excerpt ? 'checked' : '')?>>
-	<label for="oirl-display-on-excerpt-no"><?php echo esc_html__( 'No' )?></label>
-	&nbsp;
-	<input type="radio" name="oirl-display-on-excerpt" value="1" id="oirl-display-on-excerpt-yes"<?php echo (1 == $display_on_excerpt ? 'checked' : '')?>>
-	<label for="oirl-display-on-excerpt-yes"><?php echo esc_html__( 'Yes' )?></label>
-	</div>
-
-	<p class="submit">
-	<input type="submit" name="Submit" class="button-primary" value="<?php echo esc_attr__( 'Save Changes' )?>">
-	</p>
+		<p class="submit">
+		<input type="submit" name="Submit" class="button-primary" value="<?php echo esc_attr__( 'Save Changes' )?>">
+		</p>
 	</form>
 </div>
 	<?php
@@ -509,10 +552,29 @@ function oirl_add_run_log_data_to_post( $content, $excerpt = false ) {
 	$distance_unit = isset( $plugin_ops['distance_unit'] ) ? $plugin_ops['distance_unit'] : 'km';
 	$pace_or_speed = isset( $plugin_ops['pace_or_speed'] ) ? $plugin_ops['pace_or_speed'] : 'pace';
 	$style_theme = isset( $plugin_ops['style_theme'] ) ? $plugin_ops['style_theme'] : 'light';
+	$gear_links = isset( $plugin_ops['gear_links'] ) ? $plugin_ops['gear_links'] : '1';
+	$goal_links = isset( $plugin_ops['goal_links'] ) ? $plugin_ops['goal_links'] : '1';
+
+	$bottom_links = '';
+	if ( '1' === $goal_links && ! $excerpt ) {
+		$goal_list = get_the_term_list( $GLOBALS['post']->ID, 'oi_goal_taxonomy', esc_html__( 'Goal', 'run-log' ) . ': ', ', ', '' );
+		if ( false !== $goal_list && ! is_wp_error( $goal_list ) ) {
+			$bottom_links .= $goal_list;
+		}
+	}
+	if ( '1' === $gear_links && ! $excerpt ) {
+		$gear_list = get_the_term_list( $GLOBALS['post']->ID, 'oi_gear_taxonomy', esc_html__( 'Gear', 'run-log' ) . ': ', ', ', '' );
+		if ( false !== $gear_list && ! is_wp_error( $gear_list ) ) {
+			$bottom_links .= ( '' !== $bottom_links ? '; ' : '' ) . $gear_list;
+		}
+	}
+	if ( '' !== $bottom_links ) {
+		$bottom_links = "\n<div id=\"oril_bottom_links\">$bottom_links</div>\n";
+	}
 
 	// return original content if display is 'none' or if its excerpt and display_on_excerpt option is No.
 	if ( ( 'none' === $add_at_pos && ! $excerpt ) || ( $excerpt && ! $display_on_excerpt ) ) {
-		return $content;
+		return $content . $bottom_links;
 	}
 
 	$embed_external = get_post_meta( $GLOBALS['post']->ID, 'oirl-mb-embed-external', true );
@@ -524,13 +586,13 @@ function oirl_add_run_log_data_to_post( $content, $excerpt = false ) {
 	if ( ( ! $embed_external || 'strava' === $embed_external) && $strava_activity && preg_match( '/^\d+$/', $strava_activity ) && ! $excerpt ) {
 		$unit_system = 'mi' === $distance_unit ? 'imperial' : 'metric';
 		$strava_embed = "<a href='https://www.strava.com/activities/$strava_activity' rel='noopener noreferrer' target='_blank'><img  src='https://meme.strava.com/map_based/activities/$strava_activity.jpeg?height=630&width=1200&hl=en-US&unit_system=$unit_system&cfs=1&upscale=1' alt='Activity data and map from STRAVA' width='500' height='263' border='0'></a>\n";
-		return ( 'bottom' === $add_at_pos ? $content . $strava_embed : $strava_embed . $content );
+		return ( 'bottom' === $add_at_pos ? $content . $strava_embed . $bottom_links : $strava_embed . $content . $bottom_links );
 	} elseif ( ( ! $embed_external || 'garmin' === $embed_external ) && $garmin_activity && preg_match( '/^\d+$/', $garmin_activity ) && ! $excerpt ) {
 			$garmin_iframe = "<iframe src='https://connect.garmin.com/activity/embed/$garmin_activity' width='465' height='500' frameborder='0'></iframe>\n";
-			return ( 'bottom' === $add_at_pos ? $content . $garmin_iframe : $garmin_iframe . $content );
+			return ( 'bottom' === $add_at_pos ? $content . $garmin_iframe . $bottom_links : $garmin_iframe . $content . $bottom_links );
 	} elseif ( ( ! $embed_external || 'endomondo' === $embed_external) && $endomondo_activity && preg_match( '/^\d+$/', $endomondo_activity ) && ! $excerpt ) {
 		$endomondo_iframe = "<iframe src='http://www.endomondo.com/embed/workouts?w=$endomondo_activity&width=580&height=425' width='580' height='425' frameborder='1'></iframe>\n";
-		return ( 'bottom' === $add_at_pos ? $content . $endomondo_iframe : $endomondo_iframe . $content );
+		return ( 'bottom' === $add_at_pos ? $content . $endomondo_iframe . $bottom_links : $endomondo_iframe . $content . $bottom_links );
 	}
 
 	$distance = get_post_meta( $GLOBALS['post']->ID, 'oirl-mb-distance', true );
@@ -579,7 +641,7 @@ function oirl_add_run_log_data_to_post( $content, $excerpt = false ) {
 	$run_log_data .= "</div>\n";
 	$run_log_data .= '</div>';
 
-	return ( 'bottom' === $add_at_pos ? $content . $run_log_data : $run_log_data . $content );
+	return ( 'bottom' === $add_at_pos ? $content . $run_log_data . $bottom_links : $run_log_data . $content . $bottom_links );
 }
 add_filter( 'the_content', 'oirl_add_run_log_data_to_post' );
 
@@ -810,6 +872,47 @@ WHERE `meta_key`=%s $period_where
 }
 add_shortcode( 'oirl_total', 'oirl_total_shortcode' );
 
+
+/**
+ * Add Shortcode for displaying gear info.
+ * Usage examples: [oirl_gear slug="gear-slag"]
+ *
+ * @since 1.6.0
+ *
+ * @param array $atts the attributes arry -
+ *                    id: this gear's term_id (optional).
+ *                    slug: a string holding gear "slug" (optional).
+ *
+ * @return string the output - HTML of activities totals.
+ */
+function oirl_gear_shortcode( $atts ) {
+	global $wpdb;
+	// Attributes defaults when needed.
+	$atts = shortcode_atts(
+		array(
+			'id' => '',
+			'slug' => '',
+		),
+		$atts,
+		'oirl_gear'
+	);
+	if ( '' === $atts['id'] && '' === $atts['slug'] ) {
+		return '[No Atts]';
+	} elseif ( '' === $atts['id'] && '' !== $atts['slug'] ) {
+		$term_by_slag = get_term_by( 'slug', $atts['slug']); //, 'oi_goal_taxonomy' );
+		if ( false === $term_by_slag ) {
+			return "[Not Found ({$atts['slug']})]";
+		}
+		$atts['id'] = $term_by_slag->term_id;
+		$term_taxonomy_id = $term_by_slag->term_taxonomy_id;
+		$term_obj_count = $term_by_slag->count;
+	}
+
+	$output = "id: {$atts['id']}, term_taxonomy_id: $term_taxonomy_id, term_obj_count: $term_obj_count";
+
+	return $output;
+}
+add_shortcode( 'oirl_gear', 'oirl_gear_shortcode' );
 
 /**
  * Make this custom content type available for search/archive pages
