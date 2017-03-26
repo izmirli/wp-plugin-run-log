@@ -660,6 +660,52 @@ function oirl_add_run_log_data_to_excerpt( $excerp ) {
 add_filter( 'get_the_excerpt', 'oirl_add_run_log_data_to_excerpt' );
 
 /**
+ * Add gear summery data to the gear archive page.
+ *
+ * @since 1.6.0
+ *
+ * @param string $term_description the content of gear description (if any).
+ *
+ * @return string the archive description with the HTML output of the gear summery data.
+ */
+function oirl_add_run_log_data_to_gear( $term_description ) {
+	// Return original content if not gear taxonomy.
+	if ( ! is_tax( 'oi_gear_taxonomy' ) ) {
+	 	return $term_description;
+	}
+
+	$term = get_queried_object(); // has: term_id, slug, count, name, etc.
+	$gear_data = oirl_total_shortcode( array( 'term' => $term->term_id, 'only' => 'distance' ) );
+
+	return $gear_data . $term_description;
+}
+add_filter( 'get_the_archive_description', 'oirl_add_run_log_data_to_gear' );
+
+/**
+ * Add gear summery data to the goal archive page.
+ *
+ * @since 1.6.0
+ *
+ * @param string $term_description the content of goal description (if any).
+ *
+ * @return string the archive description with the HTML output of the gear summery data.
+ */
+function oirl_add_run_log_data_to_goal( $term_description ) {
+	// Return original content if not goal taxonomy.
+	if ( ! is_tax( 'oi_goal_taxonomy' ) ) {
+	 	return $term_description;
+	}
+
+	$term = get_queried_object(); // has: term_id, slug, count, name, etc.
+	$goal_distance = oirl_total_shortcode( array( 'term' => $term->term_id, 'only' => 'distance' ) );
+	$goal_duration = oirl_total_shortcode( array( 'term' => $term->term_id, 'only' => 'time' ) );
+	$goal_data = substr( $goal_distance, 0, -6 ) . '&nbsp;' . substr( $goal_duration, 44 );
+
+	return $goal_data . $term_description;
+}
+add_filter( 'get_the_archive_description', 'oirl_add_run_log_data_to_goal' );
+
+/**
  * Load the proper CSS file (LTR or RTL).
  *
  * @since 1.0.0
@@ -681,7 +727,8 @@ add_action( 'wp_enqueue_scripts', 'iorl_enqueue_css' );
  *                    year: a 4-digit year - display totals for this year only;
  *                    month: 1/2-digits for month - totals for this month only;
  *                    hide_pace: yes/no - should average pace/speed be hidden;
- *										days_display: true/false - display days in total time if more then 24 hours.
+ *										days_display: true/false - display days in total time if more then 24 hours
+ *										term: term id. if given, only data from post with thos term will sumed.
  *
  * @return string the output - HTML of activities totals.
  */
@@ -695,6 +742,7 @@ function oirl_total_shortcode( $atts ) {
 			'month'				=> '',
 			'hide_pace'		=> 'no',
 			'days_display' => 'no',
+			'term'				=> '',
 		),
 		$atts,
 		'oirl_total'
@@ -718,6 +766,11 @@ function oirl_total_shortcode( $atts ) {
 				$month_name = date( 'F', mktime( 0, 0, 0, $atts['month'], 10 ) );
 		}
 		$period_where .= ')';
+	}
+	// Prepare the where conditions for the term if needed.
+	if ( isset( $atts['term'] ) && preg_match( '/^[1-9]\d*$/', $atts['term'] ) ) {
+		$period_where .= " AND `post_id` IN(	SELECT `object_id` FROM $wpdb->term_relationships WHERE `term_taxonomy_id` = %d )";
+		array_push( $qry_value_parameters, $atts['term'] );
 	}
 
 	// Output code start.
@@ -872,47 +925,6 @@ WHERE `meta_key`=%s $period_where
 }
 add_shortcode( 'oirl_total', 'oirl_total_shortcode' );
 
-
-/**
- * Add Shortcode for displaying gear info.
- * Usage examples: [oirl_gear slug="gear-slag"]
- *
- * @since 1.6.0
- *
- * @param array $atts the attributes arry -
- *                    id: this gear's term_id (optional).
- *                    slug: a string holding gear "slug" (optional).
- *
- * @return string the output - HTML of activities totals.
- */
-function oirl_gear_shortcode( $atts ) {
-	global $wpdb;
-	// Attributes defaults when needed.
-	$atts = shortcode_atts(
-		array(
-			'id' => '',
-			'slug' => '',
-		),
-		$atts,
-		'oirl_gear'
-	);
-	if ( '' === $atts['id'] && '' === $atts['slug'] ) {
-		return '[No Atts]';
-	} elseif ( '' === $atts['id'] && '' !== $atts['slug'] ) {
-		$term_by_slag = get_term_by( 'slug', $atts['slug']); //, 'oi_goal_taxonomy' );
-		if ( false === $term_by_slag ) {
-			return "[Not Found ({$atts['slug']})]";
-		}
-		$atts['id'] = $term_by_slag->term_id;
-		$term_taxonomy_id = $term_by_slag->term_taxonomy_id;
-		$term_obj_count = $term_by_slag->count;
-	}
-
-	$output = "id: {$atts['id']}, term_taxonomy_id: $term_taxonomy_id, term_obj_count: $term_obj_count";
-
-	return $output;
-}
-add_shortcode( 'oirl_gear', 'oirl_gear_shortcode' );
 
 /**
  * Make this custom content type available for search/archive pages
