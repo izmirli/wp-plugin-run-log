@@ -22,7 +22,7 @@ The plugin add running diary capabilities to WordPress, so you can log and displ
 * Shortcode for displaying totals - distance, time, elevation gain (and average pace/speed).
 * Option to choose light or dark style theme, to blend with your theme.
 * Quick embed your STRAVA/Garmin Connect/endomondo activity in the post (displaying data and map from your account).
-* Add custom taxonomies for gear (like shoes) and goals (like "sub 4 marathon") that could be connected to run-log posts (and regular posts).
+* Add custom taxonomies for gear (like shoes) and goals (like "sub 4 marathon") that could be connected to run-log posts (and regular posts). You may trak distance run with shoes usage by this (as well as other gear).
 
 = Localization =
 
@@ -45,8 +45,8 @@ You can change these to statute/imperial by updating plugin's "Distance unit" op
 1. On the admin menu there will be a new sub-menu: "Run Log" - from it's options, select "Add New" (or click on "Run" from the "New" sub-menu of the top menu).
 2. Enter a title for this run (as post title), write your run description (e.g. type of run, location, how you fealt, etc.) in the body. You can add media (photos, videos) if you want, as you would do with a normal post.
 3. Under the main editing area (body) you should see the "Run Log Parameters" box. There you enter the distance and duration of the run (as well as elevation gain and calories - to be used in future version of the plugin).
-4. [Optional] You may add the gear you used in this run on the "Gears" box (like shoes - in future we may track shoes mileage by this).
-5. [Optional] You may add the goal, that this run is part of the road to it, on the "Gears" box (like shoes - in future we may track shoes mileage by this).
+4. [Optional] You may add the gear you used in this run on the "Gears" box (like shoes and track shoes mileage by this).
+5. [Optional] You may add the goal, that this run is part of the road to it, on the "Goals" box (so you'll be able to see all of them in one page, as well as the total distance/time).
 6. [Optional] You may add your "STRAVA", "Garmin Connect" or "endomondo" activity ID, to embed your activity's data and map from your account (instead of the regular plugin's display).
 7. Publish.
 
@@ -83,7 +83,7 @@ The plugin icon was [Designed by Freepik](http://www.freepik.com).
 
 = To Do: =
 
-* Add elevation, calories, gear , and goal display.
+* Add elevation and calories display.
 * Option to add data box to excerpt.
 * Add Widget to display accumulate data and more.
 * Add hart rate.
@@ -147,6 +147,10 @@ Make sure your activity is Public - activity's privacy is set to "Everyone" (the
 8. STRAVA embed.
 
 == Changelog ==
+
+= 1.6.0 =
+* Adding gear and goal summery data to their archive page.
+* Adding links to gear and goal archives from run-log posts.
 
 = 1.5.3 =
 * Fixed pages not displaying due to iorl_run_log_update_get_posts bug

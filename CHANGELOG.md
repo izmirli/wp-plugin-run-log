@@ -1,4 +1,5 @@
 # Changelog
+* (2017-03-27). Adding gear and goal summery data to their archive page and links to these archives from run-log posts.
 * (2016-11-19). Fixed pages not displaying due to iorl_run_log_update_get_posts bug.
 * (2016-08-16). Tested up to: 4.6
 * (2016-07-11). Totals shortcode impruvments; readme and lang files update.
