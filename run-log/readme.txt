@@ -3,7 +3,7 @@ Contributors: izem
 Tags: run, running, sport, training log, training diary, run log, run diary, running log, strava, garmin connect, garmin, endomondo, jogging, total distance, total time, total duration, share runs
 Requires at least: 3.8
 Tested up to: 4.7
-Stable tag: trunk
+Stable tag: 1.6.0
 License: GPLv2 (or later)
 License URI: https://wordpress.org/about/gpl/
 
@@ -149,7 +149,7 @@ Make sure your activity is Public - activity's privacy is set to "Everyone" (the
 == Changelog ==
 
 = 1.6.0 =
-* Adding gear and goal summery data to their archive page.
+* Adding gear and goal summery data to their archive page (in thems that display term description).
 * Adding links to gear and goal archives from run-log posts.
 
 = 1.5.3 =
