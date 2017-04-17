@@ -10,7 +10,7 @@
  * Plugin Name: Run Log
  * Plugin URI: http://run-log.gameiz.net/
  * Description: Adds running diary capabilities - log your sporting activity with custom post type, custom fields and new taxonomies.
- * Version: 1.6.0
+ * Version: 1.7.0
  * Author: Oren Izmirli
  * Author URI: https://profiles.wordpress.org/izem
  * Text Domain: run-log
@@ -48,11 +48,6 @@ register_activation_hook( __FILE__, 'oirl_set_default_options' );
  */
 function oirl_remove_default_options() {
 	delete_option( 'oi-run-log-options' );
-	// Old type options, should be removed sometime.
-	delete_option( 'oirl-distance-unit' );
-	delete_option( 'oirl-pace-or-speed' );
-	delete_option( 'oirl-display-pos' );
-	delete_option( 'oirl-display-on-excerpt' );
 }
 register_uninstall_hook( __FILE__, 'oirl_remove_default_options' );
 
@@ -68,20 +63,7 @@ function oirl_plugin_upgrate( $upgrader_object, $options ) {
 	if ( 'plugin' === $options['type'] && in_array( 'oi_run_log_post', $options['packages'], true ) ) {
 		return;
 	}
-	// Unless new options exists, migrate old ones.
-	if ( false === get_option( 'oi-run-log-options' ) ) {
-		$oirl_plugin_options = array(
-			'distance_unit' => ( get_option( 'oirl-distance-unit' ) ? get_option( 'oirl-distance-unit' ) : 'km' ),
-			'pace_or_speed' => ( get_option( 'oirl-pace-or-speed' ) ? get_option( 'oirl-pace-or-speed' ) : 'pace' ),
-			'display_pos' => ( get_option( 'oirl-display-pos' ) ? get_option( 'oirl-display-pos' ) : 'top' ),
-			'display_on_excerpt' => ( get_option( 'oirl-display-on-excerpt' ) ? get_option( 'oirl-display-on-excerpt' ) : 0 ),
-		);
-		add_option( 'oi-run-log-options', $oirl_plugin_options );
-		delete_option( 'oirl-distance-unit' );
-		delete_option( 'oirl-pace-or-speed' );
-		delete_option( 'oirl-display-pos' );
-		delete_option( 'oirl-display-on-excerpt' );
-	}
+	// don't do anything anymore.
 }
 add_action( 'upgrader_process_complete', 'oirl_plugin_upgrate', 10, 2 );
 
@@ -719,14 +701,14 @@ add_action( 'wp_enqueue_scripts', 'iorl_enqueue_css' );
 /**
  * A widget for displaying totals (distance/time/elevation/calories).
  *
- * @since 1.5.3
+ * @since 1.7.0
  */
 class OIRL_Total_Widget extends WP_Widget {
 
 	/**
-	 * Sets up the widgets name etc
+	 * Sets up the widgets name etc.
 	 *
-	 * @since 1.5.3
+	 * @since 1.7.0
 	 */
 	public function __construct() {
 		$widget_ops = array(
@@ -740,7 +722,7 @@ class OIRL_Total_Widget extends WP_Widget {
 	 * Front-end display of widget.
 	 *
 	 * @see WP_Widget::widget()
-	 * @since 1.5.3
+	 * @since 1.7
 	 *
 	 * @param array $args     Widget arguments.
 	 * @param array $instance Saved values from database.
@@ -748,9 +730,11 @@ class OIRL_Total_Widget extends WP_Widget {
 	public function widget( $args, $instance ) {
 		echo $args['before_widget'];
 		if ( ! empty( $instance['title'] ) ) {
-			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
+			echo $args['before_title'] . esc_html( apply_filters( 'widget_title', $instance['title'] ) ) . $args['after_title'];
 		}
-		echo __( 'Hello, World!', 'text_domain' );
+
+		echo esc_html( __( 'Hello, World!', 'run-log' ) );
+
 		echo $args['after_widget'];
 	}
 
@@ -758,20 +742,22 @@ class OIRL_Total_Widget extends WP_Widget {
 	 * Back-end widget form.
 	 *
 	 * @see WP_Widget::form()
-	 * @since 1.5.3
+	 * @since 1.7
 	 *
 	 * @param array $instance Previously saved values from database.
 	 */
 	public function form( $instance ) {
-		if ( isset( $instance['title'] ) ) {
-			$title = $instance['title'];
-		} else {
-			$title = __( 'Logged Activeties Total', 'run-log' );
-		}
+		$title = isset( $instance['title'] ) && ! empty( $instance['title'] ) ? $instance['title'] : __( 'Logged Activeties Total', 'run-log' );
+		$display_distance = isset( $instance['display_distance'] ) ? $instance['display_distance'] : '';
+		// time/elevation/calories.
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:' ); ?></label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
+		</p>
+		<p>
+			<input class="checkbox" type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'display_distance' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>">
+			<label for="<?php echo esc_attr( $this->get_field_id( 'display_distance' ) ); ?>">Display distance</label>
 		</p>
 		<?php
 	}
@@ -780,7 +766,7 @@ class OIRL_Total_Widget extends WP_Widget {
 	 * Sanitize widget form values as they are saved.
 	 *
 	 * @see WP_Widget::update()
-	 * @since 1.5.3
+	 * @since 1.7.0
 	 *
 	 * @param array $new_instance Values just sent to be saved.
 	 * @param array $old_instance Previously saved values from database.
@@ -794,7 +780,7 @@ class OIRL_Total_Widget extends WP_Widget {
 	}
 } // class OIRL_Total_Widget
 add_action( 'widgets_init', function() {
-	register_widget( 'oirl_total_widget' );
+	register_widget( 'OIRL_Total_Widget' );
 });
 
 /**
