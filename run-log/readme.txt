@@ -97,7 +97,7 @@ Data stored by this plugin for posts (in postmeta table) will be kept.
 
 == Installation ==
 
-From the WordPress Plugin Directory:
+From your website via WordPress Plugin Directory (recomended):
 
 1. Navigate to the 'Add New' in the plugins dashboard
 2. Search for 'Run Log'
@@ -147,6 +147,9 @@ Make sure your activity is Public - activity's privacy is set to "Everyone" (the
 8. STRAVA embed.
 
 == Changelog ==
+
+= 1.7.0 =
+* New Widget for displaying activities totals.
 
 = 1.6.0 =
 * Adding gear and goal summery data to their archive page (in thems that display term description).
