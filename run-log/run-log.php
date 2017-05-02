@@ -10,7 +10,7 @@
  * Plugin Name: Run Log
  * Plugin URI: http://run-log.gameiz.net/
  * Description: Adds running diary capabilities - log your sport activities with custom post type, custom fields and new taxonomies.
- * Version: 1.7.0
+ * Version: 1.7.1
  * Author: Oren Izmirli
  * Author URI: https://profiles.wordpress.org/izem
  * Text Domain: run-log
@@ -681,7 +681,9 @@ function oirl_add_run_log_data_to_goal( $term_description ) {
 	$term = get_queried_object(); // has: term_id, slug, count, name, etc.
 	$goal_distance = oirl_total_shortcode( array( 'term' => $term->term_id, 'only' => 'distance' ) );
 	$goal_duration = oirl_total_shortcode( array( 'term' => $term->term_id, 'only' => 'time' ) );
-	$goal_data = substr( $goal_distance, 0, -6 ) . '&nbsp;' . substr( $goal_duration, 44 );
+	// $goal_data = substr( $goal_distance, 0, -6 ) . '&nbsp;' . substr( $goal_duration, 44 );.
+	$goal_data = "$goal_distance &nbsp; $goal_duration";
+	$goal_data = preg_replace( '/<\/div>\s*&nbsp;\s*<div class="oirl oirl-\w+ oirl-total-box">/', '', $widget_data );
 
 	return $goal_data . $term_description;
 }
@@ -751,7 +753,8 @@ class OIRL_Total_Widget extends WP_Widget {
 			$widget_data = $time;
 		}
 		if ( isset( $distance ) && isset( $time ) ) {
-			$widget_data = substr( $distance, 0, -6 ) . '&nbsp;' . substr( $time, 44 );
+			$widget_data = $distance . $time;
+			$widget_data = preg_replace( '/<\/div>\s*<div class="oirl oirl-\w+ oirl-total-box">/', '', $widget_data );
 		}
 		echo $widget_data;
 
