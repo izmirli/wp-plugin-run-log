@@ -1,13 +1,13 @@
 === Run Log ===
 Contributors: izem
-Tags: run, running, sport, training log, training diary, run log, run diary, running log, strava, garmin connect, garmin, endomondo, jogging, total distance, total time, total duration, share runs
+Tags: training log, training diary, running, sport, run log, run diary, running log, run, strava, garmin connect, garmin, endomondo, jogging, total distance, total time, total duration, share runs
 Requires at least: 3.8
 Tested up to: 4.7
 Stable tag: 1.6.0
 License: GPLv2 (or later)
 License URI: https://wordpress.org/about/gpl/
 
-Add running diary capabilities - log your sporting activity, track and display: distance, duration, gear (e.g. shoes), elevation gain, calories, etc.
+Add running diary capabilities - log your sport activities, track and display: distance, duration, gear (e.g. shoes), elevation gain, calories, etc.
 
 == Description ==
 
@@ -19,7 +19,7 @@ The plugin add running diary capabilities to WordPress, so you can log and displ
 * Log distance and duration (elevation gain and calories) for each run in custom fields of run-log posts.
 * Calculate pace/speed automatically.
 * Display the above data in the post automatically.
-* Shortcode for displaying totals - distance, time, elevation gain (and average pace/speed).
+* Widget and shortcode for displaying totals - distance, time, elevation gain (and average pace/speed).
 * Option to choose light or dark style theme, to blend with your theme.
 * Quick embed your STRAVA/Garmin Connect/endomondo activity in the post (displaying data and map from your account).
 * Add custom taxonomies for gear (like shoes) and goals (like "sub 4 marathon") that could be connected to run-log posts (and regular posts). You may trak distance run with shoes usage by this (as well as other gear).

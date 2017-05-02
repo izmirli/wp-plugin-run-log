@@ -9,7 +9,7 @@
  * @wordpress-plugin
  * Plugin Name: Run Log
  * Plugin URI: http://run-log.gameiz.net/
- * Description: Adds running diary capabilities - log your sporting activity with custom post type, custom fields and new taxonomies.
+ * Description: Adds running diary capabilities - log your sport activities with custom post type, custom fields and new taxonomies.
  * Version: 1.7.0
  * Author: Oren Izmirli
  * Author URI: https://profiles.wordpress.org/izem
@@ -713,7 +713,7 @@ class OIRL_Total_Widget extends WP_Widget {
 	public function __construct() {
 		$widget_ops = array(
 			'classname' => 'oirl_total_widget',
-			'description' => __( 'Show total distance/time/elevation/calories of your logged activeties', 'run-log' ),
+			'description' => __( 'Show total distance/duration of your activeties', 'run-log' ),
 		);
 		parent::__construct( 'oirl_total_widget', __( 'Totals Widget', 'run-log' ), $widget_ops );
 	}
@@ -733,7 +733,27 @@ class OIRL_Total_Widget extends WP_Widget {
 			echo $args['before_title'] . esc_html( apply_filters( 'widget_title', $instance['title'] ) ) . $args['after_title'];
 		}
 
-		echo esc_html( __( 'Hello, World!', 'run-log' ) );
+		$option = array();
+		if ( isset( $instance['time_frame'] ) && 'this_year' === $instance['time_frame'] ) {
+			$option['year'] = date( 'Y' );
+		} elseif ( isset( $instance['time_frame'] ) && 'this_month' === $instance['time_frame'] ) {
+			$option['year'] = date( 'Y' );
+			$option['month'] = date( 'm' );
+		}
+		if ( isset( $instance['display_distance'] ) && 'on' === $instance['display_distance'] ) {
+			$option['only'] = 'distance';
+			$distance = oirl_total_shortcode( $option );
+			$widget_data = $distance;
+		}
+		if ( isset( $instance['display_duration'] ) && 'on' === $instance['display_duration'] ) {
+			$option['only'] = 'time';
+			$time = oirl_total_shortcode( $option );
+			$widget_data = $time;
+		}
+		if ( isset( $distance ) && isset( $time ) ) {
+			$widget_data = substr( $distance, 0, -6 ) . '&nbsp;' . substr( $time, 44 );
+		}
+		echo $widget_data;
 
 		echo $args['after_widget'];
 	}
@@ -747,17 +767,30 @@ class OIRL_Total_Widget extends WP_Widget {
 	 * @param array $instance Previously saved values from database.
 	 */
 	public function form( $instance ) {
-		$title = isset( $instance['title'] ) && ! empty( $instance['title'] ) ? $instance['title'] : __( 'Logged Activeties Total', 'run-log' );
-		$display_distance = isset( $instance['display_distance'] ) ? $instance['display_distance'] : '';
-		// time/elevation/calories.
+		$title = isset( $instance['title'] ) && ! empty( $instance['title'] ) ? $instance['title'] : '';
+		$display_distance = isset( $instance['display_distance'] ) && 'on' === $instance['display_distance'] ? true : false;
+		$display_duration = isset( $instance['display_duration'] )  && 'on' === $instance['display_duration'] ? true : false;
+		$time_frame = isset( $instance['time_frame'] ) ? $instance['time_frame'] : '';
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:' ); ?></label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
 		<p>
-			<input class="checkbox" type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'display_distance' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>">
-			<label for="<?php echo esc_attr( $this->get_field_id( 'display_distance' ) ); ?>">Display distance</label>
+			<input class="checkbox" type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'display_distance' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'display_distance' ) ); ?>" <?php checked( $display_distance ); ?>>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'display_distance' ) ); ?>"><?php esc_html_e( 'Display distance', 'run-log' ); ?></label>
+		</p>
+		<p>
+			<input class="checkbox" type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'display_duration' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'display_duration' ) ); ?>" <?php checked( $display_duration ); ?>>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'display_duration' ) ); ?>"><?php esc_html_e( 'Display duration', 'run-log' ) ?></label>
+		</p>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'time_frame' ) ); ?>"><?php esc_html_e( 'Time Frame' ); ?></label>
+			<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'time_frame' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'time_frame' ) ); ?>">
+				<option value="all_time" <?php selected( 'all_time', $time_frame ); ?>><?php esc_html_e( 'All Time', 'run-log' ) ?></option>
+				<option value="this_year" <?php selected( 'this_year', $time_frame ); ?>><?php esc_html_e( 'This Year', 'run-log' ) ?></option>
+				<option value="this_month" <?php selected( 'this_month', $time_frame ); ?>><?php esc_html_e( 'This Month', 'run-log' ) ?></option>
+			</select>
 		</p>
 		<?php
 	}
@@ -775,7 +808,10 @@ class OIRL_Total_Widget extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
-		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		$instance['title'] = ( isset( $new_instance['title'] ) && ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		$instance['display_distance'] = isset( $new_instance['display_distance'] ) ? $new_instance['display_distance'] : '';
+		$instance['display_duration'] = isset( $new_instance['display_duration'] ) ? $new_instance['display_duration'] : '';
+		$instance['time_frame'] = isset( $new_instance['time_frame'] ) ? $new_instance['time_frame'] : 'all_time';
 		return $instance;
 	}
 } // class OIRL_Total_Widget
