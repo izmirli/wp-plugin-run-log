@@ -681,7 +681,6 @@ function oirl_add_run_log_data_to_goal( $term_description ) {
 	$term = get_queried_object(); // has: term_id, slug, count, name, etc.
 	$goal_distance = oirl_total_shortcode( array( 'term' => $term->term_id, 'only' => 'distance' ) );
 	$goal_duration = oirl_total_shortcode( array( 'term' => $term->term_id, 'only' => 'time' ) );
-	// $goal_data = substr( $goal_distance, 0, -6 ) . '&nbsp;' . substr( $goal_duration, 44 );.
 	$goal_data = "$goal_distance &nbsp; $goal_duration";
 	$goal_data = preg_replace( '/<\/div>\s*&nbsp;\s*<div class="oirl oirl-\w+ oirl-total-box">/', '', $widget_data );
 
@@ -724,7 +723,7 @@ class OIRL_Total_Widget extends WP_Widget {
 	 * Front-end display of widget.
 	 *
 	 * @see WP_Widget::widget()
-	 * @since 1.7
+	 * @since 1.7.0
 	 *
 	 * @param array $args     Widget arguments.
 	 * @param array $instance Saved values from database.
@@ -735,6 +734,7 @@ class OIRL_Total_Widget extends WP_Widget {
 			echo $args['before_title'] . esc_html( apply_filters( 'widget_title', $instance['title'] ) ) . $args['after_title'];
 		}
 
+		$widget_data = '';
 		$option = array();
 		if ( isset( $instance['time_frame'] ) && 'this_year' === $instance['time_frame'] ) {
 			$option['year'] = date( 'Y' );
@@ -744,18 +744,22 @@ class OIRL_Total_Widget extends WP_Widget {
 		}
 		if ( isset( $instance['display_distance'] ) && 'on' === $instance['display_distance'] ) {
 			$option['only'] = 'distance';
-			$distance = oirl_total_shortcode( $option );
-			$widget_data = $distance;
+			$widget_data .= oirl_total_shortcode( $option );
 		}
 		if ( isset( $instance['display_duration'] ) && 'on' === $instance['display_duration'] ) {
 			$option['only'] = 'time';
-			$time = oirl_total_shortcode( $option );
-			$widget_data = $time;
+			$widget_data .= oirl_total_shortcode( $option );
 		}
-		if ( isset( $distance ) && isset( $time ) ) {
-			$widget_data = $distance . $time;
-			$widget_data = preg_replace( '/<\/div>\s*<div class="oirl oirl-\w+ oirl-total-box">/', '', $widget_data );
+		if ( isset( $instance['display_elevation'] ) && 'on' === $instance['display_elevation'] ) {
+			$option['only'] = 'elevation';
+			$widget_data .= oirl_total_shortcode( $option );
 		}
+		if ( isset( $instance['display_calories'] ) && 'on' === $instance['display_calories'] ) {
+			$option['only'] = 'calories';
+			$widget_data .= oirl_total_shortcode( $option );
+		}
+
+		$widget_data = preg_replace( '/<\/div>\s*<div class="oirl oirl-\w+ oirl-total-box">/', '', $widget_data );
 		echo $widget_data;
 
 		echo $args['after_widget'];
@@ -765,7 +769,7 @@ class OIRL_Total_Widget extends WP_Widget {
 	 * Back-end widget form.
 	 *
 	 * @see WP_Widget::form()
-	 * @since 1.7
+	 * @since 1.7.0
 	 *
 	 * @param array $instance Previously saved values from database.
 	 */
@@ -773,6 +777,8 @@ class OIRL_Total_Widget extends WP_Widget {
 		$title = isset( $instance['title'] ) && ! empty( $instance['title'] ) ? $instance['title'] : '';
 		$display_distance = isset( $instance['display_distance'] ) && 'on' === $instance['display_distance'] ? true : false;
 		$display_duration = isset( $instance['display_duration'] )  && 'on' === $instance['display_duration'] ? true : false;
+		$display_elevation = isset( $instance['display_elevation'] ) && 'on' === $instance['display_elevation'] ? true : false;
+		$display_calories = isset( $instance['display_calories'] )  && 'on' === $instance['display_calories'] ? true : false;
 		$time_frame = isset( $instance['time_frame'] ) ? $instance['time_frame'] : '';
 		?>
 		<p>
@@ -785,10 +791,18 @@ class OIRL_Total_Widget extends WP_Widget {
 		</p>
 		<p>
 			<input class="checkbox" type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'display_duration' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'display_duration' ) ); ?>" <?php checked( $display_duration ); ?>>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'display_duration' ) ); ?>"><?php esc_html_e( 'Display duration', 'run-log' ) ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'display_duration' ) ); ?>"><?php esc_html_e( 'Display duration', 'run-log' ); ?></label>
 		</p>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'time_frame' ) ); ?>"><?php esc_html_e( 'Time Frame' ); ?></label>
+			<input class="checkbox" type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'display_elevation' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'display_elevation' ) ); ?>" <?php checked( $display_elevation ); ?>>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'display_elevation' ) ); ?>"><?php esc_html_e( 'Display elevation', 'run-log' ); ?></label>
+		</p>
+		<p>
+			<input class="checkbox" type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'display_calories' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'display_calories' ) ); ?>" <?php checked( $display_calories ); ?>>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'display_calories' ) ); ?>"><?php esc_html_e( 'Display calories', 'run-log' ); ?></label>
+		</p>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'time_frame' ) ); ?>"><?php esc_html_e( 'Time Frame', 'run-log' ); ?></label>
 			<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'time_frame' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'time_frame' ) ); ?>">
 				<option value="all_time" <?php selected( 'all_time', $time_frame ); ?>><?php esc_html_e( 'All Time', 'run-log' ) ?></option>
 				<option value="this_year" <?php selected( 'this_year', $time_frame ); ?>><?php esc_html_e( 'This Year', 'run-log' ) ?></option>
@@ -814,6 +828,8 @@ class OIRL_Total_Widget extends WP_Widget {
 		$instance['title'] = ( isset( $new_instance['title'] ) && ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
 		$instance['display_distance'] = isset( $new_instance['display_distance'] ) ? $new_instance['display_distance'] : '';
 		$instance['display_duration'] = isset( $new_instance['display_duration'] ) ? $new_instance['display_duration'] : '';
+		$instance['display_elevation'] = isset( $new_instance['display_elevation'] ) ? $new_instance['display_elevation'] : '';
+		$instance['display_calories'] = isset( $new_instance['display_calories'] ) ? $new_instance['display_calories'] : '';
 		$instance['time_frame'] = isset( $new_instance['time_frame'] ) ? $new_instance['time_frame'] : 'all_time';
 		return $instance;
 	}
@@ -981,7 +997,7 @@ WHERE `meta_key`=%s $period_where
 		}
 	}
 
-	// Check & output distance total if needed.
+	// Check & output elevation total if needed.
 	if ( 'elevation' === $atts['only'] ) {
 		array_unshift( $qry_value_parameters, 'oirl-mb-elevation' );
 		$elevation_total = $wpdb->get_var( $wpdb->prepare(
@@ -1009,6 +1025,32 @@ WHERE `meta_key`=%s $period_where
 		}
 		// Conversion to feet if needed?.
 		$output .= '<span class="super">' . ( 'mi' === $distance_unit ? esc_html__( 'ft', 'run-log' ) : esc_html__( 'm', 'run-log' ) ) . '</span></div>';
+	}
+
+	// Check & output calories total if needed.
+	if ( 'calories' === $atts['only'] ) {
+		array_unshift( $qry_value_parameters, 'oirl-mb-calories' );
+		$calories_total = $wpdb->get_var( $wpdb->prepare(
+			"
+SELECT SUM( `meta_value` ) AS total_calories
+FROM $wpdb->postmeta
+WHERE `meta_key`=%s $period_where
+			",
+			$qry_value_parameters
+		) );
+		array_shift( $qry_value_parameters );
+		$output .= '<div class="oirl-data"><div class="oirl-data-desc">' . esc_html__( 'Total calories', 'run-log' );
+		if ( $atts['year'] ) {
+			if ( $atts['month'] ) {
+				$output .= ' ' . esc_html__( $month_name );
+			}
+			$output .= " {$atts['year']}";
+		}
+		$output .= '</div>';
+		foreach ( str_split( $calories_total ) as $cur_char ) {
+			$output .= "<span class=\"oirl-counter\"><span>$cur_char</span></span>";
+		}
+		$output .= '</div>';
 	}
 
 	// Camculate pace if needed.
