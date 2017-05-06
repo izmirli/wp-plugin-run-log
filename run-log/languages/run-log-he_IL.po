@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Run Log - Development (trunk) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-05-02 21:03:30+0000\n"
+"PO-Revision-Date: 2017-05-06 17:58:26+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,39 +11,51 @@ msgstr ""
 "Language: he_IL\n"
 "Project-Id-Version: Plugins - Run Log - Development (trunk)\n"
 
-#: run-log.php:792
+#: run-log.php:1042
+msgid "Total calories"
+msgstr "סה\"כ קלוריות"
+
+#: run-log.php:802
+msgid "Display calories"
+msgstr "הצג קלוריות"
+
+#: run-log.php:798
+msgid "Display elevation"
+msgstr "הצג טיפוס מצטבר"
+
+#: run-log.php:809
 msgid "This Month"
 msgstr "חודש נוכחי"
 
-#: run-log.php:791
+#: run-log.php:808
 msgid "This Year"
 msgstr "שנה נוכחית"
 
-#: run-log.php:790
+#: run-log.php:807
 msgid "All Time"
 msgstr "אי פעם"
 
-#: run-log.php:788
+#: run-log.php:805
 msgid "Time Frame"
 msgstr "מסגרת זמן"
 
-#: run-log.php:785
+#: run-log.php:794
 msgid "Display duration"
 msgstr "תצוגת זמן"
 
-#: run-log.php:781
+#: run-log.php:790
 msgid "Display distance"
 msgstr "תצוגת מרחק"
 
-#: run-log.php:776
+#: run-log.php:785
 msgid "Title:"
 msgstr "כותרת:"
 
-#: run-log.php:718
+#: run-log.php:719
 msgid "Totals Widget"
 msgstr "וידג'ט סכומים מצטברים"
 
-#: run-log.php:716
+#: run-log.php:717
 msgid "Show total distance/duration of your activeties"
 msgstr "הצגת סכומים מצטברים של מרחקי ו/או זמני הריצות"
 
@@ -83,15 +95,15 @@ msgstr "יש לבחור ביחידת מרחק של קילומטרים (ק\"מ) �
 msgid "http://run-log.gameiz.net/"
 msgstr ""
 
-#: run-log.php:996
+#: run-log.php:1015
 msgid "Total elevation"
 msgstr "טיפוס מצטבר"
 
-#: run-log.php:360 run-log.php:1008
+#: run-log.php:360 run-log.php:1027
 msgid "m"
 msgstr "מ'"
 
-#: run-log.php:358 run-log.php:1008
+#: run-log.php:358 run-log.php:1027
 msgid "ft"
 msgstr "רגל"
 
@@ -107,11 +119,11 @@ msgstr "מספר פעילות באתר סטרבה"
 msgid "Strava"
 msgstr "סטרבה"
 
-#: run-log.php:1019
+#: run-log.php:1064
 msgid "Average pace"
 msgstr "קצב ממוצע"
 
-#: run-log.php:1016
+#: run-log.php:1061
 msgid "Average speed"
 msgstr "מהירות ממוצעת"
 
@@ -143,11 +155,11 @@ msgstr "התמעת פעילות ממקור חיצוני"
 msgid "Should the run data box be added to the excerpt?"
 msgstr "האם להוסיף את תצוגת נתוני הריצה לתקציר?"
 
-#: run-log.php:953 run-log.php:976
+#: run-log.php:972 run-log.php:995
 msgid "Total duration"
 msgstr "זמן כולל"
 
-#: run-log.php:897 run-log.php:915
+#: run-log.php:916 run-log.php:934
 msgid "Total distance"
 msgstr "מרחק כולל"
 
@@ -195,143 +207,143 @@ msgstr "https://profiles.wordpress.org/izem"
 msgid "Oren Izmirli"
 msgstr "אורן איזמירלי"
 
-#: run-log.php:1125
+#: run-log.php:1170
 msgid "Gear Not Found"
 msgstr "ציוד לא נמצא"
 
-#: run-log.php:1124
+#: run-log.php:1169
 msgid "Choose from the most used gears"
 msgstr "בחר מתוך פרטי הציוד השכיחים ביותר"
 
-#: run-log.php:1123
+#: run-log.php:1168
 msgid "Add or remove gears"
 msgstr "הוספה או הסרה של ציוד"
 
-#: run-log.php:1122
+#: run-log.php:1167
 msgid "Search Gears"
 msgstr "חיפוש ציוד"
 
-#: run-log.php:1121
+#: run-log.php:1166
 msgid "Separate gears with commas"
 msgstr "הפרד פרטי ציוד בעזרת פסיקים"
 
-#: run-log.php:1120
+#: run-log.php:1165
 msgid "Update Gear"
 msgstr "עדכון ציוד"
 
-#: run-log.php:1119
+#: run-log.php:1164
 msgid "Edit Gear"
 msgstr "ערוך ציוד"
 
-#: run-log.php:1118
+#: run-log.php:1163
 msgid "Add New Gear"
 msgstr "הוספת ציוד חדש"
 
-#: run-log.php:1117
+#: run-log.php:1162
 msgid "New Gear Name"
 msgstr "שם הציוד החדש"
 
-#: run-log.php:1116
+#: run-log.php:1161
 msgid "Parent Gear:"
 msgstr "ציוד אב"
 
-#: run-log.php:1115
+#: run-log.php:1160
 msgid "Parent Gear"
 msgstr "ציוד אב"
 
-#: run-log.php:1114
+#: run-log.php:1159
 msgid "All Gears"
 msgstr "כל פרטי הציוד"
 
-#: run-log.php:548 run-log.php:1113
+#: run-log.php:548 run-log.php:1158
 msgid "Gear"
 msgstr "ציוד"
 
-#: run-log.php:1112
+#: run-log.php:1157
 msgctxt "Taxonomy Singular Name"
 msgid "Gear"
 msgstr "ציוד"
 
-#: run-log.php:1111
+#: run-log.php:1156
 msgctxt "Taxonomy General Name"
 msgid "Gears"
 msgstr "פרטי ציוד"
 
-#: run-log.php:1079
+#: run-log.php:1124
 msgid "Goal Not Found"
 msgstr "היעד לא נמצא"
 
-#: run-log.php:1078
+#: run-log.php:1123
 msgid "Choose from the most used goals"
 msgstr "בחר מתוך היעדים הנמצאים בשימוש נפוץ"
 
-#: run-log.php:1077
+#: run-log.php:1122
 msgid "Add or remove goals"
 msgstr "הוספה או הסרה של יעדים"
 
-#: run-log.php:1076
+#: run-log.php:1121
 msgid "Search goals"
 msgstr "חיפוש יעד"
 
-#: run-log.php:1075
+#: run-log.php:1120
 msgid "Separate goals with commas"
 msgstr "הפרד את היעדים בעזרת פסיקים"
 
-#: run-log.php:1074
+#: run-log.php:1119
 msgid "Update Goal"
 msgstr "עדכון יעד"
 
-#: run-log.php:1073
+#: run-log.php:1118
 msgid "Edit Goal"
 msgstr "ערוך יעד"
 
-#: run-log.php:1072
+#: run-log.php:1117
 msgid "Add New Goal"
 msgstr "הוספת יעד"
 
-#: run-log.php:1071
+#: run-log.php:1116
 msgid "New Goal Name"
 msgstr "שם היעד החדש"
 
-#: run-log.php:1070
+#: run-log.php:1115
 msgid "Parent Goal:"
 msgstr "יעד אב"
 
-#: run-log.php:1069
+#: run-log.php:1114
 msgid "Parent Goal"
 msgstr "יעד אב"
 
-#: run-log.php:1068
+#: run-log.php:1113
 msgid "All Goals"
 msgstr "כל היעדים"
 
-#: run-log.php:542 run-log.php:1067
+#: run-log.php:542 run-log.php:1112
 msgid "Goal"
 msgstr "יעד"
 
-#: run-log.php:1066
+#: run-log.php:1111
 msgctxt "Taxonomy Singular Name"
 msgid "Goal"
 msgstr "יעד"
 
-#: run-log.php:1065
+#: run-log.php:1110
 msgctxt "Taxonomy General Name"
 msgid "Goals"
 msgstr "יעדים"
 
-#: run-log.php:620 run-log.php:1020
+#: run-log.php:620 run-log.php:1065
 msgid "min/km"
 msgstr "דקות לק\"מ"
 
-#: run-log.php:618 run-log.php:1020
+#: run-log.php:618 run-log.php:1065
 msgid "min/mi"
 msgstr "דקות למייל"
 
-#: run-log.php:612 run-log.php:1017
+#: run-log.php:612 run-log.php:1062
 msgid "km/h"
 msgstr "קמ\"ש"
 
-#: run-log.php:610 run-log.php:1017
+#: run-log.php:610 run-log.php:1062
 msgid "mi/h"
 msgstr "מייל לשעה"
 
@@ -383,13 +395,13 @@ msgstr "קצב"
 msgid "Pace/Speed display"
 msgstr "תצוגת קצב/מהירות"
 
-#: run-log.php:227 run-log.php:346 run-log.php:595 run-log.php:912
-#: run-log.php:916
+#: run-log.php:227 run-log.php:346 run-log.php:595 run-log.php:931
+#: run-log.php:935
 msgid "mi"
 msgstr "מייל"
 
-#: run-log.php:224 run-log.php:348 run-log.php:595 run-log.php:912
-#: run-log.php:916
+#: run-log.php:224 run-log.php:348 run-log.php:595 run-log.php:931
+#: run-log.php:935
 msgid "km"
 msgstr "ק\"מ"
 
@@ -461,7 +473,7 @@ msgstr "כל הריצות"
 msgid "Parent Run:"
 msgstr "ריצת אם"
 
-#. #-#-#-#-#  run-log-code.pot (Run Log 1.7.0)  #-#-#-#-#
+#. #-#-#-#-#  run-log-code.pot (Run Log 1.7.2)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: run-log.php:90
 msgid "Run Log"

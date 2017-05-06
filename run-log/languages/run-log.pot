@@ -1,86 +1,79 @@
 # Copyright (C) 2016 Run Log
 # This file is distributed under the same license as the Run Log package.
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Run Log 1.5.2\n"
+"Project-Id-Version: Run Log 1.7.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/run-log\n"
-"POT-Creation-Date: 2016-07-11 05:57:22+00:00\n"
+"POT-Creation-Date: 2017-05-06 21:05+0300\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: https://profiles.wordpress.org/izem\n"
+"X-Generator: Poedit 2.0.1\n"
+"X-Poedit-KeywordsList: __;_e;esc_html__;esc_html_e;esc_attr__;esc_attr_e\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPath-0: .\n"
 
-#: run-log.php:104
-msgctxt "Post Type General Name"
-msgid "Runs"
-msgstr ""
-
-#: run-log.php:105
-msgctxt "Post Type Singular Name"
-msgid "Run"
-msgstr ""
-
-#. #-#-#-#-#  plugin.pot (Run Log 1.5.2)  #-#-#-#-#
-#. Plugin Name of the plugin/theme
-#: run-log.php:106
+#: run-log.php:90
 msgid "Run Log"
 msgstr ""
 
-#: run-log.php:107
+#: run-log.php:91
 msgid "Parent Run:"
 msgstr ""
 
-#: run-log.php:108
+#: run-log.php:92
 msgid "All Runs"
 msgstr ""
 
-#: run-log.php:109
+#: run-log.php:93
 msgid "View Run"
 msgstr ""
 
-#: run-log.php:110
+#: run-log.php:94
 msgid "Add New Run"
 msgstr ""
 
-#: run-log.php:111
+#: run-log.php:95
 msgid "Add New"
 msgstr ""
 
-#: run-log.php:112
+#: run-log.php:96
 msgid "Edit Run"
 msgstr ""
 
-#: run-log.php:113
+#: run-log.php:97
 msgid "Update Run"
 msgstr ""
 
-#: run-log.php:114
+#: run-log.php:98
 msgid "Search Run"
 msgstr ""
 
-#: run-log.php:115
+#: run-log.php:99
 msgid "Not run found"
 msgstr ""
 
-#: run-log.php:116
+#: run-log.php:100
 msgid "Not run found in Trash"
 msgstr ""
 
-#: run-log.php:119
+#: run-log.php:103
 msgid "oi_run_log_post"
 msgstr ""
 
-#: run-log.php:120
+#: run-log.php:104
 msgid "Log entry for a specific run"
 msgstr ""
 
-#: run-log.php:149 run-log.php:218
+#: run-log.php:133 run-log.php:218
 msgid "Run Log Options"
 msgstr ""
 
-#: run-log.php:161
+#: run-log.php:145
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
@@ -93,325 +86,380 @@ msgid "Control the Run Log settings by updating these values"
 msgstr ""
 
 #: run-log.php:221
+msgid ""
+"Select km (Kilometer) to use the metric system for distance, as well as "
+"for pace (minutes per kilometer), speed (kilometers per hour) and "
+"elevation. Select mi (Mile) to use the imperial/USC system."
+msgstr ""
+
+#: run-log.php:222
 msgid "Distance unit"
 msgstr ""
 
-#: run-log.php:223 run-log.php:323 run-log.php:551 run-log.php:694
-#: run-log.php:698
+#: run-log.php:224 run-log.php:348 run-log.php:595 run-log.php:931
+#: run-log.php:935
 msgid "km"
 msgstr ""
 
-#: run-log.php:226 run-log.php:321 run-log.php:551 run-log.php:694
-#: run-log.php:698
+#: run-log.php:227 run-log.php:346 run-log.php:595 run-log.php:931
+#: run-log.php:935
 msgid "mi"
 msgstr ""
 
-#: run-log.php:230
+#: run-log.php:231
+msgid ""
+"What is your preference? minutes per kilometer/mile? or kilometers/miles "
+"per hour?"
+msgstr ""
+
+#: run-log.php:232
 msgid "Pace/Speed display"
 msgstr ""
 
-#: run-log.php:232 run-log.php:571
+#: run-log.php:234 run-log.php:615
 msgid "Pace"
 msgstr ""
 
-#: run-log.php:235 run-log.php:563
+#: run-log.php:237 run-log.php:607
 msgid "Speed"
 msgstr ""
 
-#: run-log.php:239
+#: run-log.php:241
+msgid ""
+"Should light or dark colors be used (example: white/black background for "
+"activity's info box)?"
+msgstr ""
+
+#: run-log.php:242
 msgid "Style theme"
 msgstr ""
 
-#: run-log.php:241
+#: run-log.php:244
 msgid "Light"
 msgstr ""
 
-#: run-log.php:244
+#: run-log.php:247
 msgid "Dark"
 msgstr ""
 
-#: run-log.php:248
+#: run-log.php:251
+msgid ""
+"Should activity's info box be displayed at post top? bottom? or not at all "
+"(just trak distance, time, etc.)?"
+msgstr ""
+
+#: run-log.php:252
 msgid "Display position"
 msgstr ""
 
-#: run-log.php:250
+#: run-log.php:254
 msgid "top"
 msgstr ""
 
-#: run-log.php:253
+#: run-log.php:257
 msgid "bottom"
 msgstr ""
 
-#: run-log.php:256
+#: run-log.php:260
 msgid "without"
 msgstr ""
 
-#: run-log.php:259
+#: run-log.php:264
 msgid "Should the run data box be added to the excerpt?"
 msgstr ""
 
-#: run-log.php:260
+#: run-log.php:265
 msgid "Display on excerpt"
 msgstr ""
 
-#: run-log.php:262 run-log.php:346
+#: run-log.php:267 run-log.php:277 run-log.php:287 run-log.php:371
 msgid "No"
 msgstr ""
 
-#: run-log.php:265
+#: run-log.php:270 run-log.php:280 run-log.php:290
 msgid "Yes"
 msgstr ""
 
-#: run-log.php:269
+#: run-log.php:274
+msgid ""
+"Should links to goals activety is part of be at the bottom of its run-log "
+"posts?"
+msgstr ""
+
+#: run-log.php:275
+msgid "Display goals links"
+msgstr ""
+
+#: run-log.php:284
+msgid ""
+"Should links to gear used in activety be at the bottom of its run-log "
+"posts?"
+msgstr ""
+
+#: run-log.php:285
+msgid "Display gear links"
+msgstr ""
+
+#: run-log.php:294
 msgid "Save Changes"
 msgstr ""
 
-#: run-log.php:282
+#: run-log.php:307
 msgid "Run Log Parameters"
 msgstr ""
 
-#: run-log.php:319 run-log.php:550
+#: run-log.php:344 run-log.php:594
 msgid "Distance"
 msgstr ""
 
-#: run-log.php:328 run-log.php:556
+#: run-log.php:353 run-log.php:600
 msgid "Duration"
 msgstr ""
 
-#: run-log.php:331
+#: run-log.php:356
 msgid "Elevation gain"
 msgstr ""
 
-#: run-log.php:333 run-log.php:790
+#: run-log.php:358 run-log.php:1027
 msgid "ft"
 msgstr ""
 
-#: run-log.php:335 run-log.php:790
+#: run-log.php:360 run-log.php:1027
 msgid "m"
 msgstr ""
 
-#: run-log.php:340
+#: run-log.php:365
 msgid "Calories"
 msgstr ""
 
-#: run-log.php:344
+#: run-log.php:369
 msgid "Embed activity from external source"
 msgstr ""
 
-#: run-log.php:349
+#: run-log.php:374
 msgid "Strava"
 msgstr ""
 
-#: run-log.php:352
+#: run-log.php:377
 msgid "Garmin"
 msgstr ""
 
-#: run-log.php:355
+#: run-log.php:380
 msgid "Endomondo"
 msgstr ""
 
-#: run-log.php:358
+#: run-log.php:383
 msgid "Strava embed activity"
 msgstr ""
 
-#: run-log.php:359
+#: run-log.php:384
 msgid ""
 "Enter Strava activity ID - the number at the end of activity's page address"
 msgstr ""
 
-#: run-log.php:362
+#: run-log.php:387
 msgid "Garmin Connect embed activity"
 msgstr ""
 
-#: run-log.php:363
+#: run-log.php:388
 msgid ""
 "Enter Garmin activity ID - the number at the end of activity's page address"
 msgstr ""
 
-#: run-log.php:366
+#: run-log.php:391
 msgid "Endomondo embed activity"
 msgstr ""
 
-#: run-log.php:367
+#: run-log.php:392
 msgid ""
 "Enter endomondo activity ID - the number at the end of activity's page "
 "address"
 msgstr ""
 
-#: run-log.php:566 run-log.php:799
+#: run-log.php:542 run-log.php:1112
+msgid "Goal"
+msgstr ""
+
+#: run-log.php:548 run-log.php:1158
+msgid "Gear"
+msgstr ""
+
+#: run-log.php:610 run-log.php:1062
 msgid "mi/h"
 msgstr ""
 
-#: run-log.php:568 run-log.php:799
+#: run-log.php:612 run-log.php:1062
 msgid "km/h"
 msgstr ""
 
-#: run-log.php:574 run-log.php:802
+#: run-log.php:618 run-log.php:1065
 msgid "min/mi"
 msgstr ""
 
-#: run-log.php:576 run-log.php:802
+#: run-log.php:620 run-log.php:1065
 msgid "min/km"
 msgstr ""
 
-#: run-log.php:679 run-log.php:697
-msgid "Total distance"
+#: run-log.php:717
+msgid "Show total distance/duration of your activeties"
 msgstr ""
 
-#: run-log.php:735 run-log.php:758
-msgid "Total duration"
+#: run-log.php:719
+msgid "Totals Widget"
 msgstr ""
 
-#: run-log.php:778
-msgid "Total elevation"
+#: run-log.php:785
+msgid "Title:"
+msgstr ""
+
+#: run-log.php:790
+msgid "Display distance"
+msgstr ""
+
+#: run-log.php:794
+msgid "Display duration"
 msgstr ""
 
 #: run-log.php:798
+msgid "Display elevation"
+msgstr ""
+
+#: run-log.php:802
+msgid "Display calories"
+msgstr ""
+
+#: run-log.php:805
+msgid "Time Frame"
+msgstr ""
+
+#: run-log.php:807
+msgid "All Time"
+msgstr ""
+
+#: run-log.php:808
+msgid "This Year"
+msgstr ""
+
+#: run-log.php:809
+msgid "This Month"
+msgstr ""
+
+#: run-log.php:916 run-log.php:934
+msgid "Total distance"
+msgstr ""
+
+#: run-log.php:972 run-log.php:995
+msgid "Total duration"
+msgstr ""
+
+#: run-log.php:1015
+msgid "Total elevation"
+msgstr ""
+
+#: run-log.php:1042
+msgid "Total calories"
+msgstr ""
+
+#: run-log.php:1061
 msgid "Average speed"
 msgstr ""
 
-#: run-log.php:801
+#: run-log.php:1064
 msgid "Average pace"
 msgstr ""
 
-#: run-log.php:845
-msgctxt "Taxonomy General Name"
-msgid "Goals"
-msgstr ""
-
-#: run-log.php:846
-msgctxt "Taxonomy Singular Name"
-msgid "Goal"
-msgstr ""
-
-#: run-log.php:847
-msgid "Goal"
-msgstr ""
-
-#: run-log.php:848
+#: run-log.php:1113
 msgid "All Goals"
 msgstr ""
 
-#: run-log.php:849
+#: run-log.php:1114
 msgid "Parent Goal"
 msgstr ""
 
-#: run-log.php:850
+#: run-log.php:1115
 msgid "Parent Goal:"
 msgstr ""
 
-#: run-log.php:851
+#: run-log.php:1116
 msgid "New Goal Name"
 msgstr ""
 
-#: run-log.php:852
+#: run-log.php:1117
 msgid "Add New Goal"
 msgstr ""
 
-#: run-log.php:853
+#: run-log.php:1118
 msgid "Edit Goal"
 msgstr ""
 
-#: run-log.php:854
+#: run-log.php:1119
 msgid "Update Goal"
 msgstr ""
 
-#: run-log.php:855
+#: run-log.php:1120
 msgid "Separate goals with commas"
 msgstr ""
 
-#: run-log.php:856
+#: run-log.php:1121
 msgid "Search goals"
 msgstr ""
 
-#: run-log.php:857
+#: run-log.php:1122
 msgid "Add or remove goals"
 msgstr ""
 
-#: run-log.php:858
+#: run-log.php:1123
 msgid "Choose from the most used goals"
 msgstr ""
 
-#: run-log.php:859
+#: run-log.php:1124
 msgid "Goal Not Found"
 msgstr ""
 
-#: run-log.php:891
-msgctxt "Taxonomy General Name"
-msgid "Gears"
-msgstr ""
-
-#: run-log.php:892
-msgctxt "Taxonomy Singular Name"
-msgid "Gear"
-msgstr ""
-
-#: run-log.php:893
-msgid "Gear"
-msgstr ""
-
-#: run-log.php:894
+#: run-log.php:1159
 msgid "All Gears"
 msgstr ""
 
-#: run-log.php:895
+#: run-log.php:1160
 msgid "Parent Gear"
 msgstr ""
 
-#: run-log.php:896
+#: run-log.php:1161
 msgid "Parent Gear:"
 msgstr ""
 
-#: run-log.php:897
+#: run-log.php:1162
 msgid "New Gear Name"
 msgstr ""
 
-#: run-log.php:898
+#: run-log.php:1163
 msgid "Add New Gear"
 msgstr ""
 
-#: run-log.php:899
+#: run-log.php:1164
 msgid "Edit Gear"
 msgstr ""
 
-#: run-log.php:900
+#: run-log.php:1165
 msgid "Update Gear"
 msgstr ""
 
-#: run-log.php:901
+#: run-log.php:1166
 msgid "Separate gears with commas"
 msgstr ""
 
-#: run-log.php:902
+#: run-log.php:1167
 msgid "Search Gears"
 msgstr ""
 
-#: run-log.php:903
+#: run-log.php:1168
 msgid "Add or remove gears"
 msgstr ""
 
-#: run-log.php:904
+#: run-log.php:1169
 msgid "Choose from the most used gears"
 msgstr ""
 
-#: run-log.php:905
+#: run-log.php:1170
 msgid "Gear Not Found"
-msgstr ""
-
-#. Plugin URI of the plugin/theme
-msgid "http://stuff.izmirli.org/wordpress-run-log-plugin/"
-msgstr ""
-
-#. Description of the plugin/theme
-msgid ""
-"Adds running diary capabilities - log your sporting activity with custom "
-"post type, custom fields and new taxonomies."
-msgstr ""
-
-#. Author of the plugin/theme
-msgid "Oren Izmirli"
-msgstr ""
-
-#. Author URI of the plugin/theme
-msgid "https://profiles.wordpress.org/izem"
 msgstr ""
