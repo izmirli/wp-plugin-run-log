@@ -145,6 +145,7 @@ Make sure your activity is Public - activity's privacy is set to "Everyone" (the
 6. Gears and Goals input boxes from the post edit screen.
 7. endomondo embed.
 8. STRAVA embed.
+9. Widget configuration.
 
 == Changelog ==
 
