@@ -19,7 +19,7 @@ The plugin add running diary capabilities to WordPress, so you can log and displ
 * Log distance and duration (elevation gain and calories) for each run in custom fields of run-log posts.
 * Calculate pace/speed automatically.
 * Display the above data in the post automatically.
-* Widget and shortcode for displaying totals - distance, time, elevation gain (and average pace/speed).
+* Widget and shortcode for displaying totals - distance, time, elevation gain, calories (and average pace/speed for shortcode).
 * Option to choose light or dark style theme, to blend with your theme.
 * Quick embed your STRAVA/Garmin Connect/endomondo activity in the post (displaying data and map from your account).
 * Add custom taxonomies for gear (like shoes) and goals (like "sub 4 marathon") that could be connected to run-log posts (and regular posts). You may trak distance run with shoes usage by this (as well as other gear).
