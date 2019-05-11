@@ -2,7 +2,7 @@
 /**
  * Run Log Plugin main file.
  *
- * @link              http://run-log.gameiz.net/
+ * @link              https://run-log.gameiz.net/
  * @since             1.0.0
  * @package           Run_Log
  *
