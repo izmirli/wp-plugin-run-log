@@ -1,4 +1,5 @@
 # Changelog
+* (2019-08-01). HTTPS update (Endomondo embed fix for https sites).
 * (2017-05-06). Widget tweeks.
 * (2017-05-02). New Widget for displaying activities totals.
 * (2017-03-27). Adding gear and goal summery data to their archive page and links to these archives from run-log posts.

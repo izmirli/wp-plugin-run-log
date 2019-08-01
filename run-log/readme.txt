@@ -3,7 +3,7 @@ Contributors: izem
 Tags: training log, training diary, running, sport, run log, run diary, running log, run, strava, garmin connect, garmin, endomondo, jogging, total distance, total time, total duration, share runs
 Requires at least: 3.8
 Tested up to: 5.2
-Stable tag: 1.7.2
+Stable tag: 1.7.3
 License: GPLv2 (or later)
 License URI: https://wordpress.org/about/gpl/
 
@@ -148,6 +148,9 @@ Make sure your activity is Public - activity's privacy is set to "Everyone" (the
 9. Widget configuration.
 
 == Changelog ==
+
+= 1.7.3 =
+* Update some URLs to HTTPS (Endomondo embed fix for https sites).
 
 = 1.7.2 =
 * Added elevation and calories to widget display options.

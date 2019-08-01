@@ -8,9 +8,9 @@
  *
  * @wordpress-plugin
  * Plugin Name: Run Log
- * Plugin URI: http://run-log.gameiz.net/
+ * Plugin URI: https://run-log.gameiz.net/
  * Description: Adds running diary capabilities - log your sport activities with custom post type, custom fields and new taxonomies.
- * Version: 1.7.2
+ * Version: 1.7.3
  * Author: Oren Izmirli
  * Author URI: https://profiles.wordpress.org/izem
  * Text Domain: run-log
@@ -573,7 +573,7 @@ function oirl_add_run_log_data_to_post( $content, $excerpt = false ) {
 			$garmin_iframe = "<iframe src='https://connect.garmin.com/activity/embed/$garmin_activity' width='465' height='500' frameborder='0'></iframe>\n";
 			return ( 'bottom' === $add_at_pos ? $content . $garmin_iframe . $bottom_links : $garmin_iframe . $content . $bottom_links );
 	} elseif ( ( ! $embed_external || 'endomondo' === $embed_external) && $endomondo_activity && preg_match( '/^\d+$/', $endomondo_activity ) && ! $excerpt ) {
-		$endomondo_iframe = "<iframe src='http://www.endomondo.com/embed/workouts?w=$endomondo_activity&width=580&height=425' width='580' height='425' frameborder='1'></iframe>\n";
+		$endomondo_iframe = "<iframe src='https://www.endomondo.com/embed/workouts?w=$endomondo_activity&width=580&height=425' width='580' height='425' frameborder='1'></iframe>\n";
 		return ( 'bottom' === $add_at_pos ? $content . $endomondo_iframe . $bottom_links : $endomondo_iframe . $content . $bottom_links );
 	}
 
