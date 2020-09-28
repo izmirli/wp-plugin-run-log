@@ -412,7 +412,7 @@ function oirl_admin_scripts( $hook ) {
 	}
 	wp_enqueue_script( 'oirl-admin-script', plugin_dir_url( __FILE__ ) . '/js/admin-script.js', array( 'jquery', 'jquery-ui-tooltip' ), '1.0.1', true );
 	$css_file_name = 'run-log' . (is_rtl() ? '-rtl' : '') . '.css';
-	wp_enqueue_style( 'oirl-css', plugin_dir_url( __FILE__ ) . "/$css_file_name" );
+	wp_enqueue_style( 'oirl-css', plugin_dir_url( __FILE__ ) . "/$css_file_name", null, '1.2.0' );
 }
 add_action( 'admin_enqueue_scripts', 'oirl_admin_scripts' );
 
@@ -695,7 +695,7 @@ add_filter( 'get_the_archive_description', 'oirl_add_run_log_data_to_goal' );
  */
 function iorl_enqueue_css() {
 	$css_file_name = 'run-log' . (is_rtl() ? '-rtl' : '') . '.css';
-	wp_enqueue_style( 'wpdocsPluginStylesheet', plugins_url( $css_file_name, __FILE__ ), null, '1.1.0' );
+	wp_enqueue_style( 'oirl_plugin_stylesheet', plugins_url( $css_file_name, __FILE__ ), null, '1.2.0' );
 }
 add_action( 'wp_enqueue_scripts', 'iorl_enqueue_css' );
 
