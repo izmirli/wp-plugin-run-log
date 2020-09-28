@@ -149,6 +149,9 @@ Make sure your activity is Public - activity's privacy is set to "Everyone" (the
 
 == Changelog ==
 
+= 1.7.4 =
+* Update some css files for more robust display.
+
 = 1.7.3 =
 * Update some URLs to HTTPS (Endomondo embed fix for https sites).
 
