@@ -25,7 +25,9 @@
 	padding: 5px;
 	border-radius: 13px;
 	box-shadow: 2px 2px;
+	font-family: "helvetica neue", helvetica, sans-serif;
 }
+
 .oirl-light.oirl-data-box { border: 1px dotted black; }
 .oirl-dark.oirl-data-box { border: 1px dotted #fff; }
 
@@ -35,6 +37,7 @@
 	float: left;
 	margin: 3px 5px 0;
 	font-size: 16px;
+	line-height: normal;
 }
 
 .oirl-data-box .oirl-data-value {

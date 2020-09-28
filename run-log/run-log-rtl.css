@@ -9,32 +9,34 @@
  .oirl .smaller { font-size: 75%; }
 
 .oirl-light {
-	color: black;
 	background-color: #fff;
+	color: black;
 }
 
 .oirl-dark {
-	color: #fff;
 	background-color: black;
+	color: #fff;
 }
 
 .oirl-data-box {
-	width: 490px;
-	height: 60px;
-	margin: 15px auto;
-	padding: 5px;
 	border-radius: 13px;
-	box-shadow: 2px 2px;
+  box-shadow: 2px 2px;
+  font-family: "helvetica neue", helvetica, sans-serif;
+  height: 60px;
+  margin: 15px auto;
+  padding: 5px;
+  width: 490px;
 }
 .oirl-light.oirl-data-box { border: 1px dotted black; }
 .oirl-dark.oirl-data-box { border: 1px dotted #fff; }
 
 .oirl-data-box .oirl-data {
-	position: relative;
-	width: 30%;
-	float: right;
-	margin: 0 5px 3px;
-	font-size: 16px;
+  float: right;
+  font-size: 16px;
+  line-height: normal;
+  margin: 0 5px 3px;
+  position: relative;
+  width: 30%;
 }
 
 .oirl-data-box .oirl-data-value {
@@ -44,26 +46,26 @@
 }
 
 .oirl-data-box .oirl-data-desc {
-	position: absolute;
-	bottom: -5px; right: 5px;
-	font-size: 11px;
-	font-weight: bold;
-	color: #999;
+  bottom: -5px; right: 5px;
+  color: #999;
+  font-size: 11px;
+  font-weight: bold;
+  position: absolute;
 }
 
 /* counter */
 .oirl-total-box { text-align: center; }
 .oirl-light.oirl-total-box,
 .oirl-dark.oirl-total-box {
-	color: inherit;
-	background-color: inherit;
+  background-color: inherit;
+  color: inherit;
 }
 
 .oirl-total-box .oirl-data {
-	display: inline-block;
-	margin: 3px auto;
-	padding: 5px;
-	border-radius: 5px;
+  border-radius: 5px;
+  display: inline-block;
+  margin: 3px auto;
+  padding: 5px;
 }
 .oirl-light.oirl-total-box .oirl-data {
 	color: #000;
