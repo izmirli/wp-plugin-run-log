@@ -10,7 +10,7 @@
  * Plugin Name: Run Log
  * Plugin URI: https://run-log.gameiz.net/
  * Description: Adds running diary capabilities - log your sport activities with custom post type, custom fields and new taxonomies.
- * Version: 1.7.4
+ * Version: 1.7.5
  * Author: Oren Izmirli
  * Author URI: https://profiles.wordpress.org/izem
  * Text Domain: run-log
@@ -367,7 +367,7 @@ function oirl_run_log_meta_boxes_display( $post ) {
 		<br>
 		<div id="oirl-embed-external">
 			<?php echo esc_html__( 'Embed activity from external source', 'run-log' )?>:
-			<input type="radio" name="oirl-mb-embed-external" value="no" id="oirl-mb-embed-external-no" <?php echo ( ! in_array( $embed_external, array( 'strava', 'garmin', 'endomondo' ), true ) ? 'checked' : '')?>>
+			<input type="radio" name="oirl-mb-embed-external" value="no" id="oirl-mb-embed-external-no" <?php echo ( ! in_array( $embed_external, array( 'strava', 'garmin' ), true ) ? 'checked' : '')?>>
 			<label for="oirl-mb-embed-external-no"><?php echo esc_html__( 'No' )?></label>
 			&nbsp;
 			<input type="radio" name="oirl-mb-embed-external" value="strava" id="oirl-mb-embed-external-strava" <?php echo ( 'strava' === $embed_external ? 'checked' : '')?>>
@@ -375,9 +375,6 @@ function oirl_run_log_meta_boxes_display( $post ) {
 			&nbsp;
 			<input type="radio" name="oirl-mb-embed-external" value="garmin" id="oirl-mb-embed-external-garmin" <?php echo ( 'garmin' === $embed_external ? 'checked' : '')?>>
 			<label for="oirl-mb-embed-external-garmin"><?php echo esc_html__( 'Garmin', 'run-log' )?></label>
-			&nbsp;
-			<input type="radio" name="oirl-mb-embed-external" value="endomondo" id="oirl-mb-embed-external-endomondo" <?php echo ( 'endomondo' === $embed_external ? 'checked' : '')?>>
-			<label for="oirl-mb-embed-external-endomondo"><?php echo esc_html__( 'Endomondo', 'run-log' )?></label>
 			<br>
 			<div id="oirl-div-embed-external-strava" style="display:none;">
 				<label for="oirl-mb-strava-activity"><?php echo esc_html__( 'Strava embed activity', 'run-log' )?>:</label>
@@ -386,10 +383,6 @@ function oirl_run_log_meta_boxes_display( $post ) {
 			<div id="oirl-div-embed-external-garmin" style="display:none;">
 				<label for="oirl-mb-garmin-activity"><?php echo esc_html__( 'Garmin Connect embed activity', 'run-log' )?>:</label>
 				<input name="oirl-mb-garmin-activity" type="number" size="8" maxlength="12" value="<?php echo esc_attr( get_post_meta( $post->ID, 'oirl-mb-garmin-activity', true ) ); ?>" title="<?php echo esc_attr__( 'Enter Garmin activity ID - the number at the end of activity\'s page address', 'run-log' )?>">
-			</div>
-			<div id="oirl-div-embed-external-endomondo" style="display:none;">
-				<label for="oirl-mb-endomondo-activity"><?php echo esc_html__( 'Endomondo embed activity', 'run-log' )?>:</label>
-				<input name="oirl-mb-endomondo-activity" type="number" size="8" maxlength="12" value="<?php echo esc_attr( get_post_meta( $post->ID, 'oirl-mb-endomondo-activity', true ) ); ?>" title="<?php echo esc_attr__( 'Enter endomondo activity ID - the number at the end of activity\'s page address', 'run-log' )?>">
 			</div>
 		</div>
 	</div>
@@ -478,8 +471,8 @@ function oirl_save_run_log_meta_boxes( $post_id, $post ) {
 		update_post_meta( $post_id, 'oirl-mb-calories', $calories );
 	}
 
-	$oirl_mb_embed_external = filter_input( INPUT_POST, 'oirl-mb-embed-external', FILTER_VALIDATE_REGEXP, array( 'options' => array( 'regexp' => '/^(no|strava|garmin|endomondo)$/' ) ) );
-	if ( isset( $oirl_mb_embed_external ) && in_array( $oirl_mb_embed_external, array( 'no', 'strava', 'garmin', 'endomondo' ), true ) ) {
+	$oirl_mb_embed_external = filter_input( INPUT_POST, 'oirl-mb-embed-external', FILTER_VALIDATE_REGEXP, array( 'options' => array( 'regexp' => '/^(no|strava|garmin)$/' ) ) );
+	if ( isset( $oirl_mb_embed_external ) && in_array( $oirl_mb_embed_external, array( 'no', 'strava', 'garmin' ), true ) ) {
 		update_post_meta( $post_id, 'oirl-mb-embed-external', $oirl_mb_embed_external );
 	}
 
@@ -499,13 +492,6 @@ function oirl_save_run_log_meta_boxes( $post_id, $post ) {
 		delete_post_meta( $post_id, 'oirl-mb-garmin-activity' );
 	}
 
-	$oirl_mb_endomondo_activity = filter_input( INPUT_POST, 'oirl-mb-endomondo-activity', FILTER_SANITIZE_NUMBER_INT );
-	if ( isset( $oirl_mb_endomondo_activity ) && is_numeric( $oirl_mb_endomondo_activity ) ) {
-		$endomondo_activity = intval( $oirl_mb_endomondo_activity );
-		update_post_meta( $post_id, 'oirl-mb-endomondo-activity', $endomondo_activity );
-	} elseif ( get_post_meta( $post_id, 'oirl-mb-endomondo-activity' ) ) {
-		delete_post_meta( $post_id, 'oirl-mb-endomondo-activity' );
-	}
 }
 // register this function to save_post action with 2 args.
 add_action( 'save_post', 'oirl_save_run_log_meta_boxes', 10, 2 );
@@ -562,9 +548,8 @@ function oirl_add_run_log_data_to_post( $content, $excerpt = false ) {
 	$embed_external = get_post_meta( $GLOBALS['post']->ID, 'oirl-mb-embed-external', true );
 	$strava_activity = get_post_meta( $GLOBALS['post']->ID, 'oirl-mb-strava-activity', true );
 	$garmin_activity = get_post_meta( $GLOBALS['post']->ID, 'oirl-mb-garmin-activity', true );
-	$endomondo_activity = get_post_meta( $GLOBALS['post']->ID, 'oirl-mb-endomondo-activity', true );
 
-	// Embed strava/garmin/endomondo activity if got its ID (and it isn't an excerpt).
+	// Embed strava/garmin activity if got its ID (and it isn't an excerpt).
 	if ( ( ! $embed_external || 'strava' === $embed_external) && $strava_activity && preg_match( '/^\d+$/', $strava_activity ) && ! $excerpt ) {
 		$unit_system = 'mi' === $distance_unit ? 'imperial' : 'metric';
 		$strava_embed = "<a href='https://www.strava.com/activities/$strava_activity' rel='noopener noreferrer' target='_blank'><img  src='https://meme.strava.com/map_based/activities/$strava_activity.jpeg?height=630&width=1200&hl=en-US&unit_system=$unit_system&cfs=1&upscale=1' alt='Activity data and map from STRAVA' width='500' height='263' border='0'></a>\n";
@@ -572,9 +557,6 @@ function oirl_add_run_log_data_to_post( $content, $excerpt = false ) {
 	} elseif ( ( ! $embed_external || 'garmin' === $embed_external ) && $garmin_activity && preg_match( '/^\d+$/', $garmin_activity ) && ! $excerpt ) {
 			$garmin_iframe = "<iframe src='https://connect.garmin.com/activity/embed/$garmin_activity' width='465' height='500' frameborder='0'></iframe>\n";
 			return ( 'bottom' === $add_at_pos ? $content . $garmin_iframe . $bottom_links : $garmin_iframe . $content . $bottom_links );
-	} elseif ( ( ! $embed_external || 'endomondo' === $embed_external) && $endomondo_activity && preg_match( '/^\d+$/', $endomondo_activity ) && ! $excerpt ) {
-		$endomondo_iframe = "<iframe src='https://www.endomondo.com/embed/workouts?w=$endomondo_activity&width=580&height=425' width='580' height='425' frameborder='1'></iframe>\n";
-		return ( 'bottom' === $add_at_pos ? $content . $endomondo_iframe . $bottom_links : $endomondo_iframe . $content . $bottom_links );
 	}
 
 	$distance = get_post_meta( $GLOBALS['post']->ID, 'oirl-mb-distance', true );
