@@ -1,8 +1,8 @@
 === Run Log ===
 Contributors: izem
 Tags: training log, training diary, running, sport, run log, run diary, running log, run, strava, garmin connect, garmin, jogging, total distance, total time, total duration, share runs
-Requires at least: 3.8
-Tested up to: 5.8
+Requires at least: 4.0
+Tested up to: 6.0
 Stable tag: 1.7.5
 License: GPLv2 (or later)
 License URI: https://wordpress.org/about/gpl/
