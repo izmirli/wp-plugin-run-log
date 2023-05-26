@@ -10,7 +10,7 @@
  * Plugin Name: Run Log
  * Plugin URI: https://run-log.gameiz.net/
  * Description: Adds running diary capabilities - log your sport activities with custom post type, custom fields and new taxonomies.
- * Version: 1.7.5
+ * Version: 1.7.6
  * Author: Oren Izmirli
  * Author URI: https://profiles.wordpress.org/izem
  * Text Domain: run-log
@@ -555,7 +555,7 @@ function oirl_add_run_log_data_to_post( $content, $excerpt = false ) {
 		$strava_embed = "<a href='https://www.strava.com/activities/$strava_activity' rel='noopener noreferrer' target='_blank'><img  src='https://meme.strava.com/map_based/activities/$strava_activity.jpeg?height=630&width=1200&hl=en-US&unit_system=$unit_system&cfs=1&upscale=1' alt='Activity data and map from STRAVA' width='500' height='263' border='0'></a>\n";
 		return ( 'bottom' === $add_at_pos ? $content . $strava_embed . $bottom_links : $strava_embed . $content . $bottom_links );
 	} elseif ( ( ! $embed_external || 'garmin' === $embed_external ) && $garmin_activity && preg_match( '/^\d+$/', $garmin_activity ) && ! $excerpt ) {
-			$garmin_iframe = "<iframe src='https://connect.garmin.com/activity/embed/$garmin_activity' width='465' height='500' frameborder='0'></iframe>\n";
+			$garmin_iframe = "<iframe src='https://connect.garmin.com/modern/activity/embed/$garmin_activity' width='465' height='500' frameborder='0'></iframe>\n";
 			return ( 'bottom' === $add_at_pos ? $content . $garmin_iframe . $bottom_links : $garmin_iframe . $content . $bottom_links );
 	}
 
