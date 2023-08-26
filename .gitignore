@@ -38,3 +38,6 @@ dwsync.xml
 intermediate
 .idea
 cache
+
+# windows event files
+*.event

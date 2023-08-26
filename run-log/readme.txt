@@ -2,7 +2,7 @@
 Contributors: izem
 Tags: training log, training diary, running, sport, run log, run diary, running log, run, strava, garmin connect, garmin, jogging, total distance, total time, total duration, share runs
 Requires at least: 4.0
-Tested up to: 6.2
+Tested up to: 6.3
 Stable tag: 1.7.6
 License: GPLv2 (or later)
 License URI: https://wordpress.org/about/gpl/
@@ -147,6 +147,9 @@ Make sure your activity is Public - activity's privacy is set to "Everyone" (the
 8. Widget configuration.
 
 == Changelog ==
+
+= 1.7.6 =
+* Update Garmin enbed URL
 
 = 1.7.5 =
 * Removed Endomondo embed (Endomondo shut down on 31 December 2020).
