@@ -54,6 +54,26 @@
 	color: #999;
 }
 
+/* for narrow display use @container at-rule */
+.entry-content {
+	container-type: inline-size;
+	container-name: entry-content;
+}
+
+@container entry-content (width < 500px) {
+	.oirl-data-box {
+		height: 140px;
+		margin: 0 5px 10px;
+		width: unset;
+	}
+
+	.oirl-data-box .oirl-data {
+		width: 95%;
+		height: 33px;
+		margin: 0 5px 10px;
+	}
+}
+
 /* counter */
 .oirl-total-box { text-align: center; }
 .oirl-light.oirl-total-box,
