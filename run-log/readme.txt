@@ -3,7 +3,7 @@ Contributors: izem
 Tags: training log, training diary, running, sport, run log, run diary, running log, run, strava, garmin connect, garmin, jogging, total distance, total time, total duration, share runs
 Requires at least: 4.0
 Tested up to: 6.5
-Stable tag: 1.7.7
+Stable tag: 1.7.9
 License: GPLv2 (or later)
 License URI: https://wordpress.org/about/gpl/
 
@@ -148,7 +148,7 @@ Make sure your activity is Public - activity's privacy is set to "Everyone" (the
 
 == Changelog ==
 
-= 1.7.7 =
+= 1.7.9 =
 * Updated CSS for mobile/narrow display.
 
 = 1.7.6 =
