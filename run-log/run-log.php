@@ -2,13 +2,13 @@
 /**
  * Run Log Plugin main file.
  *
- * @link              https://run-log.gameiz.net/
+ * @link              https://izmirli.org/run-log/
  * @since             1.0.0
  * @package           Run_Log
  *
  * @wordpress-plugin
  * Plugin Name: Run Log
- * Plugin URI: https://run-log.gameiz.net/
+ * Plugin URI: https://izmirli.org/run-log/
  * Description: Adds running diary capabilities - log your sport activities with custom post type, custom fields and new taxonomies.
  * Version: 1.7.9
  * Author: Oren Izmirli
