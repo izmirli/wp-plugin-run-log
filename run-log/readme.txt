@@ -1,11 +1,11 @@
 === Run Log ===
 Contributors: izem
-Tags: training log, training diary, running, sport, run log, run diary, running log, run, strava, garmin connect, garmin, jogging, total distance, total time, total duration, share runs
+Tags: training log, running, sport, run diary, strava, garmin
 Requires at least: 4.0
-Tested up to: 6.6
-Stable tag: 1.7.10
-License: GPLv2 (or later)
-License URI: https://wordpress.org/about/gpl/
+Tested up to: 6.8
+Stable tag: 1.7.11
+License: GPL-2.0-or-later
+License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html
 
 Add running diary capabilities - log your sport activities, track and display: distance, duration, gear (e.g. shoes), elevation gain, calories, etc.
 
@@ -147,6 +147,12 @@ Make sure your activity is Public - activity's privacy is set to "Everyone" (the
 8. Widget configuration.
 
 == Changelog ==
+
+= 1.7.11 =
+* Add nonce to admin settings and implement `Plugin Check` suggestions.
+
+= 1.7.10 =
+* Updated plagin website.
 
 = 1.7.9 =
 * Updated CSS for mobile/narrow display.

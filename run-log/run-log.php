@@ -5,16 +5,17 @@
  * @link              https://izmirli.org/run-log/
  * @since             1.0.0
  * @package           Run_Log
+ * @license           GPL-2.0-or-later
  *
  * @wordpress-plugin
  * Plugin Name: Run Log
  * Plugin URI: https://izmirli.org/run-log/
  * Description: Adds running diary capabilities - log your sport activities with custom post type, custom fields and new taxonomies.
- * Version: 1.7.10
+ * Version: 1.7.11
  * Author: Oren Izmirli
  * Author URI: https://profiles.wordpress.org/izem
  * Text Domain: run-log
- * License: GPL2
+ * License: GPL v2 or later
  */
 
 // If this file is called directly, abort.
@@ -142,7 +143,12 @@ add_action( 'admin_menu', 'oirl_plugin_menu' );
  */
 function oirl_plugin_options() {
 	if ( ! current_user_can( 'manage_options' ) ) {
-		wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
+		wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'run-log' ) );
+	}
+
+	// Verify nonce if form is submitted.
+	if ( isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] === 'POST' ) {
+		check_admin_referer( 'oirl_options_update_action', 'oirl_options_nonce' );
 	}
 
 	// Get current options from db.
@@ -218,6 +224,7 @@ function oirl_plugin_options() {
 	<h3><?php echo esc_html__( 'Run Log Options', 'run-log' )?></h3>
 	<p><?php echo esc_html__( 'Control the Run Log settings by updating these values', 'run-log' )?>:<p>
 	<form name="form1" method="post">
+		<?php wp_nonce_field( 'oirl_options_update_action', 'oirl_options_nonce' ); ?>
 		<div title="<?php echo esc_attr__( 'Select km (Kilometer) to use the metric system for distance, as well as for pace (minutes per kilometer), speed (kilometers per hour) and elevation. Select mi (Mile) to use the imperial/USC system.', 'run-log' ) ?>">
 			<?php echo esc_html__( 'Distance unit', 'run-log' )?>:
 			<input type="radio" name="oirl-distance-unit" value="km" id="oirl-distance-unit-km" <?php echo ( 'km' === $distance_unit ? 'checked' : '')?>>
@@ -264,34 +271,34 @@ function oirl_plugin_options() {
 		<div title="<?php echo esc_attr__( 'Should the run data box be added to the excerpt?', 'run-log' ) ?>">
 			<?php echo esc_html__( 'Display on excerpt', 'run-log' )?>:
 			<input type="radio" name="oirl-display-on-excerpt" value="0" id="oirl-display-on-excerpt-no" <?php echo ('0' === $display_on_excerpt ? 'checked' : '')?>>
-			<label for="oirl-display-on-excerpt-no"><?php echo esc_html__( 'No' )?></label>
+			<label for="oirl-display-on-excerpt-no"><?php echo esc_html__( 'No', 'run-log' )?></label>
 			&nbsp;
 			<input type="radio" name="oirl-display-on-excerpt" value="1" id="oirl-display-on-excerpt-yes"<?php echo ('1' === $display_on_excerpt ? 'checked' : '')?>>
-			<label for="oirl-display-on-excerpt-yes"><?php echo esc_html__( 'Yes' )?></label>
+			<label for="oirl-display-on-excerpt-yes"><?php echo esc_html__( 'Yes', 'run-log' )?></label>
 		</div>
 		<br>
 
 		<div title="<?php echo esc_attr__( 'Should links to goals activety is part of be at the bottom of its run-log posts?', 'run-log' ) ?>">
 			<?php echo esc_html__( 'Display goals links', 'run-log' )?>:
 			<input type="radio" name="oirl-goal-links" value="0" id="oirl-goal-links-no" <?php echo ( '0' === $goal_links ? 'checked' : '' )?>>
-			<label for="oirl-goal-links-no"><?php echo esc_html__( 'No' )?></label>
+			<label for="oirl-goal-links-no"><?php echo esc_html__( 'No', 'run-log' )?></label>
 			&nbsp;
 			<input type="radio" name="oirl-goal-links" value="1" id="oirl-goal-links-yes"<?php echo ( '1' === $goal_links ? 'checked' : '' )?>>
-			<label for="oirl-goal-links-yes"><?php echo esc_html__( 'Yes' )?></label>
+			<label for="oirl-goal-links-yes"><?php echo esc_html__( 'Yes', 'run-log' )?></label>
 		</div>
 		<br>
 
 		<div title="<?php echo esc_attr__( 'Should links to gear used in activety be at the bottom of its run-log posts?', 'run-log' ) ?>">
 			<?php echo esc_html__( 'Display gear links', 'run-log' )?>:
 			<input type="radio" name="oirl-gear-links" value="0" id="oirl-gear-links-no" <?php echo ( '0' === $gear_links ? 'checked' : '' )?>>
-			<label for="oirl-goal-links-no"><?php echo esc_html__( 'No' )?></label>
+			<label for="oirl-goal-links-no"><?php echo esc_html__( 'No', 'run-log' )?></label>
 			&nbsp;
 			<input type="radio" name="oirl-gear-links" value="1" id="oirl-gear-links-yes"<?php echo ( '1' === $gear_links ? 'checked' : '' )?>>
-			<label for="oirl-gear-links-yes"><?php echo esc_html__( 'Yes' )?></label>
+			<label for="oirl-gear-links-yes"><?php echo esc_html__( 'Yes', 'run-log' )?></label>
 		</div>
 
 		<p class="submit">
-		<input type="submit" name="Submit" class="button-primary" value="<?php echo esc_attr__( 'Save Changes' )?>">
+		<input type="submit" name="Submit" class="button-primary" value="<?php echo esc_attr__( 'Save Changes', 'run-log' )?>">
 		</p>
 	</form>
 </div>
@@ -368,7 +375,7 @@ function oirl_run_log_meta_boxes_display( $post ) {
 		<div id="oirl-embed-external">
 			<?php echo esc_html__( 'Embed activity from external source', 'run-log' )?>:
 			<input type="radio" name="oirl-mb-embed-external" value="no" id="oirl-mb-embed-external-no" <?php echo ( ! in_array( $embed_external, array( 'strava', 'garmin' ), true ) ? 'checked' : '')?>>
-			<label for="oirl-mb-embed-external-no"><?php echo esc_html__( 'No' )?></label>
+			<label for="oirl-mb-embed-external-no"><?php echo esc_html__( 'No', 'run-log' )?></label>
 			&nbsp;
 			<input type="radio" name="oirl-mb-embed-external" value="strava" id="oirl-mb-embed-external-strava" <?php echo ( 'strava' === $embed_external ? 'checked' : '')?>>
 			<label for="oirl-mb-embed-external-strava"><?php echo esc_html__( 'Strava', 'run-log' )?></label>
@@ -713,16 +720,17 @@ class OIRL_Total_Widget extends WP_Widget {
 	public function widget( $args, $instance ) {
 		echo $args['before_widget'];
 		if ( ! empty( $instance['title'] ) ) {
-			echo $args['before_title'] . esc_html( apply_filters( 'widget_title', $instance['title'] ) ) . $args['after_title'];
+			echo $args['before_title'] . esc_html( apply_filters( 'widget_title', esc_html( $instance['title'] ) ) ) . $args['after_title'];
 		}
 
 		$widget_data = '';
 		$option = array();
+		$local_timestamp = get_option( 'gmt_offset' ) * HOUR_IN_SECONDS + time();
 		if ( isset( $instance['time_frame'] ) && 'this_year' === $instance['time_frame'] ) {
-			$option['year'] = date( 'Y' );
+			$option['year'] = gmdate( 'Y', $local_timestamp );
 		} elseif ( isset( $instance['time_frame'] ) && 'this_month' === $instance['time_frame'] ) {
-			$option['year'] = date( 'Y' );
-			$option['month'] = date( 'm' );
+			$option['year'] = gmdate( 'Y', $local_timestamp );
+			$option['month'] = gmdate( 'm', $local_timestamp );
 		}
 		if ( isset( $instance['display_distance'] ) && 'on' === $instance['display_distance'] ) {
 			$option['only'] = 'distance';
@@ -764,7 +772,7 @@ class OIRL_Total_Widget extends WP_Widget {
 		$time_frame = isset( $instance['time_frame'] ) ? $instance['time_frame'] : '';
 		?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:' ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'run-log' ); ?></label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
 		<p>
@@ -807,7 +815,7 @@ class OIRL_Total_Widget extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
-		$instance['title'] = ( isset( $new_instance['title'] ) && ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		$instance['title'] = ( isset( $new_instance['title'] ) && ! empty( $new_instance['title'] ) ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
 		$instance['display_distance'] = isset( $new_instance['display_distance'] ) ? $new_instance['display_distance'] : '';
 		$instance['display_duration'] = isset( $new_instance['display_duration'] ) ? $new_instance['display_duration'] : '';
 		$instance['display_elevation'] = isset( $new_instance['display_elevation'] ) ? $new_instance['display_elevation'] : '';
@@ -867,7 +875,6 @@ function oirl_total_shortcode( $atts ) {
 		if ( isset( $atts['month'] ) && preg_match( '/^\d\d?$/', $atts['month'] ) ) {
 				$period_where .= ' AND MONTH( `post_date` ) = %d';
 				array_push( $qry_value_parameters, sprintf( '%02d', $atts['month'] ) );
-				$month_name = date( 'F', mktime( 0, 0, 0, $atts['month'], 10 ) );
 		}
 		$period_where .= ')';
 	}
@@ -898,7 +905,7 @@ WHERE `meta_key`=%s $period_where
 			$output .= '<div class="oirl-data"><div class="oirl-data-desc">' . esc_html__( 'Total distance', 'run-log' );
 			if ( $atts['year'] ) {
 				if ( $atts['month'] ) {
-					$output .= ' ' . esc_html__( $month_name );
+					$output .= ' ' . date_i18n( 'F' );
 				}
 				$output .= " {$atts['year']}";
 			}
