@@ -563,7 +563,7 @@ function oirl_add_run_log_data_to_post( $content, $excerpt = false ) {
 		return ( 'bottom' === $add_at_pos ? $content . $strava_embed . $bottom_links : $strava_embed . $content . $bottom_links );
 	} elseif ( ( ! $embed_external || 'garmin' === $embed_external ) && $garmin_activity && preg_match( '/^\d+$/', $garmin_activity ) && ! $excerpt ) {
 			$garmin_embed_url = "https://connect.garmin.com/app/activity/embed/" . esc_attr($garmin_activity);
-			$garmin_link_url  = "https://connect.garmin.com/app/activity/" . esc_attr($garmin_activity);
+			$garmin_link_url  = "https://connect.garmin.com/activity/" . esc_attr($garmin_activity);
 			$link_color = ( isset($style_theme) && $style_theme === 'light' ) ? '#557' : '#ccf';
 			$garmin_iframe = "<iframe src='$garmin_embed_url' width='100%' height='500' frameborder='0'></iframe>\n";
 			$garmin_iframe .= "<div style='font-size: 0.70em; text-align: center; margin-top: 1px;'>";
