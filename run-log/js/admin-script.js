@@ -44,12 +44,7 @@
     } else {
       $( '#oirl-div-embed-external-garmin' ).hide();
     }
-    // Show/hide endomondo embed div.
-    if( true === $( '#oirl-mb-embed-external-endomondo' ).prop("checked") ) {
-      $( '#oirl-div-embed-external-endomondo' ).show();
-    } else {
-      $( '#oirl-div-embed-external-endomondo' ).hide();
-    }
+
   }
 
 })( jQuery );

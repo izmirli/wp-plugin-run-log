@@ -333,7 +333,7 @@ function oirl_run_log_meta_boxes_display( $post ) {
 	$plugin_ops = get_option( 'oi-run-log-options' );
 	$distance_unit = isset( $plugin_ops['distance_unit'] ) ? $plugin_ops['distance_unit'] : 'km';
 	$distance = get_post_meta( $post->ID, 'oirl-mb-distance', true );
-	if ( preg_match( '/^(\d+(?:\.\d{1,3})?)\d*$/', $distance, $distance_matches ) ) {
+	if ( $distance && preg_match( '/^(\d+(?:\.\d{1,3})?)\d*$/', $distance, $distance_matches ) ) {
 		$distance = $distance_matches[1];
 	} else { // no valid distance - display zero.
 		$distance = 0;
@@ -677,7 +677,7 @@ function oirl_add_run_log_data_to_goal( $term_description ) {
 	$goal_distance = oirl_total_shortcode( array( 'term' => $term->term_id, 'only' => 'distance' ) );
 	$goal_duration = oirl_total_shortcode( array( 'term' => $term->term_id, 'only' => 'time' ) );
 	$goal_data = "$goal_distance &nbsp; $goal_duration";
-	$goal_data = preg_replace( '/<\/div>\s*&nbsp;\s*<div class="oirl oirl-\w+ oirl-total-box">/', '', $widget_data );
+	$goal_data = preg_replace( '/<\/div>\s*&nbsp;\s*<div class="oirl oirl-\w+ oirl-total-box">/', '', $goal_data );
 
 	return $goal_data . $term_description;
 }
@@ -911,7 +911,7 @@ WHERE `meta_key`=%s $period_where
 			$output .= '<div class="oirl-data"><div class="oirl-data-desc">' . esc_html__( 'Total distance', 'run-log' );
 			if ( $atts['year'] ) {
 				if ( $atts['month'] ) {
-					$output .= ' ' . date_i18n( 'F' );
+					$output .= ' ' . date_i18n( 'F', mktime( 0, 0, 0, $atts['month'], 10 ) );
 				}
 				$output .= " {$atts['year']}";
 			}
@@ -952,7 +952,7 @@ WHERE `meta_key`=%s $period_where
 		) );
 		// Remove 'oirl-mb-duration' from $qry_value_parameters for next queries if any.
 		array_shift( $qry_value_parameters );
-		$duration_sec = ($duration_total - floor( $duration_total )) * 60;
+		$duration_sec = round( ( $duration_total - floor( $duration_total ) ) * 60 );
 		$duration_hour = floor( $duration_total / 60 );
 		$duration_min = floor( $duration_total ) - ($duration_hour * 60);
 		$duration = sprintf( '%02d:%02d:%02d', $duration_hour, $duration_min, $duration_sec );
@@ -967,7 +967,7 @@ WHERE `meta_key`=%s $period_where
 			$output .= '<div class="oirl-data"><div class="oirl-data-desc">' . esc_html__( 'Total duration', 'run-log' );
 			if ( $atts['year'] ) {
 				if ( $atts['month'] ) {
-					$output .= ' ' . esc_html__( $month_name );
+					$output .= ' ' . date_i18n( 'F', mktime( 0, 0, 0, $atts['month'], 10 ) );
 				}
 				$output .= " {$atts['year']}";
 			}
@@ -1010,7 +1010,7 @@ WHERE `meta_key`=%s $period_where
 		$output .= '<div class="oirl-data"><div class="oirl-data-desc">' . esc_html__( 'Total elevation', 'run-log' );
 		if ( $atts['year'] ) {
 			if ( $atts['month'] ) {
-				$output .= ' ' . esc_html__( $month_name );
+				$output .= ' ' . date_i18n( 'F', mktime( 0, 0, 0, $atts['month'], 10 ) );
 			}
 			$output .= " {$atts['year']}";
 		}
@@ -1037,7 +1037,7 @@ WHERE `meta_key`=%s $period_where
 		$output .= '<div class="oirl-data"><div class="oirl-data-desc">' . esc_html__( 'Total calories', 'run-log' );
 		if ( $atts['year'] ) {
 			if ( $atts['month'] ) {
-				$output .= ' ' . esc_html__( $month_name );
+				$output .= ' ' . date_i18n( 'F', mktime( 0, 0, 0, $atts['month'], 10 ) );
 			}
 			$output .= " {$atts['year']}";
 		}
@@ -1208,7 +1208,7 @@ function iorl_calculate_pace( $distance, $duration, $type = 'pace' ) {
 			+ intval( $duration_matches[2] )
 			+ (intval( $duration_matches[1] ) * 60 );
 		$pace_raw = $duration_minutes / $distance;
-		$output = sprintf( '%d:%02d', floor( $pace_raw ), ($pace_raw - floor( $pace_raw )) * 60 );
+		$output = sprintf( '%d:%02d', floor( $pace_raw ), round( ( $pace_raw - floor( $pace_raw ) ) * 60 ) );
 	} else {
 		$duration_hours = ( intval( $duration_matches[3] ) / (60 * 60) )
 			+ ( intval( $duration_matches[2] ) / 60 )
