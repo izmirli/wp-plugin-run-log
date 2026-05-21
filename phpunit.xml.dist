@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<phpunit
+	bootstrap="tests/phpunit/bootstrap.php"
+	backupGlobals="false"
+	colors="true"
+	cacheResult="false"
+>
+	<testsuites>
+		<testsuite name="run-log">
+			<directory suffix="Test.php">./tests/phpunit</directory>
+			<exclude>./tests/phpunit/bootstrap.php</exclude>
+		</testsuite>
+	</testsuites>
+</phpunit>

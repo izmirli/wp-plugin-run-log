@@ -1,9 +1,9 @@
 === Run Log ===
 Contributors: izem
 Tags: training log, running, sport, run diary, strava, garmin
-Requires at least: 4.0
-Tested up to: 6.9
-Stable tag: 1.7.12
+Requires at least: 5.0
+Tested up to: 7.0
+Stable tag: 1.7.13
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html
 
@@ -147,6 +147,11 @@ Make sure your activity is Public - activity's privacy is set to "Everyone" (the
 8. Widget configuration.
 
 == Changelog ==
+
+= 1.7.13 =
+* Declared compatibility and tested up to WordPress 7.0.
+* Implemented PHPUnit and E2E automated testing infrastructure.
+* Fix: Resolved minor bugs.
 
 = 1.7.12 =
 * Fix: Updated Garmin Connect embed URL to the new format (yet, Chrome/Edge may be broken from Garmin side).

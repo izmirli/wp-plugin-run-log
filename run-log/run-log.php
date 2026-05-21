@@ -11,7 +11,7 @@
  * Plugin Name: Run Log
  * Plugin URI: https://izmirli.org/run-log/
  * Description: Adds running diary capabilities - log your sport activities with custom post type, custom fields and new taxonomies.
- * Version: 1.7.12
+ * Version: 1.7.13
  * Author: Oren Izmirli
  * Author URI: https://profiles.wordpress.org/izem
  * Text Domain: run-log
@@ -568,7 +568,7 @@ function oirl_add_run_log_data_to_post( $content, $excerpt = false ) {
 			$garmin_iframe = "<iframe src='$garmin_embed_url' width='100%' height='500' frameborder='0'></iframe>\n";
 			$garmin_iframe .= "<div style='font-size: 0.70em; text-align: center; margin-top: 1px;'>";
             $garmin_iframe .= "<a href='$garmin_link_url' target='_blank' rel='noopener noreferrer' style='color: $link_color;'>";
-			$garmin_iframe .= esc_html__("View activity on Garmin Connect") . "</a></div>\n";
+			$garmin_iframe .= esc_html__("View activity on Garmin Connect", "run-log") . "</a></div>\n";
 			return ( 'bottom' === $add_at_pos ? $content . $garmin_iframe . $bottom_links : $garmin_iframe . $content . $bottom_links );
 	}
 
