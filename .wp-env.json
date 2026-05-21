@@ -1,0 +1,11 @@
+{
+  "core": null,
+  "plugins": [
+    "./run-log"
+  ],
+  "mappings": {
+    "wp-content/plugins/run-log/phpunit.xml.dist": "./phpunit.xml.dist",
+    "wp-content/plugins/run-log/tests/phpunit": "./tests/phpunit",
+    "wp-content/plugins/run-log/vendor": "./vendor"
+  }
+}

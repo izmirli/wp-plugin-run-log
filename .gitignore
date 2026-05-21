@@ -41,3 +41,17 @@ cache
 
 # windows event files
 *.event
+
+# Python / Virtual Environment
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+node_modules/
+vendor/
+run-log/vendor/
+
+
+

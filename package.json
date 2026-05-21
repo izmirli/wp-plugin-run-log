@@ -1,0 +1,14 @@
+{
+  "name": "wp-plugin-run-log",
+  "version": "1.7.13",
+  "description": "E2E testing infrastructure for Run Log plugin",
+  "scripts": {
+    "wp-env": "wp-env",
+    "test": "node run-tests.js",
+    "test:e2e": "pytest tests/e2e",
+    "test:php": "wp-env run tests-cli --env-cwd=wp-content/plugins/run-log ./vendor/bin/phpunit"
+  },
+  "devDependencies": {
+    "@wordpress/env": "^10.0.0"
+  }
+}
