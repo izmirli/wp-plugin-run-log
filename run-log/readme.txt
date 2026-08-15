@@ -2,7 +2,7 @@
 Contributors: izem
 Tags: training log, running, sport, run diary, strava, garmin
 Requires at least: 5.0
-Tested up to: 7.0
+Tested up to: 7.1
 Stable tag: 1.7.13
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html
